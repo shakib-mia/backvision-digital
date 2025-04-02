@@ -387,9 +387,9 @@ export const routes = [
   {
     path: "/signup-details",
     page: (
-      <RequireAuth>
-        <SignupDetails />
-      </RequireAuth>
+      // <RequireAuth>
+      <SignupDetails />
+      // </RequireAuth>
     ),
   },
 

@@ -6,89 +6,50 @@ const SelectOptions = ({
   label,
   onChange,
   options,
-  containerClassName,
-  labelClassName,
+  containerClassName = "",
+  fieldClassName = "",
   note,
   placeholder,
   required,
   name,
   value,
-  selected,
   hideRequired,
 }) => {
   return (
-    <div className={`input ${containerClassName}`}>
-      <div className="flex justify-between">
-        {label && (
-          <label htmlFor={id} className={`text-grey ${labelClassName}`}>
-            {label}
-          </label>
-        )}
-        {hideRequired ||
-          (!required ? (
-            <span className="text-button !font-light">Optional</span>
-          ) : (
-            <span className="text-interactive-light-destructive-focus text-button !font-light">
-              Required
-            </span>
-          ))}
-      </div>
-      {/* {label && <br />} */}
-      {/* <div className="border-[1px] border-surface-white-line text-[12px] mt-1 resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2 ">
-        <select
-          id={id}
-          onChange={onChange}
-          name={name}
-          value={value}
-          className="input-field bg-surface-white-surface-1 w-full h-full py-[12px] focus:outline-none cursor-pointer capitalize"
+    <div className={`relative w-full ${containerClassName}`}>
+      {label && (
+        <label
+          htmlFor={id}
+          className="absolute top-3 left-4 text-gray-400 text-sm transition-all"
         >
-          {placeholder && <option key={0}>{placeholder}</option>}
-          {options.map((option, key) => (
-            <option
-              key={key + 1}
-              selected={option.selected || false}
-              value={options.length === 0 ? "Loading..." : option}
-              className="border-[1px] p-2 text-paragraph-2"
-            >
-              {option}
-            </option>
-          ))}
-        </select>
-      </div> */}
-      <div className="relative border-[2px] border-surface-white-line text-[12px] mt-1 resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2">
+          {label}
+        </label>
+      )}
+      <div className="relative w-full mt-3 px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ">
         <select
           id={id}
-          onChange={onChange}
           name={name}
           value={value}
-          className="appearance-none w-full h-full py-[12px] focus:outline-none cursor-pointer capitalize bg-transparent"
-          style={{
-            WebkitAppearance: "none",
-            MozAppearance: "none",
-          }}
+          onChange={onChange}
+          className={`bg-transparent w-full ${fieldClassName}`}
         >
           {placeholder && (
-            <option selected disabled key={0}>
+            <option disabled value="">
               {placeholder}
             </option>
           )}
           {options.map((option, key) => (
-            <option
-              key={key + 1}
-              selected={option?.selected || false}
-              value={options.length === 0 ? "Loading..." : option}
-              className="border-[1px] p-2 text-paragraph-2"
-            >
+            <option key={key} value={option} className="bg-gray-700 text-white">
               {option}
             </option>
           ))}
         </select>
-        <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
-          <FaChevronDown />
-        </div>
+        {/* <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+          <FaChevronDown className="text-white" />
+        </div> */}
       </div>
 
-      {note && <p className="text-subtitle-2 text-grey-dark">{note}</p>}
+      {note && <p className="text-gray-400 text-sm mt-1">{note}</p>}
     </div>
   );
 };

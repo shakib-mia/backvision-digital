@@ -78,6 +78,7 @@ const SignUp = () => {
       type: "email",
       placeholder: "Email Address",
       onChange: (e) => setEmail(e.target.value),
+      value: email,
     },
     {
       id: "signup-pass",
@@ -86,6 +87,7 @@ const SignUp = () => {
       type: "password",
       placeholder: "Enter Password",
       onChange: (e) => setPassword(e.target.value),
+      value: password,
     },
     {
       id: "confirm-password",
@@ -94,6 +96,7 @@ const SignUp = () => {
       type: "password",
       placeholder: "Re-enter Address",
       onChange: (e) => setConfirmPass(e.target.value),
+      value: confirmPass,
     },
   ];
 
@@ -137,52 +140,67 @@ const SignUp = () => {
   };
 
   return (
-    <AuthBody
-      heading="Sign Up"
-      altDescription="Already Have an Account?"
-      altText="Log in"
-      altLink="/login"
-      onSubmit={signup}
-      id="signup-page"
-    >
-      {fields.map((props, id) => (
-        <InputField {...props} key={id} containerClassName="mt-3" />
-      ))}
+    <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+      <div className="bg-gray-800 p-4 rounded-lg shadow-lg w-1/4">
+        <div className="flex justify-between items-end">
+          <h5 className="text-heading-5-bold font-bold text-center text-blue-400">
+            Sign up
+          </h5>
 
-      <div className="mt-3 mb-2 text-center">
-        <Button
-          type="submit"
-          text="Sign Up"
-          disabled={
-            !(email.length > 0 && password.length && password === confirmPass)
-          }
-        />
-      </div>
+          <aside>
+            Already have an account?{" "}
+            <Link to={"/login"} className="text-interactive-light-disabled">
+              Login
+            </Link>
+          </aside>
+        </div>
 
-      <div className="my-2 flex items-center gap-3 mx-auto">
-        <div className="h-[1px] w-full bg-grey-light"></div>
-        <div>OR</div>
-        <div className="h-[1px] w-full bg-grey-light"></div>
-      </div>
+        <form onSubmit={signup}>
+          {fields.map((props, id) => (
+            <InputField {...props} key={id} containerClassName="mt-3" />
+          ))}
+          <div className="mt-3 mb-2 text-center">
+            <Button
+              type="submit"
+              text="Sign Up"
+              disabled={
+                !(
+                  email.length > 0 &&
+                  password.length &&
+                  password === confirmPass
+                )
+              }
+            >
+              Sign Up
+            </Button>
+          </div>
+        </form>
 
-      <button
-        type="button"
-        className="mb-2 flex gap-2 text-heading-6 w-full font-semibold items-center border border-grey-light py-2 rounded-lg justify-center mx-auto hover:bg-interactive-light transition hover:text-white"
-        onClick={() => signInWithGoogle()}
-      >
-        <FcGoogle />
-        <span className="font-sans">Continue with Google</span>
-      </button>
+        <div className="my-2 flex items-center gap-3 mx-auto">
+          <div className="h-[1px] w-full bg-grey-light"></div>
+          <div>OR</div>
+          <div className="h-[1px] w-full bg-grey-light"></div>
+        </div>
 
-      <div className="text-center">
-        <Link
-          to="/login"
-          className="text-interactive-light text-button uppercase"
+        <button
+          type="button"
+          className="mb-2 flex gap-2 text-heading-6 w-full font-semibold items-center border border-grey-light py-2 rounded-lg justify-center mx-auto hover:bg-interactive-light transition hover:text-white"
+          onClick={() => signInWithGoogle()}
         >
-          Already have an account?
-        </Link>
+          <FcGoogle />
+          <span className="font-sans">Continue with Google</span>
+        </button>
+
+        <div className="text-center">
+          <Link
+            to="/login"
+            className="text-interactive-light text-button uppercase"
+          >
+            Already have an account?
+          </Link>
+        </div>
       </div>
-    </AuthBody>
+    </div>
   );
 };
 

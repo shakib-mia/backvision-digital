@@ -208,10 +208,12 @@ const KYC = () => {
 
         <InputField
           type={"checkbox"}
-          label={`I have confirm forevision digital terms of service, privacy policy and refund policy.`}
+          label={`I have confirm BackVision Digital terms of service, privacy policy and refund policy.`}
           id={"accept"}
           onChange={(e) => setAccepted(e.target.checked)}
-          containerClassName={"mt-2"}
+          containerClassName={"mt-2 flex items-center gap-1"}
+          fieldClassName="!w-fit !mt-0"
+          value={accepted}
         />
 
         <div className="flex justify-center mt-2">

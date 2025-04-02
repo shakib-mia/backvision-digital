@@ -1,232 +1,142 @@
-import React, { useContext, useEffect, useState } from "react";
-import AuthBody from "../../components/AuthBody/AuthBody";
-import InputField from "../../components/InputField/InputField";
-import Button from "../../components/Button/Button";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { ProfileContext } from "../../contexts/ProfileContext";
-import { toast } from "react-toastify";
-import { backendUrl } from "../../constants";
-import LoginMessage from "../../components/LoginMessage/LoginMessage";
 import { FcGoogle } from "react-icons/fc";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 import auth from "../../firebase.init";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import axios from "axios";
+import { backendUrl } from "../../constants";
+import InputField from "../../components/InputField/InputField";
+import Button from "../../components/Button/Button";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-  const { prevRoute, setToken, setUserData, setLoginTime, userData } =
-    useContext(ProfileContext);
-  // if (loading) {
-  //   console.log(loading);
-  // }
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [signInWithGoogle, user, googleLoading, googleError] =
+    useSignInWithGoogle(auth);
+  const { setToken, setUserData, setLoginTime } = useContext(ProfileContext);
 
-  useEffect(() => {
-    if (
-      sessionStorage.getItem("token") !== null &&
-      sessionStorage.getItem("token").length > 0
-    ) {
-      navigate("/");
-    }
-  }, []);
   useEffect(() => {
     if (user) {
-      // console.log(user.user);
-      const { email } = user.user;
-      sessionStorage.setItem("user", JSON.stringify(user.user));
-
+      const email = user.user.email;
       axios
         .get(`${backendUrl}handle-firebase-login/${email}`)
         .then(({ data }) => {
-          if (data?.token?.length > 0) {
+          if (data?.token) {
             sessionStorage.setItem("token", data.token);
             setLoginTime(Date.now());
-            if (data.details === null) {
-              navigate("/signup-details");
-            } else {
-              // console.log(data);
-              // setShowMessage(true);
-
-              setIsLoading(false);
-
-              navigate("/");
-              // setTimeout(() => navigate("/"), 10000);
-              setUserData(data.details);
-              window.location.reload();
-
-              // const config = {
-              //   headers: {
-              //     token: data?.token,
-              //   },
-              // };
-              // axios.get(backendUrl + "getUserData", config).then(({ data }) => {
-              //   console.log(data?.data);
-              //   if (data?.data === null) {
-              //     setUserData({ ...userData, user_email: e.target.email.value });
-              //   } else {
-              //     setTimeout(() => navigate("/"), 10000);
-              //   }
-              // });
-            }
-
-            setToken(data.token);
-            setUserData({ user_email: email, emailId: email });
+            setUserData(data.details || { user_email: email });
+            navigate("/");
           }
         })
-        .catch((err) => {
-          // setIsLoading(false);
-          toast.error(err.response?.data?.message, {
-            position: "bottom-center",
-          });
-        });
+        .catch((err) => toast.error(err.response?.data?.message));
     }
-    if (error) {
-      console.log(error);
-    }
-  }, [user, error]);
+  }, [user]);
 
-  const fields = [
-    {
-      name: "email",
-      label: "Email",
-      type: "email",
-      placeholder: "Email Address",
-    },
-    {
-      name: "password",
-      label: "Password",
-      type: "password",
-      placeholder: "Enter Password",
-    },
-  ];
-
-  const navigate = useNavigate();
-
-  const [showMessage, setShowMessage] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  // useEffect(() => {
-  //   console.log(showMessage);
-  // }, [showMessage]);
-
-  const login = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
-    axios
-      .post(backendUrl + "user-login", {
-        email: e.target.email.value.toLowerCase(),
-        password: e.target.password.value,
-      })
-      .then(({ data }) => {
-        // console.log(data);
-        // console.log(data?.token?.length);
-        if (data?.token?.length > 0) {
-          sessionStorage.setItem("token", data.token);
-          setLoginTime(Date.now());
-          if (prevRoute === "/signup" || data.details === null) {
-            console.log(e.target.email.value.toLowerCase());
-            setUserData({
-              ...userData,
-              user_email: e.target.email.value.toLowerCase(),
-            });
-            navigate("/signup-details");
-          } else {
-            // console.log(data);
-            // setShowMessage(true);
-
-            setShowMessage(true);
-            setIsLoading(false);
-            // navigate("/");
-            setTimeout(() => navigate("/"), 5000);
-            setUserData(data.details);
-
-            // const config = {
-            //   headers: {
-            //     token: data?.token,
-            //   },
-            // };
-            // axios.get(backendUrl + "getUserData", config).then(({ data }) => {
-            //   console.log(data?.data);
-            //   if (data?.data === null) {
-            //     setUserData({ ...userData, user_email: e.target.email.value });
-            //   } else {
-            //     setTimeout(() => navigate("/"), 10000);
-            //   }
-            // });
-          }
-
-          setToken(data.token);
-          setUserData({ user_email: e.target.email.value });
-        }
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        toast.error(err.response?.data?.message, {
-          position: "bottom-center",
-        });
+    setLoading(true);
+    try {
+      const { data } = await axios.post(`${backendUrl}user-login`, {
+        email,
+        password,
       });
+      if (data?.token) {
+        sessionStorage.setItem("token", data.token);
+        setLoginTime(Date.now());
+        setUserData(data.details || { user_email: email });
+        navigate("/");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <AuthBody
-      heading="Login"
-      altDescription="New in ForeVision Digital?"
-      altText="Sign Up"
-      altLink="/signup"
-      // whiteContainerClass={"!w-1/3"}
-      onSubmit={login}
-    >
-      {/* <div className="w-1/2 mx-auto"> */}
-      {fields.map((props, id) => (
-        <InputField
-          {...props}
-          key={id}
-          containerClassName="mt-3"
-          onChange={(e) =>
-            props.name === "email"
-              ? setEmail(e.target.value)
-              : setPassword(e.target.value)
-          }
-        />
-      ))}
+    <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+      <div className="bg-gray-800 p-4 rounded-lg shadow-lg w-1/4">
+        <div className="flex justify-between items-center">
+          <h4 className="text-heading-4-bold font-bold text-center text-blue-400">
+            Login
+          </h4>
 
-      <div className="mt-3 text-center">
-        <Button
-          type="submit"
-          text={isLoading ? "Logging in" : "Login"}
-          disabled={isLoading || !email.length || !password.length}
-        />
-      </div>
+          <aside>
+            Don't have an account?{" "}
+            <Link to={"/signup"} className="text-interactive-light-disabled">
+              Create a New One
+            </Link>
+          </aside>
+        </div>
+        <form onSubmit={handleLogin} className="mt-3">
+          {/* <input
+            type="email"
+            placeholder="Email Address"
+            className="w-full px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          /> */}
 
-      <div className="my-2 flex items-center gap-3 mx-auto">
-        <div className="h-[1px] w-full bg-grey-light"></div>
-        <div>OR</div>
-        <div className="h-[1px] w-full bg-grey-light"></div>
-      </div>
+          <InputField
+            type="email"
+            label="Email"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            required={true}
+          />
 
-      <button
-        type="button"
-        className="mb-2 flex gap-2 text-heading-6 w-full font-semibold items-center border border-grey-light py-2 rounded-lg justify-center mx-auto hover:bg-interactive-light transition hover:text-white"
-        onClick={() => signInWithGoogle()}
-      >
-        <FcGoogle />
-        <span className="font-sans">Continue with Google</span>
-      </button>
-      {/* </div> */}
+          <InputField
+            type="password"
+            label="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            required={true}
+          />
+          {/* <input
+            type="password"
+            placeholder="Password"
+            className="w-full mt-3 px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          /> */}
+          <Button disabled={loading || !email.length || !password.length}>
+            {loading ? "Logging in..." : "Login"}
+          </Button>
+          {/* <button
+            type="submit"
+            className="w-full mt-2 bg-interactive-light disabled:bg-interactive-light-disabled py-2 rounded-lg hover:bg-interactive-light-hover shadow-[0_8px_16px] hover:shadow-none shadow-interactive-light-focus transition"
+            disabled={loading || !email.length || !password.length}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button> */}
+        </form>
 
-      <div className="text-center">
-        <Link
-          to="/forgot-password"
-          className="text-interactive-light text-button uppercase"
+        <div className="flex items-center my-4">
+          <div className="flex-grow border-t border-gray-500"></div>
+          <span className="mx-4 text-gray-400">OR</span>
+          <div className="flex-grow border-t border-gray-500"></div>
+        </div>
+
+        <button
+          className="w-full flex items-center justify-center gap-2 bg-interactive-light-confirmation py-2 rounded-lg hover:bg-interactive-light-confirmation-hover transition"
+          onClick={() => signInWithGoogle()}
         >
-          Forgot your password?
-        </Link>
-      </div>
+          <FcGoogle size={20} /> Continue with Google
+        </button>
 
-      {showMessage ? <LoginMessage /> : <></>}
-      {/* <LoginMessage /> */}
-    </AuthBody>
+        <div className="text-center mt-3">
+          <Link to="/forgot-password" className="text-blue-400 hover:underline">
+            Forgot your password?
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -1,0 +1,80 @@
+{
+  "name": "forevision-digital",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@madzadev/audio-player": "^2.1.13",
+    "@paypal/react-paypal-js": "^8.3.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
+    "chart.js": "^4.4.3",
+    "country-calling-code": "^0.0.3",
+    "country-codes-list": "^1.6.11",
+    "firebase": "^10.12.3",
+    "gsap": "^3.12.2",
+    "html2canvas": "^1.4.1",
+    "jquery": "^3.7.1",
+    "js-sha256": "^0.11.0",
+    "jspdf": "^2.5.2",
+    "lenis": "^1.1.16",
+    "libphonenumber-js": "^1.10.51",
+    "owl.carousel": "^2.3.4",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-countdown-circle-timer": "^3.2.1",
+    "react-dom": "^18.3.1",
+    "react-firebase-hooks": "^5.1.1",
+    "react-ga4": "^2.1.0",
+    "react-helmet": "^6.1.0",
+    "react-icons": "^5.1.0",
+    "react-owl-carousel": "^2.3.3",
+    "react-razorpay": "^2.0.1",
+    "react-router-dom": "^6.11.2",
+    "react-scripts": "5.0.1",
+    "react-to-pdf": "^1.0.1",
+    "react-toastify": "^9.1.3",
+    "react-tooltip": "^5.28.0",
+    "recharts": "^2.12.7",
+    "sass": "^1.77.6",
+    "sweetalert2": "^11.12.1",
+    "swiper": "8.0.0",
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "start": "PORT=3100 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "preview": "HOST=0.0.0.0 PORT=3000 react-scripts start",
+    "deploy": "npm run build && npx netlify deploy --prod --dir build"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "netlify-cli": "^15.6.0",
+    "react-countup": "^6.5.0",
+    "tailwindcss": "^3.3.2"
+  }
+}

@@ -37,7 +37,7 @@ const Footer = () => {
       }`}
     >
       <footer className="text-center py-2 flex flex-col md:flex-row md:justify-between items-center text-grey w-10/12 mx-auto pb-[70px] lg:pb-2">
-        <ul className="flex flex-wrap gap-x-2 gap-y-1 justify-center md:gap-2 mb-2 md:mb-0 text-sm">
+        <ul className="flex flex-wrap lg:flex-nowrap gap-x-2 gap-y-1 justify-center md:gap-2 mb-2 md:mb-0 text-sm">
           <li className="w-fit">
             <a
               href="https://forevisiondigital.com/digital-distribution-agreement/"
@@ -91,7 +91,7 @@ const Footer = () => {
         </ul>
 
         <div className="mb-2 md:mb-0 text-xs md:text-sm">
-          &copy; {year} ForeVision Digital | All rights reserved
+          &copy; {year} BackVision Digital | All rights reserved
         </div>
 
         <div className="flex gap-1 md:gap-2 items-center">
@@ -101,7 +101,7 @@ const Footer = () => {
           <a href="https://www.instagram.com/forevisiondigital/">
             <FaInstagramSquare className="text-[#d62976] text-sm md:text-heading-5" />
           </a>
-          <a href="https://twitter.com/ForeVisionIn">
+          <a href="https://twitter.com/BackVisionIn">
             <FaXTwitter className="text-white text-sm md:text-heading-5" />
           </a>
           <a href="https://www.youtube.com/channel/UCGPHBKBHGr_G16oM6SoLMRA">

@@ -121,7 +121,9 @@ const Uploads = () => {
           <h5 className="text-heading-6-bold lg:text-heading-4-bold text-grey-dark">
             Your Uploads
           </h5>
-          <Button onClick={() => navigate("/revenue")} text="Visit Dashboard" />
+          <Button className={"!w-1/3"} onClick={() => navigate("/revenue")}>
+            Visit Dashboard
+          </Button>
         </div>
       )}
     </div>

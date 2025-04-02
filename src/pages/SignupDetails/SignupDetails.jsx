@@ -129,7 +129,7 @@ const SignupDetails = () => {
       name: "company_label",
       label: "Company/Record label",
       type: "text",
-      placeholder: "Example: ForeVision Digital",
+      placeholder: "Example: BackVision Digital",
       onChange: (e) =>
         setUserData({ ...userData, recordLabel: e.target.value }),
       required: false,
@@ -274,133 +274,140 @@ const SignupDetails = () => {
 
   return (
     <>
-      <AuthBody
+      {/* <AuthBody
         heading="We need a few more details"
         onSubmit={signup}
         id="signup-page"
         className="hidden xl:flex"
-      >
-        <div className="flex flex-wrap" id="form">
-          {fields.map((props, id) =>
-            (id + 1) % 3 === 0 ? (
-              <>
-                {props.name === "phone" && (
-                  <div className="flex w-fit gap-[8px] items-center mt-3 -mb-3">
-                    <input
-                      type="checkbox"
-                      required={true}
-                      id={id}
-                      className="hidden"
-                      onChange={(e) => {
-                        if (!props.onChange) {
-                          setUserData({
-                            ...userData,
-                            [props.name]: e.target.value,
-                          });
-                        } else {
-                          props.onChange(e);
-                        }
-                      }}
-                    />
+      > */}
+      <div className="flex justify-center items-center bg-gray-900 text-white py-4 min-h-screen">
+        <div className="bg-gray-800 p-4 rounded-lg shadow-lg w-1/4">
+          <div className="w-full flex justify-between items-center">
+            <h5 className="text-heading-5-bold">We need a few more details</h5>
+          </div>
+          <div className="flex flex-wrap" id="form">
+            {fields.map((props, id) =>
+              (id + 1) % 3 === 0 ? (
+                <>
+                  {props.name === "phone" && (
+                    <div className="flex w-fit gap-[8px] items-center mt-3 -mb-3">
+                      <input
+                        type="checkbox"
+                        required={true}
+                        id={id}
+                        className="hidden"
+                        onChange={(e) => {
+                          if (!props.onChange) {
+                            setUserData({
+                              ...userData,
+                              [props.name]: e.target.value,
+                            });
+                          } else {
+                            props.onChange(e);
+                          }
+                        }}
+                      />
 
-                    <div
-                      className={`${
-                        !checked &&
-                        "border-[1px]  border-surface-white-line text-[12px]"
-                      } rounded-[4px] w-[16px] h-[16px]`}
-                    >
-                      {checked && <img src={check} alt="checkbox" />}
+                      <div
+                        className={`${
+                          !checked &&
+                          "border-[1px]  border-surface-white-line text-[12px]"
+                        } rounded-[4px] w-[16px] h-[16px]`}
+                      >
+                        {checked && <img src={check} alt="checkbox" />}
+                      </div>
+
+                      <label
+                        htmlFor={id}
+                        className="text-black-primary text-subtitle-2 font-medium"
+                      >
+                        Save this information for next time
+                      </label>
                     </div>
+                  )}
 
-                    <label
-                      htmlFor={id}
-                      className="text-black-primary text-subtitle-2 font-medium"
-                    >
-                      Save this information for next time
-                    </label>
-                  </div>
-                )}
+                  <InputField
+                    {...fields[id]}
+                    selectedCode={selectedCode}
+                    setSelectedCode={setSelectedCode}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      if (!props.onChange) {
+                        setUserData({
+                          ...userData,
+                          [props.name]: e.target.value.trim(),
+                        });
+                      } else {
+                        props.onChange(e);
+                      }
+                    }}
+                    key={id}
+                    containerId={id}
+                    containerClassName={`w-full`}
+                  />
+                </>
+              ) : props.name === "billing_country" ? (
+                <div className="w-1/2">
+                  <CountrySelector
+                    selectedCountry={userData.billing_country}
+                    setSelectedCountry={(country) =>
+                      setUserData({ ...userData, [props.name]: country })
+                    }
+                  />
+                </div>
+              ) : (
+                // <SelectOptions
+                //   containerClassName={`w-1/2`}
+                //   label={"Country"}
+                //   options={countries.map((item) => item.name?.common)}
+                //   onChange={(e) => {
+                //     setUserData({ ...userData, [props.name]: e.target.value });
+                //     const country = countries.find(
+                //       (item) => item.name.common === e.target.value
+                //     );
 
+                //     setSelectedCode(
+                //       (country.idd.root + country.idd.suffixes[0]).slice(
+                //         1,
+                //         (country.idd.root + country.idd.suffixes[0]).length
+                //       )
+                //     );
+                //   }}
+                // />
                 <InputField
-                  {...fields[id]}
-                  selectedCode={selectedCode}
-                  setSelectedCode={setSelectedCode}
+                  {...props}
+                  containerId={id}
                   onChange={(e) => {
-                    console.log(e.target.value);
                     if (!props.onChange) {
                       setUserData({
                         ...userData,
-                        [props.name]: e.target.value.trim(),
+                        [props.name]: e.target.value,
                       });
                     } else {
                       props.onChange(e);
                     }
                   }}
                   key={id}
-                  containerId={id}
-                  containerClassName={`mt-3 w-full`}
+                  containerClassName={`w-1/2`}
+                  // fieldClassName="mr-2"
                 />
-              </>
-            ) : props.name === "billing_country" ? (
-              <div className="w-1/2 mt-3">
-                <CountrySelector
-                  selectedCountry={userData.billing_country}
-                  setSelectedCountry={(country) =>
-                    setUserData({ ...userData, [props.name]: country })
-                  }
-                />
-              </div>
-            ) : (
-              // <SelectOptions
-              //   containerClassName={`mt-3 w-1/2`}
-              //   label={"Country"}
-              //   options={countries.map((item) => item.name?.common)}
-              //   onChange={(e) => {
-              //     setUserData({ ...userData, [props.name]: e.target.value });
-              //     const country = countries.find(
-              //       (item) => item.name.common === e.target.value
-              //     );
-
-              //     setSelectedCode(
-              //       (country.idd.root + country.idd.suffixes[0]).slice(
-              //         1,
-              //         (country.idd.root + country.idd.suffixes[0]).length
-              //       )
-              //     );
-              //   }}
-              // />
-              <InputField
-                {...props}
-                containerId={id}
-                onChange={(e) => {
-                  if (!props.onChange) {
-                    setUserData({
-                      ...userData,
-                      [props.name]: e.target.value,
-                    });
-                  } else {
-                    props.onChange(e);
-                  }
-                }}
-                key={id}
-                containerClassName={`mt-3 w-1/2`}
-                // fieldClassName="mr-2"
-              />
-            )
-          )}
+              )
+            )}
+          </div>
+          {/* <InputField {...fields[2]} containerClassName={`w-full`} /> */}
+          <div className="mt-3 mb-2 text-center">
+            <Button
+              type="submit"
+              text="Submit"
+              onClick={() => setScreen("contact")}
+              // disabled={
+              //   !(email.length > 0 && password.length && password === confirmPass)
+              // }
+            />
+          </div>
         </div>
-        {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
-        <div className="mt-3 mb-2 text-center">
-          <Button
-            type="submit"
-            text="Submit"
-            onClick={() => setScreen("contact")}
-            // disabled={
-            //   !(email.length > 0 && password.length && password === confirmPass)
-            // }
-          />
-        </div>
-      </AuthBody>
+      </div>
+      {/* </AuthBody> */}
 
       {/* ========== Phone View ========== */}
       {/* <ReactOwlCarousel items={1} mouseDrag={false} touchDrag={false} id="signup-details-slider"> */}
@@ -429,12 +436,12 @@ const SignupDetails = () => {
                   props.onChange(e);
                 }
               }}
-              containerClassName={`mt-3 w-full`}
+              containerClassName={`w-full`}
             />
           ))}
         </div>
 
-        {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
+        {/* <InputField {...fields[2]} containerClassName={`w-full`} /> */}
         <div className="mt-3 mb-2 text-center">
           <Button
             type="submit"
@@ -470,7 +477,7 @@ const SignupDetails = () => {
 
               // signupDetailsData;
             }}
-            containerClassName={`mt-3 w-full`}
+            containerClassName={`w-full`}
             // fieldClassName="mr-2"
           />
           {/* phone number */}
@@ -486,12 +493,12 @@ const SignupDetails = () => {
 
               // signupDetailsData;
             }}
-            containerClassName={`mt-3 w-full`}
+            containerClassName={`w-full`}
             selectedCode={selectedCode}
             setSelectedCode={setSelectedCode}
           />
         </div>
-        {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
+        {/* <InputField {...fields[2]} containerClassName={`w-full`} /> */}
         <div className="mt-3 mb-2 text-center flex justify-center">
           <Button rightIcon={true} />
         </div>
@@ -523,7 +530,7 @@ const SignupDetails = () => {
 
               // signupDetailsData;
             }}
-            containerClassName={`mt-3 w-full`}
+            containerClassName={`w-full`}
           />
           <InputField
             {...fields[5]}
@@ -536,7 +543,7 @@ const SignupDetails = () => {
               });
               // signupDetailsData;
             }}
-            containerClassName={`mt-3 w-full`}
+            containerClassName={`w-full`}
           />
         </div>
 
@@ -572,7 +579,7 @@ const SignupDetails = () => {
               });
               // signupDetailsData;
             }}
-            containerClassName={`mt-3 w-full`}
+            containerClassName={`w-full`}
             // fieldClassName="mr-2"
           />
           <InputField
@@ -586,7 +593,7 @@ const SignupDetails = () => {
               });
               // signupDetailsData;
             }}
-            containerClassName={`mt-3 w-full`}
+            containerClassName={`w-full`}
             // fieldClassName="mr-2"
           />
         </div>

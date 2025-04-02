@@ -7,7 +7,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Fasthand&display=swap");
 
 body {
-  @apply overflow-y-auto relative;
+  @apply overflow-y-auto relative bg-gray-900;
   font-family: "Roboto", sans-serif;
 }
 
