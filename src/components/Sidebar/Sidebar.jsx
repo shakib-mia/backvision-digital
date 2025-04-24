@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import logout from "./../../assets/icons/navbar/logout.webp";
 import NavItem from "../NavItem/NavItem";
 import profile from "./../../assets/images/profile.png";
+import logo from "./../../assets/images/logo2.webp";
 
 import { imageDomain, navItem } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
@@ -63,11 +64,11 @@ const Sidebar = () => {
         ({ text }) => text !== "Plans" && text !== "Yearly Plan Request"
       )
     : navItem.filter(({ text }) => text !== "Song Upload");
-  // console.log(logicalNavItems);
+  console.log(logicalNavItems);
 
   return (
     <aside
-      className="fixed top-0 left-0 h-screen shadow-lg p-2 bg-[#000] w-6 hover:w-[15%] transition-all duration-500 overflow-hidden overflow-y-auto hidden xl:flex xl:flex-col xl:justify-between z-[9999]"
+      className="fixed top-0 left-0 h-screen shadow-lg p-2 bg-[#000] w-[15%] transition-all duration-500 overflow-hidden overflow-y-auto hidden xl:flex xl:flex-col xl:justify-between z-[9999]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -93,8 +94,21 @@ const Sidebar = () => {
             />
           </div>
         </div> */}
+        <a
+          className="inline-block w-7 lg:w-2/12"
+          href={"https://forevisiondigital.com/"}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            src={logo}
+            alt="logo"
+            id="navbarLogo"
+            className="w-auto max-w-[75%] lg:max-w-[150px] h-auto"
+          />
+        </a>
 
-        <div className="mt-6 flex flex-col gap-2 whitespace-nowrap text-white">
+        <div className="mt-4 flex flex-col gap-2 whitespace-nowrap text-white">
           {logicalNavItems.map((props, key) => (
             <NavItem {...props} key={key} hovered={hovered} />
           ))}

@@ -1,7 +1,7 @@
 /* Keep existing styles */
 .inputContainer {
   position: relative;
-  margin-bottom: 1.5rem;
+  /* margin-bottom: 1.5rem; */
 }
 
 .inputWrapper {
@@ -11,8 +11,12 @@
 }
 
 .inputField {
-  @apply w-full mt-3 px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-white;
+  @apply w-full mt-3 px-2 lg:px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-white disabled:cursor-not-allowed disabled:opacity-80 file:bg-interactive-light file:border-none file:hover:bg-interactive-light-hover file:cursor-pointer file:text-white file:px-2 file:lg:px-4 file:py-2;
   padding-right: 40px; /* Space for the eye icon */
+}
+
+.inputField[type="file"] {
+  @apply p-0 pr-2 lg:pr-4;
 }
 
 .iconButton {

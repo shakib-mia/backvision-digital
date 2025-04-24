@@ -104,6 +104,9 @@ const EditSong = ({ setEditId, songData }) => {
   delete newFormData.S;
   delete newFormData.splitAvailable;
   delete newFormData.splitDetails;
+  delete newFormData.likes;
+  delete newFormData.dislikes;
+  delete newFormData.userId;
 
   // console.log(updatedData);
 

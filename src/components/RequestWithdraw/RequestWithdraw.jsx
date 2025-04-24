@@ -43,7 +43,14 @@ const RequestWithdraw = () => {
     userData.lifetimeDisbursed,
     userData.lifetimeRevenue
   );
-
+  // console.log(
+  //   loading || // Disable the button while loading
+  //     (
+  //       (userData.lifetimeRevenue?.toFixed(2) || 0) -
+  //       (userData.lifetimeDisbursed?.toFixed(2) || 0)
+  //     ).toFixed(2) < 1000 ||
+  //     (foundRequested !== null && foundRequested._id)
+  // );
   return (
     <Button
       onClick={handleRevenueWithdraw}
@@ -54,6 +61,10 @@ const RequestWithdraw = () => {
           (userData.lifetimeDisbursed?.toFixed(2) || 0)
         ).toFixed(2) < 1000 ||
         (foundRequested !== null && foundRequested._id)
+      }
+      // variant={"confirmation"}
+      className={
+        "bg-interactive-light-confirmation-focus disabled:hover:!bg-interactive-light-confirmation-disabled !shadow-interactive-light-confirmation-focus hover:!bg-interactive-light-confirmation-hover"
       }
       // disabled={false}
       text={

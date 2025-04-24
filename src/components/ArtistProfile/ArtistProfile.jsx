@@ -6,6 +6,7 @@ import Button from "../Button/Button";
 import { TbLinkMinus, TbLinkPlus } from "react-icons/tb";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import { useLocation } from "react-router-dom";
+import Modal from "../Modal/Modal";
 
 const ArtistProfile = ({
   id,
@@ -95,11 +96,11 @@ const ArtistProfile = ({
   return (
     <div
       // id={id}
-      className={`flex flex-col lg:flex-row gap-2 relative items-end ${
+      className={`flex flex-col lg:flex-row gap-2 relative items-start ${
         id === 0 ? "" : "mt-4"
       }`}
     >
-      <div className="w-full lg:w-11/12 grid grid-cols-1 lg:grid-cols-2 gap-2 relative">
+      <div className="w-full lg:w-2/3 grid grid-cols-1 lg:grid-cols-2 gap-2 relative">
         <InputField
           label={"Artist Name"}
           placeholder={"Artist Name"}
@@ -142,7 +143,7 @@ const ArtistProfile = ({
         {id >= 3 && (
           <button
             className={
-              "text-interactive-light-destructive text-heading-5-bold absolute -left-4 bottom-1"
+              "text-interactive-light-destructive text-heading-5-bold absolute -left-4 top-0 bottom-0"
             }
             // className="absolute bottom-2 -left-2 z-[99999999]"
             type="button"
@@ -175,9 +176,16 @@ const ArtistProfile = ({
       <Button
         type={"button"}
         onClick={() => setShowPlats(!showPlats)}
+        disabled={
+          location.pathname === "/album-upload" ||
+          location.search.split("?")[1] === "yearly-plan" ||
+          location?.pathname.includes("edit-album")
+            ? !formData.songs[formId]?.artists[id]?.name?.length
+            : !formData.artists[id]?.name?.length
+        }
         // onBlur={() => setShowPlats(false)}
         containerClassName={"w-full lg:w-1/3 h-fit"}
-        className={"w-full flex gap-1 items-center justify-center"}
+        className={"flex gap-1 items-center justify-center !mt-3 !w-1/3"}
         title="Add Artist Profile"
       >
         {showPlats ? (
@@ -189,14 +197,31 @@ const ArtistProfile = ({
       </Button>
 
       {showPlats && (
-        <div className="flex flex-col gap-2 mt-3 w-full lg:w-2/3 absolute -bottom-[18rem] z-[99] bg-white shadow-xl p-3 rounded right-0">
-          <div className="flex gap-2">
-            <aside className="h-[42px] rounded aspect-square flex items-center">
-              <FaSpotify className="text-heading-5 text-[#1db954]" />
-            </aside>
+        <Modal
+          whiteContainerClass={"!w-1/3"}
+          handleClose={() => setShowPlats(false)}
+        >
+          <h5 className="text-heading-5-bold text-center text-white">
+            {location.pathname === "/album-upload" ||
+            location.search.split("?")[1] === "yearly-plan" ||
+            location?.pathname.includes("edit-album") ? (
+              <>
+                {formData.songs[formId]?.artists[id]?.name} -
+                {formData.songs[formId]?.artists[id]?.role}
+              </>
+            ) : (
+              <>
+                {formData.artists[id]?.name} - {formData.artists[id]?.role}
+              </>
+            )}
+          </h5>
+          <div className="gap-x-2 mt-2 w-full p-0 rounded right-0 grid grid-cols-1 lg:grid-cols-2">
+            {/* <aside className="h-[42px] rounded aspect-square flex items-center">
+                <FaSpotify className="text-heading-5 text-[#1db954]" />
+              </aside> */}
             <InputField
+              label="Spotify Artist Profile URL"
               containerClassName={"w-full"}
-              placeholder={"Spotify Artist Profile URL"}
               onChange={(e) => {
                 // console.log(found.artists[id]);
                 // if (found) {
@@ -222,14 +247,12 @@ const ArtistProfile = ({
                   : formData.artists[id].spotifyUrl
               }
             />
-          </div>
-          <div className="flex gap-2">
-            <aside className="h-[42px] rounded aspect-square flex items-center">
-              <FaApple className="text-heading-5" />
-            </aside>
+            {/* <aside className="h-[42px] rounded aspect-square flex items-center">
+                <FaApple className="text-heading-5" />
+              </aside> */}
             <InputField
               containerClassName={"w-full"}
-              placeholder={"Apple Artist Profile URL"}
+              label={"Apple Artist Profile URL"}
               onChange={(e) => {
                 // const artists = [
                 //   ...(   location.pathname === "/album-upload" ||
@@ -258,14 +281,12 @@ const ArtistProfile = ({
                   : formData.artists[id].appleArtist
               }
             />
-          </div>
-          <div className="flex gap-2">
-            <aside className="h-[42px] rounded aspect-square flex items-center">
-              <FaFacebook className="text-heading-5 text-[#0081fb]" />
-            </aside>
+            {/* <aside className="h-[42px] rounded aspect-square flex items-center">
+                <FaFacebook className="text-heading-5 text-[#0081fb]" />
+              </aside> */}
             <InputField
               containerClassName={"w-full"}
-              placeholder={"Facebook Artist Page URL"}
+              label={"Facebook Artist Page URL"}
               onChange={(e) => {
                 // const artists = [
                 //   ...(   location.pathname === "/album-upload" ||
@@ -294,14 +315,9 @@ const ArtistProfile = ({
                   : formData.artists[id].facebookUrl
               }
             />
-          </div>
-          <div className="flex gap-2">
-            <aside className="h-[42px] rounded aspect-square flex items-center">
-              <FaInstagram className="text-heading-5" />
-            </aside>
             <InputField
               containerClassName={"w-full"}
-              placeholder={"Instagram Artist Profile URL"}
+              label={"Instagram Artist Profile URL"}
               onChange={(e) => {
                 // const artists = [
                 //   ...(   location.pathname === "/album-upload" ||
@@ -332,7 +348,7 @@ const ArtistProfile = ({
               }
             />
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

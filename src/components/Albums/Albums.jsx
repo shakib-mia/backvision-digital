@@ -152,19 +152,21 @@ const Albums = () => {
           </div>
         ))
       ) : (
-        <div className="flex justify-center items-center h-full text-grey-dark text-heading-5 text-center absolute left-0 right-0 top-0 bottom-0 m-auto">
-          <div className="flex flex-col items-center gap-1">
-            Upload Your First Album <br />
-            <Button
-              // small={true}
-              onClick={() => {
-                navigate("/plans");
-                setAlbumToggled(true);
-              }}
-              className="text-interactive-light flex gap-2 items-center"
-            >
-              Get Started <FaArrowUp className="rotate-45" />
-            </Button>
+        <div className="h-full relative">
+          <div className="flex justify-center items-center h-full text-grey-dark text-center">
+            <div className="flex flex-col items-center gap-1">
+              <h4 className="text-heading-4-bold">Upload Your First Album</h4>
+              <Button
+                // small={true}
+                onClick={() => {
+                  navigate("/plans");
+                  setAlbumToggled(true);
+                }}
+                className="text-interactive-light flex gap-2 items-center !w-fit px-5"
+              >
+                Get Started <FaArrowUp className="rotate-45" />
+              </Button>
+            </div>
           </div>
         </div>
       )}

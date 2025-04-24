@@ -3,13 +3,15 @@ import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
 import SelectOptions from "../SelectOptions/SelectOptions";
 import axios from "axios";
-import { backendUrl, config } from "../../constants";
+import { backendUrl } from "../../constants";
 import { camelCaseToNormalText } from "../../utils/camelCaseToNormalText";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const EditSongForm = ({ updatedData, setUpdatedData }) => {
   const [recordLabels, setRecordLabels] = useState([]);
   const { token } = useContext(ProfileContext);
+
+  console.log(updatedData);
 
   const config = {
     headers: {
@@ -96,12 +98,6 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
     }
   }, [updatedSelectedPlatforms, updatedSelectedPlatforms?.length]);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   console.log(updatedData);
-  // };
-
   return (
     <>
       {Object.entries(updatedData).map(([label, value], key) => {
@@ -109,9 +105,10 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
           // Handle "Language" field
           if (label === "Language") {
             return (
-              <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-                <label>{camelCaseToNormalText(label)}</label>
+              <div className="mb-4" key={key}>
+                {/* <label className="block">{camelCaseToNormalText(label)}</label> */}
                 <SelectOptions
+                  label={camelCaseToNormalText(label)}
                   value={value}
                   options={languagesInIndia}
                   hideRequired={true}
@@ -127,9 +124,10 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
           // Handle "Sub Label" field
           else if (label === "Sub Label") {
             return (
-              <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-                <label>{camelCaseToNormalText(label)}</label>
+              <div className="mb-4" key={key}>
+                {/* <label className="block">{camelCaseToNormalText(label)}</label> */}
                 <SelectOptions
+                  label={camelCaseToNormalText(label)}
                   value={updatedData["Sub Label"]}
                   options={recordLabels}
                   hideRequired={true}
@@ -145,9 +143,10 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
           // Handle platform fields (only if they are in allowedPlatforms)
           else if (allowedPlatforms.includes(label)) {
             return (
-              <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-                <label>{camelCaseToNormalText(label)}</label>
+              <div className="mb-4" key={key}>
+                {/* <label className="block">{camelCaseToNormalText(label)}</label> */}
                 <InputField
+                  label={camelCaseToNormalText(label)}
                   disabled={
                     label === "UPC" ||
                     label === "ISRC" ||
@@ -167,12 +166,15 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
           else {
             return (
               label === "S.no" || (
-                <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-                  <label>{camelCaseToNormalText(label)}</label>
+                <div className="mb-4" key={key}>
+                  {/* <label className="block">
+                    {camelCaseToNormalText(label)}
+                  </label> */}
                   <InputField
                     disabled={
                       label === "UPC" || label === "ISRC" || label === "Label"
                     }
+                    label={camelCaseToNormalText(label)}
                     value={value}
                     onChange={(e) => {
                       setUpdatedData({
@@ -189,7 +191,7 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
       })}
 
       <div className="flex justify-center mt-5">
-        <Button type={"submit"} value="Request Edit"></Button>
+        <Button type={"submit"}>Request Edit</Button>
       </div>
     </>
   );

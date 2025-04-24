@@ -16,6 +16,8 @@ const MonthStreamCount = ({ songs, details, i, open }) => {
     ...new Map(songsByPlatform.map((item) => [item["date"], item])).values(),
   ];
 
+  // console.log(songsByUniqueDate);
+
   let countByMonth = [];
   const check = songsByUniqueDate.forEach((s) => {
     let count = 0;
@@ -52,9 +54,9 @@ const MonthStreamCount = ({ songs, details, i, open }) => {
       open={open}
     >
       <summary className="cursor-pointer list-none">
-        <tr className="text-center flex justify-between items-center p-1 hover:bg-grey-light rounded-2xl px-0 xl:px-1">
+        <tr className="text-center flex justify-between items-center p-1 hover:bg-gray-800 rounded-2xl px-0 xl:px-1 transition">
           <td className="w-1/3 flex items-center justify-center">
-            <span className="xl:mr-2 transition group-open:rotate-180 group-open:text-interactive-light-destructive-focus">
+            <span className="xl:mr-2 transition group-open:rotate-180 group-open:text-interactive-light-destructive-disabled">
               {open || (
                 <svg
                   fill="none"
@@ -86,7 +88,7 @@ const MonthStreamCount = ({ songs, details, i, open }) => {
       <div className="w-full flex justify-center">
         <table className="w-11/12 text-center my-1">
           {countByMonth.map((d) => (
-            <tr className="text-interactive-light" key={d.date}>
+            <tr className="text-interactive-light-disabled" key={d.date}>
               <td className="w-1/3">
                 {months[new Date(d.date).getMonth()]}{" "}
                 {new Date(d.date).getFullYear()}

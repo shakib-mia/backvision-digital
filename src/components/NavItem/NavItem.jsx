@@ -5,7 +5,7 @@ import { FaChevronDown } from "react-icons/fa";
 
 const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
   const [itemHovered, setHovered] = useState(false);
-  //   console.log(dropdownItem);
+  // console.log(dropdownItem);
   return (
     <>
       {path ? (
@@ -24,7 +24,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
               {<h2>{text}</h2>}
             </div>
 
-            {dropdownItem ? (
+            {dropdownItem?.length ? (
               // <img
               //   src={downArrow}
               //   alt="downarrow"

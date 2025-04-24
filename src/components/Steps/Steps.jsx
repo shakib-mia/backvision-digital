@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Step from "../Step/Step";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import Timeline from "../Timeline/Timeline";
 
 const Steps = () => {
   const store = useContext(ProfileContext);
@@ -52,7 +53,7 @@ const Steps = () => {
 
   return (
     <div className="w-5/6 mx-auto">
-      <h4 className="text-heading-5-bold lg:text-heading-4-bold text-interactive-light mt-6 mb-1 text-center">
+      <h4 className="text-heading-5-bold lg:text-heading-4-bold text-interactive-light mt-6 mb-3 text-center">
         How to Upload Your Content
       </h4>
       {!store.token && (
@@ -68,11 +69,26 @@ const Steps = () => {
         </p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
         {steps.map((item) => (
           <Step {...item} />
         ))}
+      </div> */}
+
+      <Timeline steps={steps.filter((step) => step.step)} />
+      {/* <div className="flex">
+        <div className="w-1/4">Lorem ipsum dolor sit amet.</div>
+        <div className="w-1/4">Illum cum recusandae debitis inventore.</div>
+        <div className="w-1/4">Quibusdam odio repellat sit veritatis!</div>
+        <div className="w-1/4">Assumenda perferendis nesciunt labore quo?</div>
       </div>
+      <div className="flex">
+        <div className="w-1/3">Fuga iure quis velit minus.</div>
+        <div className="w-1/3">
+          Sapiente voluptate facere reprehenderit illum.
+        </div>
+        <div className="w-1/3">Quis quas molestias maxime dolore.</div>
+      </div> */}
     </div>
   );
 };

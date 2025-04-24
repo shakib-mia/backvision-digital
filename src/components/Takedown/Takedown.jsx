@@ -58,14 +58,14 @@ const Takedown = ({ setEditId, songData }) => {
         label={"Reason"}
         required={true}
         hideRequired={true}
-        placeholder={"Enter a Reason for Taking Down your song"}
+        placeholder={"Reason for Taking Down your song"}
       />
 
       <InputField
         onChange={(e) => setPlatformsToDelete(e.target.value)}
         textarea={true}
         label={"Platforms"}
-        placeholder={"Enter Platforms to Takedown"}
+        placeholder={"Platforms to Takedown"}
         note={"Use comma (,) to separate the platforms"}
         containerClassName={"mt-2"}
         required={true}
@@ -75,9 +75,9 @@ const Takedown = ({ setEditId, songData }) => {
 
       <div className="flex justify-center mt-4">
         <Button
-          containerClassName={"border-interactive-light-destructive"}
+          // containerClassName={"border-interactive-light-destructive"}
           className={
-            "bg-interactive-light-destructive hover:!bg-interactive-light-destructive-hover active:!bg-interactive-light-destructive-active focus:!bg-interactive-light-destructive-focus"
+            "bg-interactive-light-destructive hover:!bg-interactive-light-destructive-hover active:!bg-interactive-light-destructive-active focus:!bg-interactive-light-destructive-focus shadow-interactive-light-destructive"
           }
           type={"submit"}
           // onClick={() => console.log(platformsToDelete)}

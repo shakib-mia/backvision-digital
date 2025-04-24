@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../Button/Button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRupeeSign } from "react-icons/fa";
@@ -17,10 +17,9 @@ import { formatDate } from "../../utils/formatDate";
 import useRazorpay from "react-razorpay";
 
 const Distribution = () => {
-  const { formData, setScreen } = useContext(ScreenContext);
+  const { formData } = useContext(ScreenContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const [hasCouponCode, setHasCouponCode] = useState(false);
   const [error, setError] = useState(false);
   const [discountData, setDiscountData] = useState({});
   const { userData, token } = useContext(ProfileContext);
@@ -127,8 +126,7 @@ const Distribution = () => {
       order_id: data.id,
       handler: async (response) => {
         // response.songId =
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-          response;
+        const { razorpay_order_id, razorpay_payment_id } = response;
         try {
           const verifyUrl = backendUrl + "razorpay/verify";
           const config = {
@@ -287,10 +285,12 @@ const Distribution = () => {
           </h3>
         </div>
         <div className="w-full lg:w-5/12 pt-5">
-          <h3 className="text-heading-3-bold text-grey-dark">Order Details</h3>
+          <h3 className="text-heading-3-bold text-white-tertiary">
+            Order Details
+          </h3>
 
           <div className="border border-[#ddd] flex flex-col divide-y divide-[#ddd] rounded mt-3 shadow-lg">
-            <div className="flex divide-x divide-[#ddd] bg-grey-light">
+            <div className="flex divide-x divide-[#ddd] bg-white-tertiary">
               <aside className="w-1/2 p-2">Plan Name</aside>
               <aside className="w-1/2 p-2 capitalize">
                 {userData.yearlyPlanStartDate
@@ -299,7 +299,7 @@ const Distribution = () => {
               </aside>
             </div>
 
-            <div className="flex divide-x divide-[#ddd]">
+            <div className="flex divide-x divide-[#ddd] text-white">
               {location.search.includes("yearly-plan") ? (
                 <p className="p-2 w-full text-center">Yearly Plan</p>
               ) : (
@@ -319,12 +319,12 @@ const Distribution = () => {
               )}
             </div>
 
-            <div className="flex divide-x divide-[#ddd] bg-grey-light">
+            <div className="flex divide-x divide-[#ddd] bg-white-tertiary">
               <aside className="w-1/2 p-2">Order ID</aside>
               <aside className="w-1/2 p-2">{formData.orderId}</aside>
             </div>
 
-            <div className="flex divide-x divide-[#ddd]">
+            <div className="flex divide-x divide-[#ddd] text-white">
               <aside className="w-1/2 p-2">Name</aside>
               <aside className="w-1/2 p-2">
                 {userData.first_name} {userData.last_name}
@@ -421,13 +421,13 @@ const Distribution = () => {
                 formData.signature = e.target.value;
               }}
               placeholder="Sign Here..."
-              className="border-b resize-none text-heading-5 w-full focus:outline-none signature placeholder:font-sans text-center pb-3"
+              className="border-b resize-none text-heading-5 w-full focus:outline-none signature placeholder:font-sans text-center pb-3 bg-black text-white"
               // id=""
               // cols="1"
               value={signature}
               rows="1"
             ></textarea>
-            <label className="cursor-pointer">
+            <label className="cursor-pointer text-white">
               <input
                 type="checkbox"
                 disabled={signature.length === 0 || formData.accepted}

@@ -21,7 +21,7 @@ const AccountHistory = () => {
   // console.log(history);
 
   return (
-    <div className="w-full 2xl:w-1/2 bg-grey-light rounded-2xl p-4 h-[392px] overflow-y-auto">
+    <div className="w-full 2xl:w-1/2 text-white rounded-2xl p-4 h-[392px] overflow-y-auto">
       <h4 className="text-heading-6-bold 2xl:text-heading-4-bold mb-3">
         Account History
       </h4>
@@ -46,7 +46,7 @@ const AccountHistory = () => {
             <p
               className={
                 declined
-                  ? "text-interactive-light-destructive-focus"
+                  ? "text-interactive-light-destructive-disabled"
                   : disbursed
                   ? "text-interactive-light-confirmation-focus"
                   : "text-interactive-light"

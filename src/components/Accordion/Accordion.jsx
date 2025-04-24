@@ -11,9 +11,9 @@ const AccordionItem = ({
   // listItems ? console.log(listItems) : console.log("object");
   return (
     <>
-      <div className="accordion-item">
+      <div className="accordion-item text-white">
         <button
-          className="accordion-title flex justify-between w-full py-2 lg:py-4 text-left lg:text-lg text-grey-dark"
+          className="accordion-title flex justify-between w-full py-2 lg:py-4 text-left lg:text-lg"
           onClick={toggleAccordion}
         >
           {title}
@@ -45,7 +45,7 @@ const AccordionItem = ({
           </div>
         </div>
       </div>
-      <div className="w-full h-[1px] bg-gradient-to-r from-interactive-light to-white"></div>
+      <div className="w-full h-[1px] bg-gradient-to-r from-interactive-light to-black"></div>
     </>
   );
 };

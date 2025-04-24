@@ -157,9 +157,8 @@ const AlbumDetails = () => {
             id={"upc"}
             name={"upc"}
             // labelClassName={"opacity-0"}
-            placeholder={"UPC"}
+            label={"UPC"}
             value={formData.UPC}
-            label={" "}
             onChange={(e) => {
               if (
                 location.pathname === "/album-upload" ||
@@ -180,102 +179,109 @@ const AlbumDetails = () => {
       </div>
 
       {formData.contentType === "Film" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4 mt-2">
-          <InputField
-            type={"text"}
-            id={"filmBanner"}
-            required
-            // name={"filmBanner"}
-            // accept={"image/*"}
-            placeholder={filmBanner?.name || "Film Banner"}
-            value={formData.filmBanner}
-            onChange={(e) => {
-              if (
-                location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan" ||
-                location?.pathname.includes("edit-album")
-              ) {
-                formData.filmBanner = e.target.value;
-                setFormData({ ...formData });
-              } else {
-                setFormData({ ...formData, filmBanner: e.target.value });
-              }
-            }}
-          />
-          <InputField
-            required
-            name={"filmProducer"}
-            type={"text"}
-            placeholder={"Film Producer"}
-            onChange={(e) => {
-              if (
-                location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan" ||
-                location?.pathname.includes("edit-album")
-              ) {
-                formData.filmProducer = e.target.value;
-                setFormData({ ...formData });
-              } else {
-                setFormData({ ...formData, filmProducer: e.target.value });
-              }
-            }}
-          />
-          <InputField
-            required
-            name={"actor"}
-            type={"text"}
-            placeholder={"Actor"}
-            onChange={(e) => {
-              if (
-                location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan" ||
-                location?.pathname.includes("edit-album")
-              ) {
-                formData.actor = e.target.value;
-                setFormData({ ...formData });
-              } else {
-                setFormData({ ...formData, actor: e.target.value });
-              }
-            }}
-          />
-          <InputField
-            required
-            label={" "}
-            name={"director"}
-            type={"text"}
-            placeholder={"Director"}
-            onChange={(e) => {
-              if (
-                location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan" ||
-                location?.pathname.includes("edit-album")
-              ) {
-                formData.director = e.target.value;
-                setFormData({ ...formData });
-              } else {
-                setFormData({ ...formData, director: e.target.value });
-              }
-            }}
-          />
-          <InputField
-            required
-            name={"movieReleaseDate"}
-            type={"date"}
-            label={"Movie Release Date"}
-            onChange={(e) => {
-              if (
-                location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan" ||
-                location?.pathname.includes("edit-album")
-              ) {
-                formData.movieReleaseDate = e.target.value;
-                setFormData({ ...formData });
-              } else {
-                setFormData({ ...formData, movieReleaseDate: e.target.value });
-              }
-            }}
-          />
-        </div>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4 mt-2">
+            <InputField
+              type={"text"}
+              id={"filmBanner"}
+              required
+              // name={"filmBanner"}
+              // accept={"image/*"}
+              label={filmBanner?.name || "Film Banner"}
+              value={formData.filmBanner}
+              onChange={(e) => {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
+                ) {
+                  formData.filmBanner = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, filmBanner: e.target.value });
+                }
+              }}
+            />
+            <InputField
+              required
+              name={"filmProducer"}
+              type={"text"}
+              label={"Film Producer"}
+              onChange={(e) => {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
+                ) {
+                  formData.filmProducer = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, filmProducer: e.target.value });
+                }
+              }}
+            />
+            <InputField
+              required
+              name={"actor"}
+              type={"text"}
+              label={"Actor"}
+              onChange={(e) => {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
+                ) {
+                  formData.actor = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, actor: e.target.value });
+                }
+              }}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4">
+            <InputField
+              required
+              name={"director"}
+              type={"text"}
+              label={"Director"}
+              onChange={(e) => {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
+                ) {
+                  formData.director = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, director: e.target.value });
+                }
+              }}
+            />
+            <InputField
+              required
+              name={"movieReleaseDate"}
+              type={"date"}
+              label={"Movie Release Date"}
+              onChange={(e) => {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
+                ) {
+                  formData.movieReleaseDate = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({
+                    ...formData,
+                    movieReleaseDate: e.target.value,
+                  });
+                }
+              }}
+            />
+          </div>
+        </>
       )}
 
       <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row items-baseline">
@@ -285,8 +291,7 @@ const AlbumDetails = () => {
           <div className="w-full lg:w-1/2">
             <InputField
               name={"title"}
-              label={" "}
-              placeholder={"Title"}
+              label={"Album Title"}
               note={"Album title"}
               required={true}
               // labelClassName={"opacity-0"}
@@ -403,7 +408,7 @@ const AlbumDetails = () => {
           /> */}
           <Button
             containerClassName={"!rounded-none w-full !border-0 !p-0"}
-            className={"!rounded-none justify-center py-[12px]"}
+            className={"!rounded-none justify-center py-[12px] mb-3"}
             onClick={() => setShowRecordLabelForm(true)}
             text={
               <div className="flex items-center gap-1">
@@ -427,7 +432,7 @@ const AlbumDetails = () => {
           ></Button>
         </aside>
       </div>
-      <div className="lg:w-1/2 mt-3">
+      <div className="lg:w-2/3 pr-1 lg:pr-2 mt-4">
         <SelectOptions
           placeholder={"Select..."}
           // labelClassName={"font-medium text-subtitle-2 !text-black"}
@@ -464,7 +469,10 @@ const AlbumDetails = () => {
       </Button>
 
       {showRecordLabelForm && (
-        <Modal>
+        <Modal
+          whiteContainerClass={"!w-1/3"}
+          handleClose={() => setShowRecordLabelForm(false)}
+        >
           <CreateRecordLabel setShowRecordLabelForm={setShowRecordLabelForm} />
         </Modal>
       )}

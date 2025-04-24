@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const SongUploadProgress = ({ setScreen, screen }) => {
   const location = useLocation();
-  const isEditMode = location.pathname.startsWith("/edit"); // Check if the path starts with /edit-song
+  const isEditMode = location.pathname.startsWith("/edit");
 
-  // Define the steps of the song upload process
   const steps = [
     { id: "albumDetails", label: "ALBUM DETAILS" },
     { id: "platform", label: "PLATFORM" },
@@ -14,80 +13,105 @@ const SongUploadProgress = ({ setScreen, screen }) => {
     { id: "distribution", label: "DISTRIBUTION" },
   ];
 
-  // Determine the steps based on the URL
-  const logicalSteps =
-    location.pathname.includes("/song-upload") ||
-    location.pathname.includes("/album-upload")
-      ? steps
-      : steps.slice(0, steps.length - 1); // Remove distribution step for other paths like album-upload
-
-  // Get the index of the current step
   const currentStepIndex = steps.findIndex((step) => step.id === screen);
-  const maxReachedStepIndex = React.useRef(currentStepIndex); // Track the highest reached step
+  const maxReachedStepIndex = useRef(currentStepIndex);
+  const [visitedSteps, setVisitedSteps] = useState([screen]);
 
-  // Update the max reached step unless in edit mode
-  React.useEffect(() => {
+  // Update visited steps whenever screen changes
+  useEffect(() => {
+    setVisitedSteps((prev) => {
+      if (!prev.includes(screen)) {
+        return [...prev, screen];
+      }
+      return prev;
+    });
+
     if (!isEditMode && currentStepIndex > maxReachedStepIndex.current) {
       maxReachedStepIndex.current = currentStepIndex;
     }
-  }, [currentStepIndex, isEditMode]);
+  }, [screen, currentStepIndex, isEditMode]);
 
-  // Handle step click to move to the clicked step
   const handleStepClick = (stepId) => {
     const clickedStepIndex = steps.findIndex((step) => step.id === stepId);
-    // In edit mode, allow jumping to any step
-    // if (isEditMode || clickedStepIndex <= maxReachedStepIndex.current) {
-    setScreen(stepId); // Set the screen to the clicked step
-    // }
+    const isForward = clickedStepIndex > currentStepIndex;
+    const isVisited = visitedSteps.includes(stepId);
+
+    if (!isForward || isVisited) {
+      setScreen(stepId);
+    }
   };
+
+  // Example: Check if any forward steps are already visited
+  const hasVisitedForwardSteps = steps.some((step, index) => {
+    return index > currentStepIndex && visitedSteps.includes(step.id);
+  });
+
+  console.log("Has visited forward steps:", hasVisitedForwardSteps);
 
   return (
     <div
-      className="w-full overflow-x-auto flex gap-2 lg:gap-5 mt-5"
+      className="w-full overflow-x-visible flex flex-col gap-0 lg:gap-8 mt-6"
       id="upload-progress"
     >
-      {logicalSteps.map((step, index) => {
-        const isPassedStep = index <= maxReachedStepIndex.current; // Check if the step is passed
-        const isActiveStep = screen === step.id; // Check if the step is currently active
+      <div className="w-full relative mt-2 mb-4">
+        <div className="relative px-4 lg:px-12">
+          <div className="w-full lg:w-11/12 mx-auto h-[2px] bg-gray-200 rounded-full">
+            <div
+              className="h-[2px] bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-300"
+              style={{
+                width: `${(currentStepIndex / (steps.length - 1)) * 100}%`,
+              }}
+            ></div>
+          </div>
 
-        return (
-          <h4
-            key={step.id}
-            className={`text-heading-6-bold lg:text-heading-4-bold flex items-center whitespace-nowrap ${
-              isEditMode || isPassedStep
-                ? "text-grey-dark cursor-pointer" // Allow clicking if in edit mode or step is passed
-                : "text-grey cursor-not-allowed" // Disable click if step is not passed
-            }`}
-            onClick={() => {
-              // (isEditMode || isPassedStep) &&
-              handleStepClick(step.id); // Allow jumping directly in edit mode
-            }}
-          >
-            <aside
-              className={
-                isActiveStep
-                  ? "text-interactive-dark-destructive-active" // Active step
-                  : isEditMode || isPassedStep
-                  ? "text-interactive-dark-destructive-focus" // Passed or edit mode
-                  : "text-grey" // Unreached steps
-              }
-            >
-              {(index + 1).toString().padStart(2, "0")} {/* Show step number */}
-            </aside>
-            <aside
-              className={`ml-[4px] lg:ml-2 ${
-                isActiveStep
-                  ? "border-b-2 border-interactive-dark-destructive-active" // Border for active step
-                  : isEditMode || isPassedStep
-                  ? "text-grey-dark" // Passed or in edit mode
-                  : "text-grey" // Unreached steps
-              }`}
-            >
-              {step.label}
-            </aside>
-          </h4>
-        );
-      })}
+          <div className="absolute -top-2 lg:-top-[32px] left-0 right-4 lg:right-12 flex justify-between">
+            {steps.map((step, index) => {
+              const isVisited = visitedSteps.includes(step.id);
+              const isForward = index > currentStepIndex;
+
+              return (
+                <div
+                  key={step.id}
+                  className={`flex flex-col items-center ${
+                    !isForward || isVisited
+                      ? "cursor-pointer"
+                      : "cursor-not-allowed"
+                  }`}
+                >
+                  <div
+                    className={`rounded-full w-4 lg:w-6 aspect-square ${
+                      screen === step.id
+                        ? "p-1 border-2 border-interactive-light bg-black"
+                        : ""
+                    } transition-all`}
+                    onClick={() => handleStepClick(step.id)}
+                  >
+                    <div
+                      className={`w-full h-full flex justify-center items-center text-heading-5-bold text-white text-sm rounded-full ${
+                        currentStepIndex >= index || isVisited
+                          ? "bg-gradient-to-br from-blue-700 to-blue-600"
+                          : "bg-gray-300"
+                      }`}
+                    >
+                      {index + 1}
+                    </div>
+                  </div>
+                  <span
+                    className={`hidden lg:block text-paragraph-1 text-center font-bold mt-1 ${
+                      currentStepIndex >= index || isVisited
+                        ? "text-interactive-light"
+                        : "text-white-deactivated"
+                    }`}
+                    onClick={() => handleStepClick(step.id)}
+                  >
+                    {step.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -255,7 +255,7 @@ const EditProfile = ({ handleClose }) => {
             alt=""
           />
 
-          <p className="w-7/12 ml-auto lg:w-full text-right mt-1 text-interactive-light-destructive">
+          <p className="w-7/12 ml-auto lg:w-full text-right mt-1 text-interactive-light-destructive-focus">
             Image size should be 1788&times;280
           </p>
 
@@ -263,7 +263,7 @@ const EditProfile = ({ handleClose }) => {
             // htmlFor=""
             className="absolute bottom-1 right-1 cursor-pointer bg-white p-1 rounded-md group overflow-hidden transition"
           >
-            <div className="relative flex items-center gap-1">
+            <div className="relative flex items-center gap-1 text-primary">
               <TbCameraUp className="text-heading-6" />
               <span className="absolute group-hover:static whitespace-nowrap left-4 transition">
                 Upload Cover Photo
@@ -293,65 +293,75 @@ const EditProfile = ({ handleClose }) => {
       >
         {fields.map((props, id) =>
           (id + 1) % 3 === 0 ? (
-            <>
+            <div className="w-full">
               <InputField
                 {...fields[id]}
                 key={id}
                 containerId={id}
                 containerClassName={`mt-3 w-full`}
               />
-            </>
+            </div>
           ) : (
-            <InputField
-              {...props}
-              containerId={id}
-              key={id}
-              containerClassName={`mt-3 w-full lg:w-1/2 ${
-                (id - 1) % 3 === 0 ? "lg:pl-1" : "lg:pr-1"
-              }`}
-              // fieldClassName="mr-2"
-            />
+            <div className="w-full lg:w-1/2">
+              <InputField
+                {...props}
+                containerId={id}
+                key={id}
+                containerClassName={`mt-3 !w-full ${
+                  (id - 1) % 3 === 0 ? "lg:pl-1" : "lg:pr-1"
+                }`}
+                // fieldClassName="mr-2"
+              />
+            </div>
           )
         )}
-        <InputField
-          label={<FaFacebook className="text-interactive-light" />}
-          hideRequired={true}
-          placeholder={"Enter Facebook Link Here"}
-          onChange={(e) =>
-            handleFieldChange("facebook_profile_link", e.target.value)
-          }
-          value={formData.facebook_profile_link}
-          labelClassName={"mb-0"}
-          containerClassName={`mt-3 lg:w-1/3 lg:pr-2`}
-          note="Don't forget to enter your link with https://"
-          noteLeftAligned
-        />
-        <InputField
-          label={<FaInstagram className="text-[#FD1D1D]" />}
-          placeholder={"Enter Instagram Link Here"}
-          onChange={(e) =>
-            handleFieldChange("instagram_profile_link", e.target.value)
-          }
-          value={formData.instagram_profile_link}
-          hideRequired={true}
-          labelClassName={"mb-0"}
-          containerClassName={`mt-3 lg:w-1/3 lg:pr-2`}
-          note="Don't forget to enter your link with https://"
-          noteLeftAligned
-        />
-        <InputField
-          label={<FaXTwitter className="text-black" />}
-          placeholder={"Enter Twitter Link Here"}
-          onChange={(e) =>
-            handleFieldChange("twitter_profile_link", e.target.value)
-          }
-          value={formData.twitter_profile_link}
-          hideRequired={true}
-          labelClassName={"mb-0"}
-          containerClassName={`mt-3 lg:w-1/3`}
-          note="Don't forget to enter your link with https://"
-          noteLeftAligned
-        />
+        <div className="w-full lg:w-1/3">
+          <InputField
+            label={<FaFacebook className="text-[#506fdf]" />}
+            hideRequired={true}
+            placeholder={"Enter Facebook Link Here"}
+            onChange={(e) =>
+              handleFieldChange("facebook_profile_link", e.target.value)
+            }
+            value={formData.facebook_profile_link}
+            labelClassName={"mb-0"}
+            containerClassName={`mt-3 lg:mr-2`}
+            note="Don't forget to enter your link with https://"
+            noteLeftAligned
+            noteClassName="right-2"
+          />
+        </div>
+        <div className="w-full lg:w-1/3">
+          <InputField
+            label={<FaInstagram className="text-[#ff5757]" />}
+            placeholder={"Enter Instagram Link Here"}
+            onChange={(e) =>
+              handleFieldChange("instagram_profile_link", e.target.value)
+            }
+            value={formData.instagram_profile_link}
+            hideRequired={true}
+            labelClassName={"mb-0"}
+            containerClassName={`mt-3 lg:mr-2`}
+            note="Don't forget to enter your link with https://"
+            noteLeftAligned
+            noteClassName="right-2"
+          />{" "}
+        </div>
+        <div className="w-full lg:w-1/3">
+          <InputField
+            label={<FaXTwitter className="text-white" />}
+            placeholder={"Enter Twitter Link Here"}
+            onChange={(e) =>
+              handleFieldChange("twitter_profile_link", e.target.value)
+            }
+            value={formData.twitter_profile_link}
+            hideRequired={true}
+            labelClassName={"mb-0"}
+            containerClassName={`mt-3`}
+            note="Don't forget to enter your link with https://"
+            noteLeftAligned
+          />{" "}
+        </div>
       </div>
 
       <InputField
@@ -375,6 +385,7 @@ const EditProfile = ({ handleClose }) => {
         labelClassName={"mb-0"}
         containerClassName={`mt-3 w-full`}
         maxLength={500}
+        row={1}
       />
 
       <div className="mt-3 mb-2 text-center">

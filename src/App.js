@@ -16,6 +16,8 @@ import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollTop/ScrollTop";
 import Lenis from "lenis";
 import initializeGA from "./analytics";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // import Construction from "./pages/Construction/Construction";
 
@@ -44,6 +46,7 @@ function App() {
   const [albumToggled, setAlbumToggled] = useState(false);
 
   /* Working api calls starts here */
+  gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
     if (token && location.pathname !== "/login") {
@@ -139,10 +142,9 @@ function App() {
         }
       });
     }
-  }, [token, updated]);
+  }, [token, updated, refetch]);
 
   useEffect(() => {
-    console.log(userData);
     if (userData.user_email) {
       axios
         .get(backendUrl + "check-requested/" + userData.user_email)
@@ -241,21 +243,34 @@ function App() {
                 location.pathname !== "/signup-details" &&
                 !location.pathname.includes("payment") && (
                   <>
-                    {store.token && <Sidebar />}
+                    {/* {store.token && <Sidebar />} */}
                     {<Navbar />}
                   </>
                 )}
-              <Routes>
-                {routes.map(({ page, path }, key) => (
-                  <Route key={key} path={path} element={page} />
-                ))}
-              </Routes>
+              <div
+                // className={`${
+                //   location.pathname !== "/login" &&
+                //   location.pathname !== "/signup" &&
+                //   location.pathname !== "/forgot-password" &&
+                //   location.pathname !== "/signup-details" &&
+                //   !location.pathname.includes("payment")
+                //     ? "w-[85%]"
+                //     : "w-full"
+                // } ml-auto`}
+                className={location.pathname !== "/profile" && "container"}
+              >
+                <Routes>
+                  {routes.map(({ page, path }, key) => (
+                    <Route key={key} path={path} element={page} />
+                  ))}
+                </Routes>
+              </div>
               <ToastContainer />
             </PlanContext.Provider>
           </ProfileContext.Provider>
-          {location.pathname.includes("upload") ||
+          {/* {location.pathname.includes("upload") ||
             location.pathname.includes("edit") ||
-            location.pathname.includes("login") || <Footer />}
+            location.pathname.includes("login") || <Footer />} */}
         </>
       )}
     </>

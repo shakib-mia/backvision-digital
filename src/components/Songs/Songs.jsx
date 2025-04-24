@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 const Songs = () => {
   const [songs, setSongs] = useState([]);
-  const [openSongId, setOpenSongId] = useState(songs[0]?._id); // To track which accordion is open
+  const [openSongId, setOpenSongId] = useState(""); // To track which accordion is open
   const [loading, setLoading] = useState(true);
   const { userData, token } = useContext(ProfileContext);
   const location = useLocation();
@@ -61,7 +61,7 @@ const Songs = () => {
     };
 
     fetchSongs();
-  }, [userId, userData["user-id"], token]);
+  }, [userId, userData["user-id"], userData, token]);
 
   if (!loading && songs.length === 0) {
     return (
@@ -89,7 +89,7 @@ const Songs = () => {
   };
 
   return (
-    <div className="songs-list divide-y divide-white">
+    <div className="songs-list">
       {songs.map((song, index) => (
         <SongItem
           key={song._id}

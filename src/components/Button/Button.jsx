@@ -18,6 +18,7 @@ const Button = ({
   onBlur,
   borderColor = "border-white", // Default color
   title,
+  variant,
 }) => {
   const [focus, setFocus] = useState(false);
 
@@ -83,11 +84,21 @@ const Button = ({
 
     <button
       type={type}
-      className={`w-full mt-2 bg-interactive-light disabled:bg-interactive-light-disabled py-2 rounded-lg hover:bg-interactive-light-hover shadow-[0_8px_16px] disabled:shadow-none disabled:cursor-not-allowed hover:shadow-none shadow-interactive-light-focus transition font-extrabold disabled:text-black disabled:text-opacity-70 text-white flex justify-center items-center gap-1 ${className}`}
+      className={`w-full mt-2 ${
+        variant ? "bg-interactive-light-" + variant : "bg-interactive-light"
+      } disabled:bg-interactive-light-${
+        variant ? variant + "-" : ""
+      }disabled py-2 rounded-lg hover:bg-interactive-light${
+        variant ? "-" + variant : ""
+      }-hover shadow-[0_8px_16px] disabled:shadow-none disabled:cursor-not-allowed hover:shadow-none shadow-interactive-light-${
+        variant ? variant + "-" : ""
+      }focus transition font-extrabold disabled:hover:bg-interactive-light-${
+        variant ? variant + "-" : ""
+      }disabled disabled:text-black disabled:text-opacity-70 text-white flex justify-center items-center gap-1 ${className}`}
       disabled={disabled}
       onClick={onClick}
     >
-      {children}
+      {children || text}
     </button>
   );
 };

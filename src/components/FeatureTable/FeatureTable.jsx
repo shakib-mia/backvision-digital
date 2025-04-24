@@ -1,6 +1,4 @@
 import React from "react";
-import { IoCheckmarkOutline } from "react-icons/io5";
-import { IoMdClose } from "react-icons/io";
 import { FaCheck, FaTimes } from "react-icons/fa";
 // import { RxCross2 } from "react-icons/rx";
 
@@ -128,46 +126,56 @@ const plans = [
 const FeatureTable = () => {
   return (
     <>
-      <h2 className="text-heading-4-bold lg:text-heading-2-bold text-center text-grey-dark mt-3 mb-4">
+      <h2 className="text-heading-4-bold lg:text-heading-2-bold text-center mt-3 mb-4">
         Compare Plans
       </h2>
-      <div className="w-[94%] lg:w-5/6 mx-auto shadow-xl">
+      <div className="w-[94%] lg:w-full mx-auto shadow-xl">
         {/* Desktop Table */}
-        <div className="hidden lg:block overflow-x-auto">
-          <table className="min-w-full bg-white rounded-lg overflow-hidden shadow">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 border-b border-interactive-light-disabled bg-gray-100 text-left text-xs font-bold text-grey-dark uppercase tracking-wider bg-interactive-light-disabled">
+        <div className="hidden lg:block overflow-visible">
+          <table className="min-w-full rounded-lg overflow-visible shadow">
+            <thead
+              className="sticky"
+              style={{
+                top: document.getElementById("topbar")?.clientHeight + "px",
+              }}
+            >
+              <tr className="rounded-t">
+                <th className="px-6 py-3 border-b border-interactive-light-disabled  text-left text-xs font-bold uppercase tracking-wider bg-interactive-light">
                   Feature
                 </th>
                 {plans.map((plan, index) => (
                   <th
                     key={index}
-                    className="px-6 py-3 border-b border-interactive-light-disabled bg-interactive-light-disabled bg-gray-100 text-center text-xs font-bold text-grey-dark uppercase tracking-wider"
+                    className="px-6 py-3 border-b border-interactive-light-disabled bg-interactive-light  text-center text-xs font-bold text-white uppercase tracking-wider"
                   >
                     {plan.name}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-grey-dark overflow-visible">
               {features.map((feature, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 border-b border-interactive-light-disabled text-sm text-gray-700 bg-interactive-light text-white selection:bg-white selection:text-interactive-light">
+                <tr
+                  key={index}
+                  className={`hover:bg-interactive-light hover:shadow-2xl hover:scale-110 transition ${
+                    index % 2 ? "bg-grey-dark" : ""
+                  }`}
+                >
+                  <td className="p-2 text-sm text-white selection:bg-white selection:text-interactive-light">
                     {feature}
                   </td>
                   {plans.map((plan, planIndex) => (
                     <td
                       key={planIndex}
-                      className="px-6 py-4 border-b border-interactive-light-disabled text-sm text-gray-700 text-center"
+                      className="p-2 text-sm text-white text-center"
                     >
                       {plan.features[index] ? (
                         <>
-                          <FaCheck className="text-interactive-light-confirmation text-xl text-center mx-auto" />
+                          <FaCheck className="text-interactive-light-confirmation-disabled text-xl text-center mx-auto" />
                         </>
                       ) : (
                         <>
-                          <FaTimes className="text-interactive-light-destructive text-xl text-center mx-auto" />
+                          <FaTimes className="text-interactive-light-destructive-focus text-xl text-center mx-auto" />
                         </>
                       )}
                     </td>

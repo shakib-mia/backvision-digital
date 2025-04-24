@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
 const SelectOptions = ({
@@ -13,43 +13,48 @@ const SelectOptions = ({
   required,
   name,
   value,
-  hideRequired,
 }) => {
+  const [focused, setFocused] = useState(false);
+  console.log(options);
+  const handleFocus = () => setFocused(true);
+  const handleBlur = () => setFocused(value?.length > 0);
+
   return (
-    <div className={`relative w-full ${containerClassName}`}>
-      {label && (
-        <label
-          htmlFor={id}
-          className="absolute top-3 left-4 text-gray-400 text-sm transition-all"
-        >
-          {label}
-        </label>
-      )}
-      <div className="relative w-full mt-3 px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ">
+    <div className="relative mt-[24px]">
+      <div className="relative flex items-center bg-gray-700 rounded-lg">
         <select
           id={id}
           name={name}
-          value={value}
+          // value={value}
           onChange={onChange}
-          className={`bg-transparent w-full ${fieldClassName}`}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          className={`w-full bg-transparent text-white-deactivated border-none outline-none p-2 text-base appearance-none ${fieldClassName}`}
         >
           {placeholder && (
-            <option disabled value="">
+            <option disabled selected value="">
               {placeholder}
             </option>
           )}
           {options.map((option, key) => (
-            <option key={key} value={option} className="bg-gray-700 text-white">
+            <option key={key} value={option} className="text-black">
               {option}
             </option>
           ))}
         </select>
-        {/* <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-          <FaChevronDown className="text-white" />
-        </div> */}
+        <FaChevronDown className="absolute right-4 text-gray-400" />
       </div>
-
-      {note && <p className="text-gray-400 text-sm mt-1">{note}</p>}
+      {label && (
+        <label
+          htmlFor={id}
+          className={`absolute left-4 transform -translate-y-1/2 text-gray-400 transition-all text-base pointer-events-none text-sm -top-[12px]`}
+        >
+          {label}
+        </label>
+      )}
+      {note && (
+        <p className="text-right text-sm text-gray-400 text-button">{note}</p>
+      )}
     </div>
   );
 };

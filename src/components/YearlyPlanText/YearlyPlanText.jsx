@@ -173,7 +173,7 @@ const YearlyPlanText = () => {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <div className="relative bg-interactive-light selection:bg-white selection:text-interactive-light text-white p-4 rounded-xl">
-        <div className="sticky top-0 left-0 py-4">
+        <div className="left-0 py-4">
           <h3 className="text-heading-4-bold xl:text-[55px] text-white text-center xl:text-left">
             BackVision Digital
           </h3>

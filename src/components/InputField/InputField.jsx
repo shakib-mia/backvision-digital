@@ -12,6 +12,7 @@ const InputField = (props) => {
     required,
     containerClassName = "",
     fieldClassName = "",
+    disabled,
     ...rest
   } = props;
 
@@ -21,35 +22,64 @@ const InputField = (props) => {
   const handleBlur = () => setFocused(value?.length > 0);
 
   return (
-    <div className={`${styles.inputContainer} ${containerClassName}`}>
-      <input
-        id={id}
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        className={`${styles.inputField} ${fieldClassName}`}
-        required={required}
-        {...rest}
-      />
-      {label && (
-        <label
-          htmlFor={id}
-          className={`${styles.label} ${
-            focused ||
-            type === "date" ||
-            type === "file" ||
-            type === "checkbox" ||
-            value?.length
-              ? styles.focused
-              : ""
-          } ${type === "checkbox" ? "static" : "absolute"}`}
-        >
-          {label}
-        </label>
-      )}
+    <div className="relative mb-3">
+      <div className={`${styles.inputContainer} ${containerClassName}`}>
+        {props.textarea ? (
+          <textarea
+            id={id}
+            type={type}
+            value={value}
+            placeholder={placeholder}
+            onChange={onChange}
+            disabled={disabled}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className={`${styles.inputField} ${fieldClassName}`}
+            required={required}
+            {...rest}
+          />
+        ) : (
+          <input
+            id={id}
+            type={type}
+            value={value}
+            placeholder={placeholder}
+            onChange={onChange}
+            disabled={disabled}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className={`${styles.inputField} ${fieldClassName}`}
+            required={required}
+            {...rest}
+          />
+        )}
+        {label && (
+          <label
+            htmlFor={id}
+            className={`${styles.label} ${
+              focused ||
+              type === "date" ||
+              type === "file" ||
+              type === "checkbox" ||
+              disabled ||
+              value?.length
+                ? styles.focused
+                : ""
+            } ${type === "checkbox" ? "static" : "absolute"}`}
+          >
+            {label}
+          </label>
+        )}
+      </div>
+      <div
+        className={`${
+          type !== "file" && "absolute -bottom-2"
+        } text-right right-0 text-white-deactivated text-button ${
+          props.noteClassName
+        }`}
+      >
+        {props.note}
+      </div>
     </div>
   );
 };

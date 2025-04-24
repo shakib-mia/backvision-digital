@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AlbumPreview from "../AlbumPreview/AlbumPreview";
 import Button from "../Button/Button";
 import { ScreenContext } from "../../contexts/ScreenContext";
-import { backendUrl, config } from "../../constants";
+import { backendUrl } from "../../constants";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { ProfileContext } from "../../contexts/ProfileContext";
@@ -136,7 +136,7 @@ const PreviewDetails = ({ albumData }) => {
       {artists?.map((artist, index) => (
         <li
           key={index}
-          className="flex items-center text-paragraph-2 text-black-secondary"
+          className="flex items-center text-paragraph-2 text-white"
         >
           <span className="font-medium">{artist.name}</span>
           <span className="mx-1">-</span>
@@ -144,7 +144,7 @@ const PreviewDetails = ({ albumData }) => {
           {artist.spotifyUrl && (
             <a
               href={artist.spotifyUrl}
-              className="ml-2 text-primary hover:text-primary-light"
+              className="ml-2 text-primary-light hover:text-primary-light-light"
             >
               Spotify
             </a>
@@ -152,7 +152,7 @@ const PreviewDetails = ({ albumData }) => {
           {artist.appleArtist && (
             <a
               href={artist.appleArtist}
-              className="ml-2 text-primary hover:text-primary-light"
+              className="ml-2 text-primary-light hover:text-primary-light-light"
             >
               Apple Music
             </a>
@@ -160,7 +160,7 @@ const PreviewDetails = ({ albumData }) => {
           {artist.facebookUrl && (
             <a
               href={artist.facebookUrl}
-              className="ml-2 text-primary hover:text-primary-light"
+              className="ml-2 text-primary-light hover:text-primary-light-light"
             >
               Facebook
             </a>
@@ -171,7 +171,6 @@ const PreviewDetails = ({ albumData }) => {
   );
 
   const renderSongDetails = (song) => {
-    console.log(song, albumData);
     return (
       <div key={song?.isrc || "single"}>
         <div className="px-4 py-3">
@@ -274,70 +273,58 @@ const PreviewDetails = ({ albumData }) => {
           </ul>
         </div>
 
-        <div className="px-4 py-3 bg-surface-white-surface-2">
-          <h2 className="text-heading-6-bold text-black">
+        <div className="px-4 py-3 bg-grey-dark">
+          <h2 className="text-heading-6-bold text-white">
             Additional Information
           </h2>
           <div className="mt-2 grid grid-cols-2 gap-3">
             <div>
-              <span className="text-subtitle-2 text-black-secondary">
-                ISRC:
-              </span>{" "}
-              <span className="text-subtitle-2-bold text-primary">
+              <span className="text-subtitle-2 text-white">ISRC:</span>{" "}
+              <span className="text-subtitle-2-bold text-primary-light">
                 {song.isrc || albumData.isrc}
               </span>
             </div>
             <div>
-              <span className="text-subtitle-2 text-black-secondary">UPC:</span>{" "}
-              <span className="text-subtitle-2-bold text-primary">
+              <span className="text-subtitle-2 text-white">UPC:</span>{" "}
+              <span className="text-subtitle-2-bold text-primary-light">
                 {albumData.UPC}
               </span>
             </div>
             <div>
-              <span className="text-subtitle-2 text-black-secondary">
-                Publisher:
-              </span>{" "}
-              <span className="text-subtitle-2-bold text-primary">
+              <span className="text-subtitle-2 text-white">Publisher:</span>{" "}
+              <span className="text-subtitle-2-bold text-primary-light">
                 {albumData.publisher}
               </span>
             </div>
             <div>
-              <span className="text-subtitle-2 text-black-secondary">
-                Record Label:
-              </span>{" "}
-              <span className="text-subtitle-2-bold text-primary">
+              <span className="text-subtitle-2 text-white">Record Label:</span>{" "}
+              <span className="text-subtitle-2-bold text-primary-light">
                 {albumData.recordLabel}
               </span>
             </div>
             <div>
-              <span className="text-subtitle-2 text-black-secondary">
-                Content Type:
-              </span>{" "}
-              <span className="text-subtitle-2-bold text-primary">
+              <span className="text-subtitle-2 text-white">Content Type:</span>{" "}
+              <span className="text-subtitle-2-bold text-primary-light">
                 {albumData.contentType}
               </span>
             </div>
             <div>
-              <span className="text-subtitle-2 text-black-secondary">
+              <span className="text-subtitle-2 text-white">
                 Payment Status:
               </span>{" "}
-              <span className="text-subtitle-2-bold text-primary">
+              <span className="text-subtitle-2-bold text-primary-light">
                 {song.status || albumData.status}
               </span>
             </div>
             <div>
-              <span className="text-subtitle-2 text-black-secondary">
-                Upload Time:
-              </span>{" "}
-              <span className="text-subtitle-2-bold text-primary">
+              <span className="text-subtitle-2 text-white">Upload Time:</span>{" "}
+              <span className="text-subtitle-2-bold text-primary-light">
                 {song.time || albumData.time}
               </span>
             </div>
             <div>
-              <span className="text-subtitle-2 text-black-secondary">
-                User Email:
-              </span>{" "}
-              <span className="text-subtitle-2-bold text-primary">
+              <span className="text-subtitle-2 text-white">User Email:</span>{" "}
+              <span className="text-subtitle-2-bold text-primary-light">
                 {song.userEmail || albumData.userEmail}
               </span>
             </div>
@@ -385,8 +372,8 @@ const PreviewDetails = ({ albumData }) => {
   }
 
   return (
-    <div className="bg-surface-white-surface-1 min-h-screen lg:p-4 mx-auto w-full pb-7">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="min-h-screen lg:p-4 mx-auto w-full pb-7">
+      <div className="text-white rounded-lg shadow-lg overflow-hidden">
         <div
           className={`flex flex-col lg:flex-row ${
             location.pathname.includes("album") && "bg-surface-white-surface-2"
@@ -401,46 +388,38 @@ const PreviewDetails = ({ albumData }) => {
           </div>
           <aside className="w-full lg:w-3/4">
             <div className="p-3 lg:p-4">
-              {/* <div className="uppercase tracking-wide text-subtitle-2-bold text-primary">
+              {/* <div className="uppercase tracking-wide text-subtitle-2-bold text-primary-light">
                 {albumData.albumType}
               </div> */}
-              <h1 className="lg:mt-2 text-heading-1-bold text-black">
+              <h1 className="lg:mt-2 text-heading-1-bold">
                 {albumData.songs ? albumData.albumTitle : albumData.songName}
               </h1>
-              <p className="lg:mt-2 text-paragraph-1 text-black-tertiary">
+              <p className="lg:mt-2 text-paragraph-1">
                 {albumData.description}
               </p>
               {!(albumData.songs && albumData.songs.length) ? (
                 <div className="mt-1 lg:mt-3 grid grid-cols-2 gap-1 lg:gap-2">
                   <div>
-                    <span className="text-subtitle-2 text-black-secondary">
-                      Genre:
-                    </span>{" "}
-                    <span className="text-subtitle-2-bold text-primary">
+                    <span className="text-subtitle-2 ">Genre:</span>{" "}
+                    <span className="text-subtitle-2-bold text-primary-light">
                       {albumData.genre}
                     </span>
                   </div>
                   <div>
-                    <span className="text-subtitle-2 text-black-secondary">
-                      Sub-Genre:
-                    </span>{" "}
-                    <span className="text-subtitle-2-bold text-primary">
+                    <span className="text-subtitle-2 ">Sub-Genre:</span>{" "}
+                    <span className="text-subtitle-2-bold text-primary-light">
                       {albumData.subGenre}
                     </span>
                   </div>
                   <div>
-                    <span className="text-subtitle-2 text-black-secondary">
-                      Language:
-                    </span>{" "}
-                    <span className="text-subtitle-2-bold text-primary">
+                    <span className="text-subtitle-2">Language:</span>{" "}
+                    <span className="text-subtitle-2-bold text-primary-light">
                       {albumData.language}
                     </span>
                   </div>
                   <div>
-                    <span className="text-subtitle-2 text-black-secondary">
-                      Mood:
-                    </span>{" "}
-                    <span className="text-subtitle-2-bold text-primary">
+                    <span className="text-subtitle-2">Mood:</span>{" "}
+                    <span className="text-subtitle-2-bold text-primary-light">
                       {albumData.mood}
                     </span>
                   </div>
@@ -464,8 +443,8 @@ const PreviewDetails = ({ albumData }) => {
             {albumData.songs ? (
               <></>
             ) : (
-              <div className="px-4 py-3 bg-surface-white-surface-2">
-                <h2 className="text-heading-6-bold text-black">Artists</h2>
+              <div className="px-4 py-3 bg-grey-dark">
+                <h2 className="text-heading-6-bold">Artists</h2>
                 {renderArtists(
                   albumData.songs
                     ? albumData.songs[0]?.artists

@@ -50,14 +50,16 @@ import RoyaltySplit from "./pages/RoyaltySplit/RoyaltySplit";
 import FreshProfile from "./pages/FreshProfile/FreshProfile";
 import Pitch from "./pages/Pitch/Pitch";
 import CustomPlan from "./pages/CustomPlan/CustomPlan";
+import HomeV2 from "./pages/HomeV2/HomeV2";
+import Accounts from "./pages/Accounts/Accounts";
 
-// export const backendUrl = "http://localhost:5000/";
-export const backendUrl = "https://server.forevisiondigital.in/";
+export const backendUrl = "http://localhost:5000/";
+// export const backendUrl = "https://server.forevisiondigital.in/";
 export const currencyAPI = "https://api.frankfurter.app/latest";
 
 export const navItem = [
   {
-    icon: <IoMdHome className="text-[24px]" />,
+    icon: <IoMdHome className="text-[30px]" />,
     text: "Home",
     path: "/",
   },
@@ -67,7 +69,7 @@ export const navItem = [
     path: "/revenue",
   },
   {
-    icon: <BsUpload className="text-heading-6" />,
+    icon: <BsUpload className="text-[24px]" />,
     text: "Song Upload",
     path: "/song-upload",
   },
@@ -78,36 +80,36 @@ export const navItem = [
   },
 
   {
-    icon: <LiaItunesNote className="text-heading-6 text-center" />,
+    icon: <LiaItunesNote className="text-heading-5 text-center" />,
     text: "My Releases",
     path: "/all-songs",
   },
 
-  {
-    icon: (
-      <FaCrown className="text-heading-6 text-yellow-300 group-hover:text-black" />
-    ),
-    text: "Custom Plan",
-    path: "/custom-plans",
-  },
+  // {
+  //   icon: (
+  //     <FaCrown className="text-heading-6 text-yellow-300 group-hover:text-black" />
+  //   ),
+  //   text: "Custom Plan",
+  //   path: "/custom-plans",
+  // },
 
-  {
-    icon: <LuUserCheck2 className="text-heading-6 text-center" />,
-    text: "KYC",
-    path: "/kyc",
-  },
+  // {
+  //   icon: <LuUserCheck2 className="text-heading-6 text-center" />,
+  //   text: "KYC",
+  //   path: "/kyc",
+  // },
 
-  {
-    icon: <BsFileMusicFill className="text-heading-6 text-center" />,
-    text: "CRBT Codes",
-    path: "/crbt-codes",
-  },
+  // {
+  //   icon: <BsFileMusicFill className="text-heading-6 text-center" />,
+  //   text: "CRBT Codes",
+  //   path: "/crbt-codes",
+  // },
 
-  {
-    icon: <FaArrowsSplitUpAndLeft className="text-heading-6 text-center" />,
-    text: "Royalty Split",
-    path: "/royalty-split",
-  },
+  // {
+  //   icon: <FaArrowsSplitUpAndLeft className="text-heading-6 text-center" />,
+  //   text: "Royalty Split",
+  //   path: "/royalty-split",
+  // },
   {
     icon: <FaWpforms className="text-[24px]" />,
     text: "Forms",
@@ -259,7 +261,23 @@ export const routes = [
     path: "/home",
     page: (
       <RequireAuth>
+        <HomeV2 /> {/* will be replaced by <Home /> */}
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/home",
+    page: (
+      <RequireAuth>
         <Home />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/accounts",
+    page: (
+      <RequireAuth>
+        <Accounts />
       </RequireAuth>
     ),
   },

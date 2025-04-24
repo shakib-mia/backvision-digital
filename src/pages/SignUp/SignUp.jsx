@@ -17,7 +17,8 @@ const SignUp = () => {
   const [confirmPass, setConfirmPass] = useState("");
   // const location = useLocation();
   const navigate = useNavigate();
-  const { setUId, setUserData, userData } = useContext(ProfileContext);
+  const { setUId, setUserData, userData, setToken } =
+    useContext(ProfileContext);
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
 
   // console.log(location.pathname);
@@ -111,9 +112,9 @@ const SignUp = () => {
     axios
       .post(backendUrl + "user-signup", signupData)
       .then(({ data }) => {
-        if (data.acknowledged) {
+        if (data.length) {
           setUId(data.insertedId);
-
+          setToken(data);
           setUserData({ ...userData, user_email: signupData.email });
           navigate("/signup-details");
         }
@@ -140,19 +141,19 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 p-4 rounded-lg shadow-lg w-1/4">
+    <div className="flex justify-center items-center min-h-screen text-white">
+      <div className="bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm lg:max-w-md w-full">
         <div className="flex justify-between items-end">
           <h5 className="text-heading-5-bold font-bold text-center text-blue-400">
             Sign up
           </h5>
 
-          <aside>
+          {/* <aside className="hidden lg:block">
             Already have an account?{" "}
             <Link to={"/login"} className="text-interactive-light-disabled">
               Login
             </Link>
-          </aside>
+          </aside> */}
         </div>
 
         <form onSubmit={signup}>
@@ -176,7 +177,7 @@ const SignUp = () => {
           </div>
         </form>
 
-        <div className="my-2 flex items-center gap-3 mx-auto">
+        {/* <div className="my-2 flex items-center gap-3 mx-auto">
           <div className="h-[1px] w-full bg-grey-light"></div>
           <div>OR</div>
           <div className="h-[1px] w-full bg-grey-light"></div>
@@ -189,12 +190,12 @@ const SignUp = () => {
         >
           <FcGoogle />
           <span className="font-sans">Continue with Google</span>
-        </button>
+        </button> */}
 
         <div className="text-center">
           <Link
             to="/login"
-            className="text-interactive-light text-button uppercase"
+            className="text-interactive-light-disabled text-button uppercase"
           >
             Already have an account?
           </Link>

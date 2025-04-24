@@ -116,118 +116,95 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
   // console.log(recordLabelData);
 
   return (
-    <form
-      className={`${
-        location.pathname === "/home" || location.pathname === "/"
-          ? "bg-grey-light p-4 rounded-2xl"
-          : "bg-white p-4 rounded lg:w-full h-5/6 overflow-auto relative"
-      }`}
-      onSubmit={handleRecordLabelSubmit}
-    >
-      {location.pathname === "/home" || location.pathname === "/" || (
-        <button
-          className="text-interactive-light-destructive absolute top-2 right-2"
-          type="button"
-          onClick={() => setShowRecordLabelForm(false)}
-        >
-          <FaTimes />
-        </button>
-      )}
-      <h5
-        className={
-          location.pathname === "/home" ||
-          location.pathname === "/" ||
-          location.pathname.includes("upload")
-            ? "text-heading-5-bold 2xl:text-heading-4-bold text-grey-dark mb-3"
-            : "text-heading-5-bold text-center mt-4"
-        }
-      >
+    <>
+      <h4 className="text-heading-4-bold text-white text-center mb-2">
         Create A New Record Label
-      </h5>
-
-      {/* Your existing form fields */}
-      <InputField
-        type={"text"}
-        placeholder={"Record Label Name"}
-        label={"Record Label Name"}
-        name={"recordLabelName"}
-        id={"record-label-name"}
-        required={true}
-      />
-
-      <div className="flex flex-col xl:flex-row gap-3 mt-3">
+      </h4>
+      <form onSubmit={handleRecordLabelSubmit}>
+        {/* Your existing form fields */}
         <InputField
-          type={"tel"}
-          placeholder={"Enter your phone no. here"}
-          label={"Phone No."}
-          setSelectedCode={setSelectedCode}
-          name={"phoneNo"}
-          selectedCode={selectedCode}
-          containerClassName={"xl:w-1/2"}
-          id={"phone-no"}
+          type={"text"}
+          placeholder={"Enter Your Record Label Name Here"}
+          label={"Record Label"}
+          name={"recordLabelName"}
+          id={"record-label-name"}
           required={true}
         />
 
-        <InputField
-          type={"email"}
-          disabled={true}
-          placeholder={"Enter your email address here"}
-          name={"email"}
-          id={"email"}
-          label={"Email id"}
-          value={userData.user_email}
-          containerClassName={"xl:w-1/2"}
-          required={true}
-        />
-      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-3">
+          <InputField
+            type={"tel"}
+            placeholder={"Enter your phone no. here"}
+            label={"Phone No."}
+            setSelectedCode={setSelectedCode}
+            name={"phoneNo"}
+            selectedCode={selectedCode}
+            // containerClassName={"xl:w-1/2"}
+            id={"phone-no"}
+            required={true}
+          />
 
-      <InputField
-        type={"text"}
-        placeholder={"Enter your address here"}
-        id={"address"}
-        label={"Address"}
-        name={"address"}
-        containerClassName={"mt-3"}
-        required={true}
-      />
-
-      <div className="flex flex-col xl:flex-row gap-3 mt-3">
-        <InputField
-          type={"date"}
-          containerClassName={"xl:w-1/2"}
-          required={true}
-          name={"startDate"}
-          label={"Start Date"}
-        />
+          <InputField
+            type={"email"}
+            disabled={true}
+            placeholder={"Enter your email address here"}
+            name={"email"}
+            id={"email"}
+            label={"Email id"}
+            value={userData.user_email}
+            // containerClassName={"xl:w-1/2"}
+            required={true}
+          />
+        </div>
 
         <InputField
           type={"text"}
-          placeholder={"Enter your signature here"}
-          label={"Signatory Person Name"}
-          name={"signatoryName"}
-          id={"signature"}
-          containerClassName={"xl:w-1/2"}
+          placeholder={"Enter your address here"}
+          id={"address"}
+          label={"Address"}
+          name={"address"}
+          // containerClassName={"mt-2"}
           required={true}
         />
-      </div>
 
-      <div className="flex justify-center">
-        <Button
-          type={"submit"}
-          text={submitted ? "Submitting..." : "Submit"}
-          containerClassName={"mt-2 lg:mt-6 mx-auto"}
-          disabled={submitted}
-        />
-      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-3">
+          <InputField
+            type={"date"}
+            // containerClassName={"xl:w-1/2"}
+            required={true}
+            name={"startDate"}
+            label={"Start Date"}
+          />
 
-      <div className={`relative -z-[9999999999999999] opacity-0`}>
-        <Modal>
-          <div ref={letterHeadRef}>
-            <Letterhead formData={recordLabelData} />
-          </div>
-        </Modal>
-      </div>
-    </form>
+          <InputField
+            type={"text"}
+            placeholder={"Enter your signature here"}
+            label={"Signatory Person Name"}
+            name={"signatoryName"}
+            id={"signature"}
+            // containerClassName={"xl:w-1/2"}
+            required={true}
+          />
+        </div>
+
+        <div className="flex justify-center">
+          <Button
+            type={"submit"}
+            text={submitted ? "Submitting..." : "Submit"}
+            containerClassName={"mt-2 lg:mt-6 mx-auto"}
+            disabled={submitted}
+          />
+        </div>
+
+        <div className={`relative -z-[9999999999999999] opacity-0`}>
+          <Modal>
+            <div ref={letterHeadRef}>
+              <Letterhead formData={recordLabelData} />
+            </div>
+          </Modal>
+        </div>
+      </form>
+    </>
   );
 };
 

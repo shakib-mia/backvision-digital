@@ -16,7 +16,7 @@ const Platform = () => {
       />
       <Button
         disabled={!selectedPlatforms?.length}
-        containerClassName={"w-fit mx-auto mt-5"}
+        className={"!w-1/5 mx-auto mt-5"}
         onClick={() => setScreen("audio")}
       >
         Save and Next

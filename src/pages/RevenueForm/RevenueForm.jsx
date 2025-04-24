@@ -271,13 +271,13 @@ function RevenueForm() {
   return (
     <>
       <section
-        className={`w-full lg:w-4/6 mx-auto my-4 text-grey-dark ${
+        className={`w-full lg:w-5/6 mx-auto my-4 text-grey-dark ${
           confirmed && "overflow-y-hidden"
         }`}
       >
         <form
           onSubmit={FormHandle}
-          className="px-3 md:px-[4rem] w-full md:mx-auto rounded-md shadow-xl bg-white"
+          className="px-3 md:px-[4rem] w-full md:mx-auto rounded-md shadow-xl text-white"
         >
           <div className="pt-[4rem]">
             <div className=" mb-3">
@@ -369,7 +369,7 @@ function RevenueForm() {
           </div>
 
           {/* <fieldset> */}
-          <div className="flex flex-col gap-3 bg-white mt-5">
+          <div className="flex flex-col gap-3 mt-5">
             <div className="flex flex-col md:flex-row gap-3">
               <InputField
                 name={"vendorName"}

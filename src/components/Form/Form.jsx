@@ -180,7 +180,7 @@ const Form = forwardRef(
           id={id || "myForm"}
           ref={ref || formRef}
           autoComplete="off"
-          className={`mt-[90px] rounded-[15px] shadow-lg pt-[29px] px-[50px] 2xl:px-[60px] 3xl:px-[101px] pb-[80px] bg-white-secondary w-7/12 mx-auto ${containerClassName}`}
+          className={`mt-[90px] rounded-[15px] shadow-lg pt-[29px] px-[50px] 2xl:px-[60px] 3xl:px-[101px] pb-[80px] bg-black w-7/12 mx-auto ${containerClassName}`}
         >
           {heading && (
             <h3
@@ -194,14 +194,14 @@ const Form = forwardRef(
 
           {fields.map((props, key) =>
             props.type === "dropdown" ? (
-              <div className="mt-[32px]">
-                <SelectOptions
-                  {...props}
-                  key={props.name}
-                  // onChange={(e) => setSelectedCode(e.target.value)} // Update selected code
-                />
-              </div>
-            ) : props.type === "file" ? (
+              // <div className="mt-[32px]">
+              <SelectOptions
+                {...props}
+                key={props.name}
+                // onChange={(e) => setSelectedCode(e.target.value)} // Update selected code
+              />
+            ) : // </div>
+            props.type === "file" ? (
               <InputField
                 {...props}
                 key={key}
@@ -223,7 +223,7 @@ const Form = forwardRef(
 
           <div className="mt-6">{instruction}</div>
 
-          <div className="w-fit mx-auto mt-[70px]">
+          <div className="w-full mx-auto mt-[70px]">
             <Button type="submit" text="Submit" />
           </div>
         </form>

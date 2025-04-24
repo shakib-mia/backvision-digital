@@ -58,12 +58,10 @@ const UploadRecordLabel = () => {
   };
 
   return (
-    <div
-      className={`w-full bg-grey-light rounded-2xl p-4 text-grey-dark relative overflow-y-auto`}
-    >
-      <h4 className="text-heading-5-bold 2xl:text-heading-4-bold">
+    <div className={`w-full text-white relative overflow-y-auto`}>
+      {/* <h4 className="text-heading-5-bold 2xl:text-heading-4-bold">
         Upload Record Labels
-      </h4>
+      </h4> */}
 
       <form
         action=""
@@ -73,6 +71,7 @@ const UploadRecordLabel = () => {
         <InputField
           type="file"
           containerClassName={"w-full 2xl:w-9/12"}
+          fieldClassName="!rounded-r-none"
           accept="application/pdf"
           id="record-label"
           placeholder={file.name || "Upload Your PDF"}
@@ -83,10 +82,14 @@ const UploadRecordLabel = () => {
         <div className="flex justify-center w-full 2xl:w-3/12">
           <Button
             containerClassName={"w-full"}
-            className={"inline-block !w-full justify-center"}
+            className={
+              "inline-block !w-full justify-center !mt-0 !rounded-l-none"
+            }
             type={"submit"}
             disabled={initiated || !file.name}
-          />
+          >
+            Upload
+          </Button>
         </div>
       </form>
 

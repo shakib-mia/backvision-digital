@@ -8,14 +8,18 @@ import { backendUrl } from "../../constants";
 const YoutubeClaimRelease = () => {
   const { userData } = useContext(ProfileContext);
   const [songs, setSongs] = useState([]);
+  const [songName, setSongName] = useState("");
+  // alert(songs.length);
+  // console.log({ songs });
 
   useEffect(() => {
     if (userData["user-id"]) {
       axios
         .get(backendUrl + "songs/by-user-id/" + userData["user-id"])
-        .then(({ data }) =>
-          setSongs(data.map((item) => item.Song || item.songName))
-        );
+        .then(({ data }) => {
+          // console.log(data);
+          setSongs(data.map((item) => item.Song || item.songName));
+        });
     }
   }, []);
 
@@ -51,6 +55,8 @@ const YoutubeClaimRelease = () => {
       options: songs,
       name: "youtube_claim_release_song_name",
       required: true,
+      value: songName,
+      onChange: (e) => setSongName(e.target.value),
     },
     {
       label: "YT Video URl",

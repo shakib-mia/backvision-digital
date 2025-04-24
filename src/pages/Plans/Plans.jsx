@@ -29,6 +29,7 @@ import LoadingPulse from "../../components/LoadingPulse/LoadingPulse";
 import Steps from "../../components/Steps/Steps";
 import Faq from "../../components/Faq/Faq";
 import YearlyPlanText from "../../components/YearlyPlanText/YearlyPlanText";
+import FeatureList from "../../components/FeatureList/FeatureList";
 
 const DynamicSongPlans = () => {
   const navigate = useNavigate();
@@ -163,8 +164,8 @@ const DynamicSongPlans = () => {
   const renderPlan = (plan, index) => {
     const isHighlighted = plan.name === "BackVision CRBT+";
     const containerClass = isHighlighted
-      ? "!h-full p-4 rounded-lg mx-2 bg-gradient-to-br from-secondary to-interactive-light-focus text-white shadow-[0_13px_20px_#aaa] relative -top-3"
-      : "!h-full p-4 shadow-lg mx-2 relative";
+      ? "!h-full p-4 rounded-lg mx-2 bg-interactive-light text-white shadow-[0_13px_13px] shadow-interactive-light relative -top-3"
+      : "!h-full p-4 rounded-lg shadow-[0_13px_13px_#000] mx-2 relative";
     const buttonClass = isHighlighted
       ? "w-full justify-center bg-white !text-interactive-light hover:bg-white-secondary focus:!bg-white-tertiary"
       : "w-full justify-center";
@@ -184,7 +185,8 @@ const DynamicSongPlans = () => {
             >
               {displayPrice}
             </h5>
-            <ul className="flex flex-col gap-1 mt-4">
+            <FeatureList plan={plan} isHighlighted={isHighlighted} />
+            {/* <ul className="flex flex-col gap-1 mt-4">
               {plan.features.map((feature, idx) => (
                 <li
                   key={idx}
@@ -194,7 +196,7 @@ const DynamicSongPlans = () => {
                   <aside className="w-11/12">{feature}</aside>
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </aside>
           <Button
             text="Get Started"
@@ -208,14 +210,14 @@ const DynamicSongPlans = () => {
 
   return (
     <div
-      className="overflow-hidden py-7 px-[10px] relative song-plans"
+      className="py-7 px-[10px] relative song-plans text-white"
       id="plans-page"
     >
-      <h3 className="text-heading-3-bold text-center mt-6 text-grey-dark">
+      <h3 className="text-heading-3-bold text-center mt-6 text-white">
         Plans We Offer
       </h3>
 
-      <h6 className="lg:w-1/2 my-2 text-grey-dark mx-auto text-center text-heading-6">
+      <h6 className="lg:w-1/2 my-2 text-white mx-auto text-center text-heading-6">
         To Upload a Song, Please Choose a Plan Below
       </h6>
 
@@ -226,7 +228,7 @@ const DynamicSongPlans = () => {
           <p>Album</p>
         </div>
       )}
-      {isLoading ||
+      {/* {isLoading ||
         (!checked && (
           <div className="flex gap-3 justify-center items-center w-fit mx-auto">
             <Button
@@ -247,11 +249,11 @@ const DynamicSongPlans = () => {
               <FaChevronRight className="text-heading-6" />
             </Button>
           </div>
-        ))}
+        ))} */}
 
       {checked ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 lg:mt-5 gap-4">
-          <aside className="px-2 lg:pl-7 text-grey-dark">
+          <aside className="px-2 lg:pl-7 text-white">
             <h2 className="text-heading-5-bold lg:text-heading-2-bold">
               Album for Everyone
             </h2>
@@ -307,14 +309,15 @@ const DynamicSongPlans = () => {
             <ReactOwlCarousel
               loop={true}
               autoplayHoverPause
+              autoplay
               navigation="true"
               nav
               responsive={{
                 0: {
                   items: 1,
-                  startPosition: 1,
+                  // startPosition: 1,
                   startPosition: plans.findIndex(
-                    (item) => item.planName === "BackVision CRBT+"
+                    (item) => item.name === "BackVision CRBT+"
                   ), // Set the default active item
                 },
                 768: { items: 2 },
@@ -322,11 +325,11 @@ const DynamicSongPlans = () => {
                   items: 3,
                   startPosition:
                     plans.findIndex(
-                      (item) => item.planName === "BackVision CRBT+"
-                    ) + 1,
+                      (item) => item.name === "BackVision CRBT+"
+                    ) + 2,
                 },
               }}
-              className="py-6 !overflow-hidden text-grey-dark xl:!w-5/6 mx-auto"
+              className="py-6 !overflow-hidden text-white mx-auto"
             >
               {plans
                 .filter((item) => !item.name.includes("BackVision Album"))
@@ -341,9 +344,9 @@ const DynamicSongPlans = () => {
       <Steps />
 
       <FeatureTable />
-      <div className="w-[94%] lg:w-5/6 mx-auto">
-        <Faq />
-      </div>
+      {/* <div className="mx-auto"> */}
+      <Faq />
+      {/* </div> */}
     </div>
   );
 };

@@ -10,8 +10,8 @@ const RevenueAnalytics = ({ heading, data, id }) => {
 
   return (
     <>
-      <div className="relative 2xl:hidden h-[148px] 3xl:h-[204px] text-grey-dark overflow-hidden rounded-[9px] bg-white shadow 2xl:shadow-none">
-        <div className={styles.ocean}>
+      <div className="relative 2xl:hidden h-[148px] 3xl:h-[204px] text-white overflow-hidden rounded-[9px] shadow 2xl:shadow-[6px_6px_20px_rgb(10,10,10)] bg-gradient-to-br to-neutral-800 from-neutral-900">
+        {/* <div className={styles.ocean}>
           <div
             className={styles.wave}
             style={{
@@ -19,7 +19,7 @@ const RevenueAnalytics = ({ heading, data, id }) => {
               rotate: id === 0 ? 0 : id === 1 || id === 2 ? "180deg" : 0,
             }}
           ></div>
-        </div>
+        </div> */}
         <div className="absolute w-full h-full py-[13px] px-2">
           <p className="text-paragraph-2">{heading}</p>
           <div className="h-full flex items-center gap-[5px]">
@@ -43,15 +43,15 @@ const RevenueAnalytics = ({ heading, data, id }) => {
         </div>
       </div>
 
-      <div className="relative hidden 2xl:block h-[148px] 3xl:h-[204px] text-grey-dark overflow-hidden rounded-[9px] bg-white shadow 2xl:shadow-none">
-        <div className={styles.ocean}>
+      <div className="relative hidden 2xl:block h-[148px] 3xl:h-[204px] text-white overflow-hidden rounded-[9px] shadow 2xl:shadow-[6px_6px_20px_rgb(10,10,10)] bg-gradient-to-br to-neutral-800 from-neutral-900">
+        {/* <div className={styles.ocean}>
           <div
             className={styles.wave}
             style={
               (id + 1) % 2 === 0 ? { bottom: 0 } : { top: 0, rotate: "180deg" }
             }
           ></div>
-        </div>
+        </div> */}
         <div className="absolute w-full h-full py-[13px] px-2">
           <p className="text-paragraph-2">{heading}</p>
           <div className="h-full flex items-center gap-[5px]">

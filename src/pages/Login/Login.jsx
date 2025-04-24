@@ -46,6 +46,7 @@ const Login = () => {
       });
       if (data?.token) {
         sessionStorage.setItem("token", data.token);
+        setToken(data.token);
         setLoginTime(Date.now());
         setUserData(data.details || { user_email: email });
         navigate("/");
@@ -58,19 +59,19 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 p-4 rounded-lg shadow-lg w-1/4">
+    <div className="flex justify-center items-center min-h-screen text-white">
+      <div className="bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm lg:max-w-md w-full">
         <div className="flex justify-between items-center">
           <h4 className="text-heading-4-bold font-bold text-center text-blue-400">
             Login
           </h4>
 
-          <aside>
+          {/* <aside className="hidden lg:block">
             Don't have an account?{" "}
-            <Link to={"/signup"} className="text-interactive-light-disabled">
+            <Link to={"/signup"} className="text-blue-400">
               Create a New One
             </Link>
-          </aside>
+          </aside> */}
         </div>
         <form onSubmit={handleLogin} className="mt-3">
           {/* <input
@@ -117,7 +118,7 @@ const Login = () => {
           </button> */}
         </form>
 
-        <div className="flex items-center my-4">
+        {/* <div className="flex items-center my-4">
           <div className="flex-grow border-t border-gray-500"></div>
           <span className="mx-4 text-gray-400">OR</span>
           <div className="flex-grow border-t border-gray-500"></div>
@@ -128,9 +129,15 @@ const Login = () => {
           onClick={() => signInWithGoogle()}
         >
           <FcGoogle size={20} /> Continue with Google
-        </button>
+        </button> */}
 
-        <div className="text-center mt-3">
+        <aside className="text-center mt-3">
+          Don't have an account?{" "}
+          <Link to={"/signup"} className="text-blue-400">
+            Create a New One
+          </Link>
+        </aside>
+        <div className="text-center">
           <Link to="/forgot-password" className="text-blue-400 hover:underline">
             Forgot your password?
           </Link>

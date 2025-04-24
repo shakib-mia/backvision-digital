@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import MonthStreamCount from "../MonthStreamCount/MonthStreamCount";
 import {
-  Area,
-  AreaChart,
   CartesianGrid,
   Legend,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -26,121 +26,90 @@ const RevenueDetailsItem = ({ result, details, songs, open }) => {
   ];
 
   let countByMonth = [];
-  const check = songsByUniqueDate.forEach((s) => {
+  songsByUniqueDate.forEach((s) => {
     let count = 0;
     let revenue = 0;
     songsByPlatform.forEach((songs) => {
       if (s.date === songs.date) {
-        count = count + songs.total;
-        revenue = revenue + songs["final revenue"];
+        count += songs.total;
+        revenue += songs["final revenue"];
       }
     });
     countByMonth.push({ count, date: s.date, revenue });
   });
 
-  // console.log(result);
-
-  // const months = [
-  //   "January",
-  //   "February",
-  //   "March",
-  //   "April",
-  //   "May",
-  //   "June",
-  //   "July",
-  //   "August",
-  //   "September",
-  //   "October",
-  //   "November",
-  //   "December",
-  // ];
-
   return (
     <table className="w-full">
       {result.map((i) => (
-        <MonthStreamCount songs={songs} details={details} i={i} open={open} />
+        <MonthStreamCount
+          key={i.platformName}
+          songs={songs}
+          details={details}
+          i={i}
+          open={open}
+        />
       ))}
 
-      {/* <div className="grid grid-cols-2 gap-2 items-center"> */}
+      {/* LineChart for Views */}
       <ResponsiveContainer
         height={250}
         width={"100%"}
         className={"hidden lg:block"}
       >
-        <AreaChart className="mb-5 mt-3" data={result}>
-          <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#2B52DD" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#2B52DD" stopOpacity={0} />
-            </linearGradient>
-            <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#2B52DD" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#2B52DD" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <XAxis dataKey="platformName" />
-          <YAxis />
+        <LineChart className="mb-5 mt-3" data={result}>
+          <XAxis dataKey="platformName" tick={{ fill: "#fff" }} />
+          <YAxis tick={{ fill: "#fff" }} />
           <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
-          <Area
+          <Tooltip contentStyle={{ backgroundColor: "#4B5563" }} />
+          <Line
             type="monotone"
             dataKey="total"
-            stroke="#2B52DD"
-            fillOpacity={1}
-            fill="url(#colorUv)"
+            stroke="#9BAAF2"
+            strokeWidth={2}
+            dot={{ r: 3 }}
+            activeDot={{ r: 6 }}
           />
           <Legend
             content={
-              <div className="text-center text-interactive-light-focus flex items-center gap-1 justify-center">
-                <div className="w-1 h-1 bg-interactive-light-focus"></div> Views
+              <div className="text-center text-[#9BAAF2] flex items-center gap-1 justify-center">
+                <div className="w-1 h-1 bg-[#9BAAF2]"></div> Views
               </div>
             }
           />
-        </AreaChart>
+        </LineChart>
       </ResponsiveContainer>
 
+      {/* LineChart for Revenue */}
       <ResponsiveContainer
         height={250}
         width={"100%"}
         className={"hidden lg:block"}
       >
-        <AreaChart
+        <LineChart
           data={result}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
-          <defs>
-            <linearGradient id="colorU" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#41B658" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#41B658" stopOpacity={0} />
-            </linearGradient>
-            <linearGradient id="colorP" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#41B658" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#41B658" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <XAxis dataKey="platformName" />
-          <YAxis />
+          <XAxis dataKey="platformName" tick={{ fill: "#fff" }} />
+          <YAxis tick={{ fill: "#fff" }} />
           <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
-          <Area
+          <Tooltip contentStyle={{ backgroundColor: "#4B5563" }} />
+          <Line
             type="monotone"
             dataKey="final revenue"
-            // xAxis={}
-            stroke="#41B658"
-            fillOpacity={1}
-            fill="url(#colorU)"
+            stroke="#9EE1AD"
+            strokeWidth={2}
+            dot={{ r: 3 }}
+            activeDot={{ r: 6 }}
           />
           <Legend
             content={
-              <div className="text-center text-interactive-light-confirmation-focus flex items-center gap-1 justify-center">
-                <div className="w-1 h-1 bg-interactive-light-confirmation-focus"></div>{" "}
-                Revenue
+              <div className="text-center text-[#9EE1AD] flex items-center gap-1 justify-center">
+                <div className="w-1 h-1 bg-[#9EE1AD]"></div> Revenue
               </div>
             }
           />
-        </AreaChart>
+        </LineChart>
       </ResponsiveContainer>
-      {/* </div> */}
     </table>
   );
 };

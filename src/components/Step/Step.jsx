@@ -1,21 +1,68 @@
-import React from "react";
+import gsap from "gsap";
+import React, { useEffect, useRef } from "react";
 
-const Step = ({ step, details }) => {
+const Step = ({ step, isLeft, id }) => {
+  console.log(id);
+  const stepRef = useRef(null);
+
+  useEffect(() => {
+    if ((id + 1) % 2) {
+      gsap.to(stepRef.current, {
+        left: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "elastic.out(1,0.9)",
+        scrollTrigger: {
+          trigger: `#step-${id}`,
+          start: "top 50%",
+          // markers: true,
+        },
+      });
+    } else {
+      gsap.to(stepRef.current, {
+        right: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "elastic.out(1,0.9)",
+        scrollTrigger: {
+          trigger: `#step-${id}`,
+          start: "top 50%",
+          // markers: true,
+        },
+      });
+    }
+  }, [id]);
+
   return (
-    <>
-      {step ? (
-        <div className="p-2 shadow-lg rounded-md hover:shadow-md transition duration-300 text-grey-dark flex flex-col items-center group cursor-grab">
-          <h6 className="text-heading-6-bold mb-1 inline-block mx-auto items-center text-center">
-            {step}
-            <div className="w-full h-[2px] bg-interactive-light-confirmation-focus duration-300 transition-[box-shadow] group-hover:shadow-[0_0_4px_0_#2E844A] mt-1"></div>
-          </h6>
-
-          <p className="text-center">{details}</p>
-        </div>
-      ) : (
-        <div className="hidden lg:block"></div>
-      )}
-    </>
+    <div
+      className={`mb-12 relative flex justify-between items-center w-full ${
+        isLeft ? "flex-row-reverse" : "flex-row"
+      } ${
+        (id + 1) % 2 === 0 ? "-right-[50%] opacity-0" : "-left-[50%] opacity-0"
+      }`}
+      ref={stepRef}
+      id={`step-${id}`}
+    >
+      <div className="w-5/12"></div>
+      <div className="z-10 bg-interactive-light border-2 border-interactive-light rounded-xl shadow-md w-5/12 p-4">
+        <h5 className="font-bold text-heading-5-bold text-white mb-1">
+          {step.step}
+        </h5>
+        <p className="text-white-secondary">{step.details}</p>
+        {step.important_notes && (
+          <ul className="list-disc pl-2 flex flex-col gap-1 mt-2 text-sm text-white-secondary">
+            {step.important_notes.map((note, i) => (
+              <li key={i}>{note}</li>
+            ))}
+          </ul>
+        )}
+        {step.example && (
+          <p className="text-sm text-white-secondary mt-2">
+            <span className="font-semibold">Example:</span> {step.example}
+          </p>
+        )}
+      </div>
+    </div>
   );
 };
 

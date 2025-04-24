@@ -914,7 +914,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                   ? formData?.songs && formData.songs[id]?.songName
                   : formData?.songName
               }
-              placeholder={"Name"}
+              placeholder={"Enter Your Song Name Here"}
             />
             <InputField
               label={"ISRC"}
@@ -932,8 +932,9 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                   setFormData({ ...formData, isrc: e.target.value });
                 }
               }}
-              placeholder={"ISRC"}
+              placeholder={"Enter the ISRC Here"}
               // required={alreadyHaveIsrc}
+              note="Keep it blank if you don't have any"
               value={
                 location.pathname === "/album-upload" ||
                 location.search.split("?")[1] === "yearly-plan" ||
@@ -979,15 +980,15 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 }
               }}
               required={true}
-              options={["no", "yes"]}
-              value={formData.parentalAdvisory ? "yes" : "no"}
+              options={["No", "Yes"]}
+              value={formData.parentalAdvisory ? "Yes" : "No"}
               placeholder={"Select..."}
               label={"Parent Advisory"}
             />
             <SelectOptions
               placeholder={"Select..."}
-              value={formData.instrumental ? "yes" : "no"}
-              options={["no", "yes"]}
+              value={formData.instrumental ? "Yes" : "No"}
+              options={["No", "Yes"]}
               label={"Instrumental"}
               required={true}
               onChange={(e) => {
@@ -1068,10 +1069,10 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
 
           <Button
             containerClassName={
-              "!rounded-none w-1/2 relative -bottom-[6px] mt-2"
+              "!rounded-none w-1/2 relative -bottom-[6px] mt-0"
             }
             className={
-              "!rounded-none px-4 !py-[12px] w-full text-center justify-center border border-interactive-light"
+              "!rounded-none px-4 !py-[12px] w-full text-center justify-center border border-interactive-light mt-0"
             }
             text={"+ Add Artist"}
             type={"button"}
@@ -1165,7 +1166,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
         <></>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-5 items-baseline">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-0 items-end">
         <SelectOptions
           placeholder={"Select The Primary Genre"}
           required={true}
@@ -1300,6 +1301,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           placeholder={"Description"}
           required={false}
           textarea
+          rows={4}
+          containerClassName="!mt-[24px] !mb-0"
           value={
             location.pathname === "/album-upload" ||
             location.search.split("?")[1] === "yearly-plan" ||

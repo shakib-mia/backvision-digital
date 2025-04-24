@@ -280,8 +280,11 @@ const SignupDetails = () => {
         id="signup-page"
         className="hidden xl:flex"
       > */}
-      <div className="flex justify-center items-center bg-gray-900 text-white py-4 min-h-screen">
-        <div className="bg-gray-800 p-4 rounded-lg shadow-lg w-1/4">
+      <form
+        onSubmit={signup}
+        className="flex justify-center items-center min-h-screen text-white"
+      >
+        <div className="bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm lg:max-w-md w-full">
           <div className="w-full flex justify-between items-center">
             <h5 className="text-heading-5-bold">We need a few more details</h5>
           </div>
@@ -406,7 +409,7 @@ const SignupDetails = () => {
             />
           </div>
         </div>
-      </div>
+      </form>
       {/* </AuthBody> */}
 
       {/* ========== Phone View ========== */}

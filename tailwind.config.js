@@ -2,6 +2,21 @@
 module.exports = {
   content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1rem",
+        sm: "2rem",
+        lg: "0",
+      },
+      screens: {
+        sm: "100%",
+        md: "768px",
+        lg: "1000px",
+        xl: "1240px",
+        "2xl": "1340px",
+      },
+    },
     screens: {
       sm: { min: "0px" },
       md: { min: "600px" },

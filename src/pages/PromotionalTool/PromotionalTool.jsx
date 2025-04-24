@@ -111,10 +111,10 @@ const PromotionalTool = () => {
     },
     {
       label: "ISRC",
-      placeholder: "ISRC.",
       name: "promotional_tool_isrc",
       type: userData.isrc?.length && "dropdown",
       options: userData.isrc?.split(","),
+      placeholder: "Select an ISRC from here",
       required: true,
       // onChange: (e) => setSelectedIsrc(e.target.value),
     },
@@ -395,7 +395,7 @@ const PromotionalTool = () => {
     <div className="bg-no-repeat form-bg">
       <Header
         header="BackVision Promotions"
-        subheader={<>Submit your song for BackVisionPromotions</>}
+        subheader={<>Submit your song for BackVision Promotions</>}
       />
 
       <Form

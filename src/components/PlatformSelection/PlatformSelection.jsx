@@ -161,7 +161,7 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
   return (
     <>
       <Button
-        containerClassName={"w-fit mx-auto lg:ml-auto"}
+        className={"!w-1/4 ml-auto mb-4"}
         onClick={handleSelectedPlatform}
       >
         {checked ? "Deselect All" : "Select All"}
