@@ -36,9 +36,9 @@ const SongUploadProgress = ({ setScreen, screen }) => {
     const isForward = clickedStepIndex > currentStepIndex;
     const isVisited = visitedSteps.includes(stepId);
 
-    if (!isForward || isVisited) {
-      setScreen(stepId);
-    }
+    // if (!isForward || isVisited || isEditMode) {
+    setScreen(stepId);
+    // }
   };
 
   // Example: Check if any forward steps are already visited
@@ -73,7 +73,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
                 <div
                   key={step.id}
                   className={`flex flex-col items-center ${
-                    !isForward || isVisited
+                    !isForward || isVisited || isEditMode
                       ? "cursor-pointer"
                       : "cursor-not-allowed"
                   }`}
@@ -88,7 +88,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
                   >
                     <div
                       className={`w-full h-full flex justify-center items-center text-heading-5-bold text-white text-sm rounded-full ${
-                        currentStepIndex >= index || isVisited
+                        currentStepIndex >= index || isVisited || isEditMode
                           ? "bg-gradient-to-br from-blue-700 to-blue-600"
                           : "bg-gray-300"
                       }`}
@@ -98,7 +98,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
                   </div>
                   <span
                     className={`hidden lg:block text-paragraph-1 text-center font-bold mt-1 ${
-                      currentStepIndex >= index || isVisited
+                      currentStepIndex >= index || isVisited || isEditMode
                         ? "text-interactive-light"
                         : "text-white-deactivated"
                     }`}

@@ -44,16 +44,27 @@ const Distribution = () => {
   //     .then(({ data }) => setOrderId(data.orderId));
   // }, []);
 
-  const [accepted, setAccepted] = useState(false);
+  const [accepted, setAccepted] = useState(formData.accepted || false);
   const discountPrice = discountData.discountPercentage
-    ? (parseFloat(location.search.split("?")[2] || planStore.price) / 100 -
-        (parseFloat(location.search.split("?")[2] || planStore.price) / 100) *
+    ? (parseFloat(
+        location.search.split("?")[2] || planStore.price || formData.price
+      ) /
+        100 -
+        (parseFloat(
+          location.search.split("?")[2] || planStore.price || formData.price
+        ) /
+          100) *
           (parseFloat(discountData.discountPercentage) / 100)) *
       100
-    : parseFloat(location.search.split("?")[2] || planStore.price);
+    : parseFloat(
+        location.search.split("?")[2] || planStore.price || formData.price
+      );
 
   const saved = discountData.discountPercentage
-    ? (parseFloat(location.search.split("?")[2] || planStore.price) / 100) *
+    ? (parseFloat(
+        location.search.split("?")[2] || planStore.price || formData.price
+      ) /
+        100) *
       (discountData.discountPercentage / 100)
     : 0;
   // console.log(discountData.discountPercentage);
@@ -63,7 +74,9 @@ const Distribution = () => {
     axios
       .get(backendUrl + `coupon-codes/${e.target.couponCode.value}`, {
         headers: {
-          planName: planStore.planName.split("-").join(" "),
+          planName: (planStore.planName || formData.planName)
+            .split("-")
+            .join(" "),
         },
       })
       .then(({ data }) => setDiscountData(data))
@@ -87,6 +100,12 @@ const Distribution = () => {
     delete formData.file;
     // formData;
     // navigate("/");
+
+    const config = {
+      headers: {
+        token,
+      },
+    };
 
     axios
       .post(backendUrl + "upload-song/upload-song-data", formData, config)
@@ -194,12 +213,14 @@ const Distribution = () => {
   console.log(planStore);
   const handleSubmit = () => {
     const price =
-      parseFloat(location.search.split("?")[2] || planStore.price) / 100;
+      parseFloat(
+        location.search.split("?")[2] || planStore.price || formData.price
+      ) / 100;
 
     // formData.orderId = orderId;
     formData.userEmail = userData.emailId;
     formData.status = "pending";
-    formData.planName = planStore.planName;
+    formData.planName = planStore.planName || formData.planName;
     formData.price = price * 100;
 
     console.log(formData);
@@ -226,7 +247,9 @@ const Distribution = () => {
               })
               .then(({ data }) => {
                 formData.planName =
-                  location.search.split("?")[1] || planStore.planName;
+                  location.search.split("?")[1] ||
+                  planStore.planName ||
+                  formData.planName;
 
                 axios
                   .put(
@@ -263,7 +286,7 @@ const Distribution = () => {
             //   `/payment?price=${
             //     discountData.discountPercentage
             //       ? discountPrice
-            //       : location.search.split("?")[2] || planStore.price
+            //       : location.search.split("?")[2] || planStore.price || formData.price
             //   }?id=${orderId}`
             // );
           }
@@ -295,7 +318,7 @@ const Distribution = () => {
               <aside className="w-1/2 p-2 capitalize">
                 {userData.yearlyPlanStartDate
                   ? "Yearly Plan"
-                  : planStore.planName}
+                  : planStore.planName || formData.planName}
               </aside>
             </div>
 
@@ -308,13 +331,13 @@ const Distribution = () => {
                   {/* <aside className="w-1/2 p-2 flex items-center">
                 <FaRupeeSign className="text-subtitle-2" />{" "}
                 <span className="font-bold flex items-center">
-                  {location.search.split("?")[2] || planStore.price / 100} (Includes {"   "}
-                  <FaRupeeSign /> {(location.search.split("?")[2] || planStore.price * 0.18) /
+                  {location.search.split("?")[2] || planStore.price || formData.price / 100} (Includes {"   "}
+                  <FaRupeeSign /> {(location.search.split("?")[2] || planStore.price || formData.price * 0.18) /
                     100}{" "}
                   18% GST )
                 </span>
               </aside> */}
-                  <GSTCalculator location={location} />
+                  <GSTCalculator location={location} formData={formData} />
                 </>
               )}
             </div>
@@ -342,22 +365,25 @@ const Distribution = () => {
               location.search.toLowerCase().includes("social") ||
               location.search.toLowerCase().includes("yearly-plan") || (
                 <form
-                  className="flex gap-2 items-end p-2"
+                  className="flex items-end p-2"
                   onSubmit={verifyCouponCode}
                 >
-                  <InputField
-                    hideRequired
-                    fieldClassName={
-                      error &&
-                      "border-interactive-dark-destructive outline-interactive-dark-destructive"
-                    }
-                    containerClassName={"w-full"}
-                    onChange={(e) => setError(false)}
-                    placeholder={"Coupon Code"}
-                    name={"couponCode"}
-                  />
+                  <div className="w-3/4">
+                    <InputField
+                      hideRequired
+                      fieldClassName={`!rounded-r-none ${
+                        error &&
+                        "border-interactive-dark-destructive outline-interactive-dark-destructive"
+                      }`}
+                      containerClassName={"!w-full !mb-0"}
+                      onChange={(e) => setError(false)}
+                      label={"Coupon Code"}
+                      name={"couponCode"}
+                      parentClassName="!mb-0"
+                    />
+                  </div>
                   <Button
-                    className={"!rounded-none"}
+                    className={"!w-1/4 !rounded-l-none !rounded-r-lg"}
                     containerClassName={"!p-0 !border-none"}
                   >
                     Apply

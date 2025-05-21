@@ -84,7 +84,7 @@ const Button = ({
 
     <button
       type={type}
-      className={`w-full mt-2 ${
+      className={`w-full mt-2 shadow-black ${
         variant ? "bg-interactive-light-" + variant : "bg-interactive-light"
       } disabled:bg-interactive-light-${
         variant ? variant + "-" : ""

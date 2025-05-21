@@ -31,6 +31,7 @@ const RecentUploadsItem = (props) => {
     status,
     songData,
   } = props;
+  console.log(props);
   const { token } = useContext(ProfileContext);
   const [reason, setReason] = useState("");
   const [editId, setEditId] = useState("");
@@ -99,8 +100,109 @@ const RecentUploadsItem = (props) => {
       {takedownId.length > 0 && (
         <Takedown setEditId={setTakedownId} songData={songData} />
       )}
+
+      <div className="flex gap-1">
+        <img src={props.artwork} alt="art-work" className="w-7 aspect-square" />
+        <aside>
+          <h4 className="text-heading-4-bold">{songName}</h4>
+          <h6 className="text-heading-6-bold">{props.albumTitle}</h6>
+
+          {/* <p>{props.status}</p> */}
+
+          <div className="flex items-center gap-1 mt-2">
+            <RiEditBoxLine
+              className="cursor-pointer"
+              onClick={() => navigate("/edit-song/" + _id)}
+              title="Edit"
+              data-tooltip-id={"edit" + _id}
+              data-tooltip-content={`Edit`}
+              data-tooltip-place="top"
+            />
+            {payment_id ? (
+              <p
+                className="text-subtitle-1 flex gap-1 items-center justify-center capitalize w-full"
+                title={payment_id}
+              >
+                <span
+                  className={
+                    status === "streaming"
+                      ? "text-interactive-light"
+                      : status === "paid"
+                      ? "text-interactive-light-confirmation-focus"
+                      : status === "sent-to-stores"
+                      ? "text-interactive-light-confirmation"
+                      : status === "Copyright infringed"
+                      ? "text-interactive-light-destructive"
+                      : status === "taken-down"
+                      ? "text-interactive-dark-destructive"
+                      : ""
+                  }
+                >
+                  {status}
+                </span>
+                {status === "paid" ? (
+                  <FaCheckCircle className="text-interactive-light-confirmation-focus" />
+                ) : status === "Sent to Stores" ? (
+                  <BsSendArrowUp className="text-interactive-light-confirmation" />
+                ) : status === "streaming" ? (
+                  <div className="flex gap-2">
+                    <CiStreamOn className="text-interactive-light w-3 h-3" />
+                    <CiStreamOff
+                      className="text-heading-6 cursor-pointer"
+                      data-tooltip-id={"takedown" + _id}
+                      data-tooltip-content={`Takedown`}
+                      data-tooltip-place="top"
+                      onClick={() => setTakedownId(_id)}
+                    />
+                    <Tooltip id={"takedown" + _id} />
+                  </div>
+                ) : status === "Copyright infringed" ? (
+                  <TbCopyrightOff className="text-interactive-light-destructive w-3 h-3" />
+                ) : status === "taken-down" ? (
+                  <TbMusicOff className="text-interactive-dark-destructive w-3 h-3" />
+                ) : (
+                  <></>
+                )}
+              </p>
+            ) : price === "0" && !status ? (
+              <p className="text-center mx-auto text-interactive-light-confirmation">
+                Submitted Successfully
+              </p>
+            ) : status ? (
+              <p
+                className={`text-center capitalize mx-auto ${
+                  status === "Copyright infringed"
+                    ? "text-interactive-light-destructive"
+                    : status === "Sent to Stores"
+                    ? "text-interactive-light-confirmation"
+                    : status === "streaming"
+                    ? "text-interactive-light"
+                    : status === "taken-down"
+                    ? "text-interactive-dark-destructive"
+                    : ""
+                }`}
+              >
+                {status.includes("-") ? status.split("-").join(" ") : status}
+              </p>
+            ) : price ? (
+              <Button
+                containerClassName={"mx-auto"}
+                small={true}
+                onClick={() => {
+                  navigate(`/payment?price=${price}?id=${orderId}`);
+                  // setPlanStore({ planName, price });
+                }}
+              >
+                Pay Now
+              </Button>
+            ) : (
+              <p className="mx-auto">{status}</p>
+            )}
+          </div>
+        </aside>
+      </div>
       {/* {editId.length > 0 && <EditSong setEditId={setEditId} songData={props} />} */}
-      <div className="flex gap-1 items-center">
+      {/* <div className="flex gap-1 items-center">
         <FaMusic />
         <div>{songName}</div>
       </div>
@@ -193,7 +295,7 @@ const RecentUploadsItem = (props) => {
         ) : (
           <p className="mx-auto">{status}</p>
         )}
-      </aside>
+      </aside> */}
 
       {/* {status === "taken-down" || status === "copyright-infringed" ? (
         <></>

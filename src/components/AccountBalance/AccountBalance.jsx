@@ -7,6 +7,7 @@ import { backendUrl } from "../../constants";
 import { toast } from "react-toastify";
 import { RiTokenSwapFill } from "react-icons/ri";
 import Tokenize from "../Tokenize/Tokenize";
+import { FaRupeeSign } from "react-icons/fa";
 
 const WithdrawalSection = () => {
   const { setProfileData, userData, dollarRate, token, setRefetch } =
@@ -14,8 +15,11 @@ const WithdrawalSection = () => {
   const { lifetimeRevenue, lifetimeDisbursed } = userData;
   const [tokenize, showTokenize] = useState(false);
   const accountBalance =
-    lifetimeRevenue -
-    (parseFloat(lifetimeDisbursed || 0) + (userData.tokenized || 0));
+    lifetimeRevenue?.toFixed(2) ||
+    0 -
+      (parseFloat(lifetimeDisbursed || 0) + (userData.tokenized || 0))?.toFixed(
+        2
+      );
   const navigate = useNavigate();
 
   // State to toggle between INR and USD
@@ -45,21 +49,24 @@ const WithdrawalSection = () => {
 
   const currencySymbol = isINR ? "₹" : "$";
   const displayRevenue = !isINR
-    ? convertToUSD(lifetimeRevenue).toFixed(2)
-    : lifetimeRevenue?.toFixed(2);
+    ? convertToUSD(lifetimeRevenue || 0).toFixed(2)
+    : lifetimeRevenue?.toFixed(2) || 0;
+  const numericBalance = Number(accountBalance) || 0;
+
   const displayWithdrawableAmount = !isINR
-    ? convertToUSD(accountBalance).toFixed(2)
-    : accountBalance?.toFixed(2);
+    ? convertToUSD(numericBalance).toFixed(2)
+    : numericBalance.toFixed(2);
 
   return (
     <div className="max-w-xl mx-auto shadow">
-      {tokenize && (
-        <Tokenize
-          showTokenize={showTokenize}
-          isINR={isINR}
-          accountBalance={displayWithdrawableAmount}
-        />
-      )}
+      {/* {tokenize && ( */}
+      <Tokenize
+        showTokenize={showTokenize}
+        isINR={isINR}
+        tokenize={tokenize}
+        accountBalance={displayWithdrawableAmount}
+      />
+      {/* )} */}
       <div className="text-white rounded-lg shadow-[6px_6px_20px_rgb(10,10,10)] bg-gradient-to-br to-neutral-800 from-neutral-900 p-3 h-full">
         <h4 className="text-2xl text-heading-4-bold font-semibold mb-1">
           Withdrawal Section
@@ -77,7 +84,10 @@ const WithdrawalSection = () => {
               {displayWithdrawableAmount}
             </p>
           </div>
-          <Button onClick={() => showTokenize(true)}>
+          <Button
+            onClick={() => showTokenize(true)}
+            disabled={parseFloat(displayWithdrawableAmount) === 0}
+          >
             <RiTokenSwapFill /> Tokenize
           </Button>
         </div>
@@ -94,9 +104,19 @@ const WithdrawalSection = () => {
 
         {/* Withdraw Button - Disabled if withdrawable amount is less than $1000 */}
         <Button onClick={handleWithdrawClick} disabled={accountBalance < 1000}>
-          {accountBalance >= 1000
-            ? "Request Withdraw"
-            : "Minimum Withdrawable Amount: $1000"}
+          {accountBalance >= 1000 ? (
+            "Request Withdraw"
+          ) : (
+            <>
+              Minimum Withdrawable Amount:{" "}
+              <div className="flex items-center">
+                {userData.billing_country === "India" ? "₹" : "$"}
+                {userData.billing_country === "India"
+                  ? 1000
+                  : (dollarRate * 1000).toFixed(2)}
+              </div>
+            </>
+          )}
         </Button>
       </div>
     </div>

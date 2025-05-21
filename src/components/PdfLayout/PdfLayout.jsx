@@ -77,9 +77,7 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
         preview ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      <div>
-        <PdfLayout ref={detailsRef} result={result} />
-      </div>
+      <div>{/* <PdfLayout ref={detailsRef} result={result} /> */}</div>
 
       <div className="bg-gray-900 text-white w-11/12 xl:w-3/5 h-[80vh] rounded-2xl p-5 overflow-y-auto relative shadow-xl">
         <button

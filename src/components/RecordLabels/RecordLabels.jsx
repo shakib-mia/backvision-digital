@@ -41,7 +41,6 @@ const RecordLabels = () => {
       {openModal &&
         createPortal(
           <AuthBody
-            // heading="Edit Song"
             // onSubmit={edit}
             className="backdrop-blur fixed top-0 left-0 z-[99999999999]"
             id="edit-song"

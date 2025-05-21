@@ -9,6 +9,7 @@ const YoutubeClaimRelease = () => {
   const { userData } = useContext(ProfileContext);
   const [songs, setSongs] = useState([]);
   const [songName, setSongName] = useState("");
+  const [url, setUrl] = useState("");
   // alert(songs.length);
   // console.log({ songs });
 
@@ -30,15 +31,15 @@ const YoutubeClaimRelease = () => {
       type: "text",
       name: "youtube_claim_release_name",
       value: userData["user-id"],
-      disabled: userData["user-id"]?.length,
+      disabled: userData["user-id"]?.length > 0,
     },
     {
       label: "Email Address",
       placeholder: "Email",
       type: "email",
       name: "emailId",
-      value: userData.emailId,
-      disabled: userData.emailId?.length,
+      value: userData.user_email,
+      disabled: userData.user_email?.length > 0,
     },
     {
       label: "Phone",
@@ -46,7 +47,7 @@ const YoutubeClaimRelease = () => {
       type: "text",
       name: "youtube_claim_release_phone",
       value: userData?.phone_no,
-      disabled: userData?.phone_no?.length,
+      disabled: userData?.phone_no?.length > 0,
     },
     {
       label: "Song Name",
@@ -64,6 +65,9 @@ const YoutubeClaimRelease = () => {
       type: "text",
       required: true,
       name: "youtube_claim_release_youTube_video_url",
+      onChange: (e) => console.log(e.target.value),
+      value: url,
+      disabled: false,
     },
   ];
 

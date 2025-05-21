@@ -39,6 +39,8 @@ const Songs = () => {
             config
           );
         }
+
+        // console.log();
         if (response?.data) {
           setLoading(false);
           if (typeof response?.data !== "string") {
@@ -89,7 +91,18 @@ const Songs = () => {
   };
 
   return (
-    <div className="songs-list">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 text-white">
+      {songs.map((song, index) => (
+        <SongItem
+          key={song._id}
+          song={song}
+          isFirst={index === 0}
+          openSongId={openSongId}
+          setOpenSongId={setOpenSongId}
+          isAccordionOpen={openSongId === song._id} // Pass the open state
+          onToggleAccordion={() => handleAccordionToggle(song._id)} // Handle toggle
+        />
+      ))}
       {songs.map((song, index) => (
         <SongItem
           key={song._id}

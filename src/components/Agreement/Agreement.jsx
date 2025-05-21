@@ -217,7 +217,7 @@ const Agreement = ({ handleClose, formData }) => {
     };
 
     generateAndUploadPdf(); // Call the async function
-  }, [formData.accepted, userData, backendUrl]); // Dependencies
+  }, [formData.accepted]); // Dependencies
 
   const [platforms, setPlatforms] = useState([]);
   useEffect(() => {
@@ -226,7 +226,7 @@ const Agreement = ({ handleClose, formData }) => {
       headers: { token: sessionStorage.getItem("token") || token },
     };
     axios
-      .get("https://api.forevisiondigital.in/platforms", config)
+      .get("https://localhost:5000/platforms", config)
       .then(({ data }) => {
         setPlatforms(data);
       })

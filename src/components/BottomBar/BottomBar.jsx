@@ -57,7 +57,7 @@ const BottomBar = () => {
       path: "/song-upload",
     },
     {
-      icon: <FaMoneyBillWave className="text-2xl text-black" />, // Updated to Revenue
+      icon: <FaMoneyBillWave className="text-2xl text-white" />, // Updated to Revenue
       text: "Revenue",
       path: "/revenue",
     }, // Updated Revenue NavLink
@@ -78,13 +78,13 @@ const BottomBar = () => {
     },
     {
       icon: (
-        <BsFileMusicFill className="text-heading-6 !text-black text-center" />
+        <BsFileMusicFill className="text-heading-6 !text-white text-center" />
       ),
       text: "CRBT Codes",
       path: "/crbt-codes",
     },
     {
-      icon: <MdLogout className="text-2xl text-black" />,
+      icon: <MdLogout className="text-2xl text-white" />,
       text: "Logout",
       action: handleLogout, // Add this action to call handleLogout when clicked
     },
@@ -92,7 +92,7 @@ const BottomBar = () => {
 
   return (
     <nav
-      className="fixed bottom-0 z-[99999] px-1 shadow w-screen bg-white flex justify-center xl:hidden py-2"
+      className="fixed bottom-0 z-[99999] px-1 shadow w-screen bg-black text-white flex justify-center xl:hidden py-2"
       id="bottomBar"
     >
       {/* Left side: Home, Plans, and Hamburger */}
@@ -102,7 +102,7 @@ const BottomBar = () => {
           className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px] cursor-pointer relative"
           onClick={toggleDropdown}
         >
-          <IoMenuOutline className="text-2xl text-black" />
+          <IoMenuOutline className="text-2xl text-white" />
           <h2 className="text-paragraph-2">Menu</h2>
         </div>
 
@@ -110,7 +110,7 @@ const BottomBar = () => {
           to="/"
           className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px]"
         >
-          <FaHome className="text-2xl text-black" />
+          <FaHome className="text-2xl text-white" />
           <h2 className="text-paragraph-2">Home</h2>
         </NavLink>
 
@@ -118,7 +118,7 @@ const BottomBar = () => {
           to="/plans"
           className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px]"
         >
-          <GoTag className="text-2xl text-black" />
+          <GoTag className="text-2xl text-white" />
           <h2 className="text-paragraph-2">Plans</h2>
         </NavLink>
       </div>
@@ -142,7 +142,7 @@ const BottomBar = () => {
                       {dropdownItem.map((item, subKey) => (
                         <NavLink
                           to={item.dropdownPath}
-                          className="w-full gap-1 px-4 py-2 hover:bg-gray-200 text-black flex items-center"
+                          className="w-full gap-1 px-4 py-2 hover:bg-gray-200 text-white flex items-center"
                           key={subKey}
                           onClick={() => setDropdownOpen(false)}
                         >

@@ -36,6 +36,9 @@ const HomeAnalytics = () => {
 
   return (
     <div className="card-shadow p-2">
+      <h4 className="text-heading-4-bold capitalize text-white mb-2 pl-3">
+        Month wise revenue
+      </h4>
       <LineChart
         width={730}
         height={250}

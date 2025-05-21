@@ -107,6 +107,7 @@ const EditSong = ({ setEditId, songData }) => {
   delete newFormData.likes;
   delete newFormData.dislikes;
   delete newFormData.userId;
+  delete newFormData.revenue;
 
   // console.log(updatedData);
 

@@ -11,6 +11,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import { PlanContext } from "../../contexts/PlanContext";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import { formatDate } from "../../utils/formatDate";
+import { SiRazorpay } from "react-icons/si";
 
 const Payment = () => {
   const [Razorpay] = useRazorpay();
@@ -18,14 +19,25 @@ const Payment = () => {
   const { token, userData } = useContext(ProfileContext);
   const navigate = useNavigate();
   const [songData, setSongData] = useState({});
-  const { formData } = useContext(ScreenContext);
+  // const { formData } = useContext(ScreenContext);
   const { setPlanStore, planStore } = useContext(PlanContext);
+  const [formData, setFormData] = useState({});
+  const order_id = location.search.split("?")[2].split("=")[1];
+
+  useEffect(() => {
+    axios
+      .get(backendUrl + "recent-uploads/by-order-id/" + order_id, {
+        headers: {
+          token,
+        },
+      })
+      .then(({ data }) => setFormData(data));
+  }, []);
 
   // console.log();
   // console.log(planStore);
   // console.log(data);
   // console.log();
-  const order_id = location.search.split("?")[2].split("=")[1];
   // console.log(songId);
 
   useEffect(() => {
@@ -201,20 +213,22 @@ const Payment = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-grey-light">
-      <div className="flex flex-col w-10/12 md:w-1/2 xl:w-1/4 relative shadow-xl bg-white rounded-lg">
+    <div className="h-screen flex justify-center items-center">
+      <div className="flex flex-col w-10/12 md:w-1/2 xl:w-1/4 relative shadow-xl bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-lg">
         {/* <h5 className="text-heading-5-bold text-white-secondary bg-primary absolute top-0 left-0 w-full p-2 rounded-t-lg">
           Select Your Payment Method
         </h5> */}
 
         <div className="p-4">
           <button
-            className="w-full flex justify-center py-2 border-2 border-primary rounded-full mb-3" // mt-6 will be here when more methods and header will be added
+            className="w-full flex justify-center items-baseline text-white hover:bg-white hover:text-primary transition py-2 border-2 border-white rounded-full mb-3" // mt-6 will be here when more methods and header will be added
             onClick={() => {
               handleRazorpayPayment(99900);
             }}
           >
-            <img src={razorpay} alt="razorpay" className="w-1/3" />
+            <SiRazorpay className="" />
+            <p className="italic text-heading-6-bold">Razorpay</p>
+            {/* <img src={razorpay} alt="razorpay" className="w-1/3 grayscale" /> */}
           </button>
           {/* 
           <PayPalScriptProvider options={initialOptions}>

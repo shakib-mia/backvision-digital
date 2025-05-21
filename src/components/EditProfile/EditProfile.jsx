@@ -274,6 +274,7 @@ const EditProfile = ({ handleClose }) => {
               type="file"
               onChange={handleCoverPhotoUpload}
               className="hidden"
+              accept="image/*"
             />
           </label>
         </div>
@@ -284,11 +285,12 @@ const EditProfile = ({ handleClose }) => {
             profileData={formData}
             editable={true}
             setProfileData={setFormData}
+            modal={true}
           />
         </div>
       </div>
       <div
-        className="flex flex-col lg:flex-row flex-wrap mt-5 lg:mt-6"
+        className="flex flex-col lg:flex-row flex-wrap mt-5 lg:mt-7"
         id="form"
       >
         {fields.map((props, id) =>
@@ -317,7 +319,9 @@ const EditProfile = ({ handleClose }) => {
         )}
         <div className="w-full lg:w-1/3">
           <InputField
-            label={<FaFacebook className="text-[#506fdf]" />}
+            label={
+              <FaFacebook className="text-[#506fdf] relative -top-[4px]" />
+            }
             hideRequired={true}
             placeholder={"Enter Facebook Link Here"}
             onChange={(e) =>
@@ -333,7 +337,9 @@ const EditProfile = ({ handleClose }) => {
         </div>
         <div className="w-full lg:w-1/3">
           <InputField
-            label={<FaInstagram className="text-[#ff5757]" />}
+            label={
+              <FaInstagram className="text-[#ff5757] relative -top-[4px]" />
+            }
             placeholder={"Enter Instagram Link Here"}
             onChange={(e) =>
               handleFieldChange("instagram_profile_link", e.target.value)
@@ -349,7 +355,7 @@ const EditProfile = ({ handleClose }) => {
         </div>
         <div className="w-full lg:w-1/3">
           <InputField
-            label={<FaXTwitter className="text-white" />}
+            label={<FaXTwitter className="text-white relative -top-[4px]" />}
             placeholder={"Enter Twitter Link Here"}
             onChange={(e) =>
               handleFieldChange("twitter_profile_link", e.target.value)
@@ -384,11 +390,13 @@ const EditProfile = ({ handleClose }) => {
         hideRequired={true}
         labelClassName={"mb-0"}
         containerClassName={`mt-3 w-full`}
+        note={`${formData.bio?.length || 0}/500`}
         maxLength={500}
-        row={1}
+        rows={5}
+        fieldClassName="resize-none"
       />
 
-      <div className="mt-3 mb-2 text-center">
+      <div className="mt-5 mb-2 text-center">
         <Button
           type="submit"
           text="Submit"

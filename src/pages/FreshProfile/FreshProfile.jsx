@@ -266,8 +266,8 @@ const FreshProfile = () => {
         id={location.pathname.split("/")[1]}
         submitFromParent={handleSubmit}
       >
-        <div className="flex gap-2 items-center">
-          <aside className="flex items-center gap-1">
+        <div className="flex gap-1 lg:gap-2 items-center text-white">
+          <aside className="flex items-center gap-[4px] lg:gap-1">
             <input
               type="radio"
               id="fresh-profile"
@@ -280,7 +280,7 @@ const FreshProfile = () => {
             <label htmlFor="fresh-profile">Fresh Profile</label>
           </aside>
 
-          <aside className="flex items-center gap-1">
+          <aside className="flex items-center gap-[4px] lg:gap-1">
             <input
               type="radio"
               id="profile-relocate"

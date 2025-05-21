@@ -16,6 +16,7 @@ const AudioUI = (props) => {
         {...props}
         id={props.id}
         setCount={setCount}
+        setCollapsed={props.setCollapsed}
       />
       {/* ))} */}
 

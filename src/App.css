@@ -5,7 +5,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Tillana&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Fasthand&display=swap");
-
+@import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css");
 @import "owl.carousel/dist/assets/owl.carousel.css";
 @import "owl.carousel/dist/assets/owl.theme.default.css";
 
@@ -126,7 +126,7 @@ aside:hover #profile-container {
 
 a.active {
   /* @apply bg-interactive-light text-white inline-block w-full; */
-  @apply after:w-full after:h-[1px] after:lg:h-[3px] after:rounded-full after:bg-interactive-light after:inline-block after:absolute after:left-0 after:bottom-[-5px] text-interactive-light;
+  @apply after:w-full after:h-[1px] after:lg:h-[3px] after:rounded-full after:bg-interactive-light after:inline-block after:absolute after:left-0 after:bottom-[-2px] text-interactive-light;
 }
 
 a.active svg path {
@@ -138,7 +138,7 @@ a.active svg path {
 }
 
 #bottomBar a:not(.active) svg path {
-  fill: #202020cc;
+  fill: #ffffff;
 }
 
 #bottomBar a.active svg path {
@@ -294,4 +294,22 @@ button.swal2-styled {
 
 .card-shadow {
   @apply shadow-[0_12px_16px_#111];
+}
+
+.auth-slider .owl-stage-outer,
+.auth-slider .owl-stage,
+.auth-slider .owl-item {
+  @apply h-full;
+}
+
+.auth-slider .owl-dots {
+  @apply relative -top-2 gap-1;
+}
+
+.auth-slider .owl-dot {
+  @apply w-7 h-[4px] before:w-full before:absolute before:left-0 before:top-0 before:bg-white before:bg-opacity-50 before:h-full relative after:absolute after:w-0 after:transition-[width] after:h-full after:right-0 after:top-0 after:bg-white opacity-25 rounded-full transition-opacity duration-500 overflow-hidden;
+}
+
+.auth-slider .owl-dot.active {
+  @apply after:left-0 after:w-full opacity-100;
 }

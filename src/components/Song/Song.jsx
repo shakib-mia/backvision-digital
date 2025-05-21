@@ -1,20 +1,31 @@
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import React, { useContext, useState } from "react";
-import { FaApple, FaChevronDown, FaMusic } from "react-icons/fa";
+import {
+  FaApple,
+  FaChartBar,
+  FaChartLine,
+  FaChartPie,
+  FaChevronDown,
+} from "react-icons/fa";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import EditSong from "../EditSong/EditSong";
 import { RiEditBoxFill } from "react-icons/ri";
 import { FaShareNodes } from "react-icons/fa6";
 import axios from "axios";
 import { backendUrl } from "../../constants";
+import dummyAlbum from "../../assets/images/amogh-sympathy.webp";
+import { BsGraphUpArrow } from "react-icons/bs";
+import RevenueDetails from "../RevenueDetails/RevenueDetails";
+import { formatNumber } from "../../utils/formatNumber";
 
 const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
   const [editId, setEditId] = useState("");
-  const navigate = useNavigate();
-  const { userData, setRefetch } = useContext(ProfileContext);
+  const { userData, setRefetch, dollarRate } = useContext(ProfileContext);
   const location = useLocation();
   const [expandedSocial, setExpandedSocial] = useState(false);
+  const [details, setDetails] = useState("");
+  // console.log(song.likes?.includes(userData["user-id"]), song);
 
   const {
     Song,
@@ -28,38 +39,10 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
     _id,
   } = song;
 
-  // Special styling for first item
-  const firstItemStyles = isFirst
-    ? {
-        zIndex: 10,
-        position: "relative",
-      }
-    : {};
-
   const isAccordionOpen = isFirst
     ? openSongId === "" || openSongId === _id
     : openSongId === _id;
 
-  function hasLinkWithoutUrlOrArtWork(song) {
-    // Iterate through the song object keys
-    for (const key of Object.keys(song)) {
-      const value = song[key]; // Get the value for each key
-
-      // Check if the value includes a link and 'songUrl' or 'artWork' is missing
-      if (
-        typeof value === "string" &&
-        value.includes("http") &&
-        (!song.songUrl || !song.artWork)
-      ) {
-        return true; // Found a link without 'songUrl' or 'artWork'
-      }
-    }
-    return false; // No invalid fields found
-  }
-
-  // useEffect(() => {
-  //   hasLinkWithoutUrlOrArtWork(song);
-  // }, []);
   const userId = userData["user-id"];
 
   // Handle Like Action
@@ -74,12 +57,12 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
     }
 
     // If user is not already in likes, add them and remove from dislikes
-    if (!song.likes.includes(userId)) {
-      song.likes.push(userId);
+    if (!song.likes?.includes(userId)) {
+      song.likes?.push(userId);
       song.dislikes = song.dislikes.filter((id) => id !== userId); // Remove user from dislikes if they are there
     } else {
       // If user is already in likes, remove them
-      song.likes = song.likes.filter((id) => id !== userId);
+      song.likes = song.likes?.filter((id) => id !== userId);
     }
 
     // Update backend with the changes
@@ -106,7 +89,7 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
     // If user is not already in dislikes, add them and remove from likes
     if (!song.dislikes.includes(userId)) {
       song.dislikes.push(userId);
-      song.likes = song.likes.filter((id) => id !== userId); // Remove user from likes if they are there
+      song.likes = song.likes?.filter((id) => id !== userId); // Remove user from likes if they are there
     } else {
       // If user is already in dislikes, remove them
       song.dislikes = song.dislikes.filter((id) => id !== userId);
@@ -125,272 +108,190 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
 
   return (
     <div
-      className="lg:px-2 py-1 card-shadow hover:shadow-[0_8px_8px_#111] cursor-pointer mb-1"
-      // className="border-b border-white lg:px-2 py-1"
-      onMouseEnter={() => {
-        setExpandedSocial(true);
-      }}
+      className="relative group rounded-2xl overflow-hidden shadow-xl hover:shadow-xl transition-all duration-300 cursor-pointer"
+      onMouseEnter={() => setExpandedSocial(true)}
       onMouseLeave={() => setExpandedSocial(false)}
     >
-      {/* <audio src={jiosaavn} controls></audio> */}
-      <div
-        className="flex items-center justify-between py-[4px] lg:py-[11px]"
-        style={firstItemStyles}
-      >
-        <div className="flex items-center gap-[4px] lg:gap-[12px]">
-          <FaMusic className="text-white hidden lg:block" />
-          <h6 className="text-white lg:text-heading-6">{Song || songName}</h6>
-        </div>
+      <div className="relative w-full overflow-hidden">
+        <div className="relative aspect-square overflow-hidden">
+          <img
+            src={dummyAlbum}
+            alt="Album Cover"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+          />
 
-        <div className="flex gap-2">
-          {/* Platform icons */}
-          <div
-            className={`flex ${expandedSocial ? "gap-2" : "gap-0"} transition`}
-          >
-            {/* <button onClick={() => setexpandedSocial(_id)} className="transition">
-              <FaChevronCircleLeft
-                className={`text-heading-5 text-white ${
-                  expandedSocial === _id ? "rotate-180" : "rotate-0"
-                }`}
-              />
-            </button> */}
-            <div
-              className="flex gap-2 items-center transition-all overflow-hidden ml-auto"
-              style={{ width: expandedSocial ? "100%" : 0 }}
-            >
-              {jiosaavn && (
-                <a
-                  href={jiosaavn}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-                  style={{ display: "block" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src="http://localhost:5000/uploads/platforms/jiosaavn.png"
-                    alt="JioSaavn"
-                    className="w-2 lg:w-3"
-                  />
-                </a>
-              )}
-
-              {wynk && (
-                <a
-                  href={wynk}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-                  style={{ display: "block" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src="http://localhost:5000/uploads/platforms/wynk-music.png"
-                    alt="Wynk"
-                    className="w-2 lg:w-3"
-                  />
-                </a>
-              )}
-
-              {gaana && (
-                <a
-                  href={gaana}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-                  style={{ display: "block" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src="http://localhost:5000/uploads/platforms/gaana.png"
-                    alt="Gaana"
-                    className="w-2 lg:w-3"
-                  />
-                </a>
-              )}
-
-              {spotify && (
-                <a
-                  href={spotify}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-                  style={{ display: "block" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src="http://localhost:5000/uploads/platforms/spotify.png"
-                    alt="Spotify"
-                    className="w-2 lg:w-3"
-                  />
-                </a>
-              )}
-
-              {apple && (
-                <a
-                  href={apple}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-                  style={{ display: "block" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <FaApple className="text-white text-[20px] lg:text-heading-5" />
-                </a>
-              )}
-
-              {amazon && (
-                <a
-                  href={amazon}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-                  style={{ display: "block" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src="http://localhost:5000/uploads/platforms/amazon-music.png"
-                    alt="Amazon Music"
-                    className="w-2 lg:w-3"
-                  />
-                </a>
-              )}
-
-              {song["YouTube-Music"] && (
-                <a
-                  href={song["YouTube-Music"]}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-                  style={{ display: "block" }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img
-                    src="http://localhost:5000/uploads/platforms/youtube-music.png"
-                    alt="Amazon Music"
-                    className="w-2 lg:w-3"
-                  />
-                </a>
-              )}
+          {location.pathname === "/profile" && (
+            <div className="absolute bg-black bg-opacity-70 flex items-center justify-center w-fit h-fit transition-all duration-700 px-2 py-1 rounded-lg top-1 right-1 group-hover:-top-5 group-hover:-right-5">
+              <div className="text-white text-lg font-semibold">
+                {userData.billingCountry === "India" ? "₹" : "$"}
+                {formatNumber(
+                  song?.revenue *
+                    (userData.billingCountry === "India" ? 1 : dollarRate) || 0
+                )}
+              </div>
             </div>
-          </div>
-
-          {/* Accordion Toggle Button (visible only on mobile) */}
-          <button className="lg:hidden z-20">
-            <FaChevronDown
-              className={`transition-transform text-white ${
-                (isFirst || isAccordionOpen) && openSongId === song._id
-                  ? "rotate-180"
-                  : "rotate-0"
-              }`}
-            />
-          </button>
-
-          {/* Action buttons for larger screens */}
-          <div className="hidden lg:flex items-center gap-2 text-white">
-            <button
-              className="flex gap-1 cursor-pointer hover:opacity-80 transition-opacity z-20 disabled:opacity-60 disabled:cursor-not-allowed"
-              onClick={handleLike}
-              disabled={!userData["user-id"]}
-            >
-              <AiFillLike
-                className={`text-heading-6 ${
-                  song.likes?.includes(userId)
-                    ? "text-interactive-light"
-                    : "text-white"
-                }`}
-              />
-
-              {song.likes?.length || 0}
-            </button>
-            <button
-              className="cursor-pointer hover:opacity-80 transition-opacity z-20 flex gap-1 disabled:opacity-60 disabled:cursor-not-allowed"
-              onClick={handleDislike}
-              disabled={!userData["user-id"]}
-            >
-              <AiFillDislike
-                className={`text-heading-6 ${
-                  song.dislikes?.includes(userId)
-                    ? "text-interactive-light-destructive"
-                    : "text-white"
-                }`}
-              />
-              {song.dislikes?.length || 0}
-            </button>
-
-            {location.pathname === "/profile" && (
-              <button
-                className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+          )}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col justify-between p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 group">
+            <div className="flex justify-between items-start relative -top-full group-hover:top-0 transition-[top] duration-700">
+              <h6 className="text-white font-semibold text-heading-6 line-clamp-2">
+                {Song || songName}
+              </h6>
+              {/* <button
+                className="lg:hidden text-white"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setEditId(_id);
                 }}
               >
-                <RiEditBoxFill className="text-heading-6 text-white" />
-              </button>
-            )}
+                <FaChevronDown
+                  className={`transition-transform duration-300 ${
+                    (isFirst || isAccordionOpen) && openSongId === song._id
+                      ? "rotate-180"
+                      : "rotate-0"
+                  }`}
+                />
+              </button> */}
+            </div>
+
+            <div className="flex flex-col gap-3 relative top-full group-hover:top-0 transition-[top] duration-700">
+              {/* Platform icons */}
+              <div className="flex flex-wrap gap-3 items-center">
+                {[
+                  { url: jiosaavn, src: "jiosaavn" },
+                  { url: wynk, src: "wynk-music" },
+                  { url: gaana, src: "gaana" },
+                  { url: spotify, src: "spotify" },
+                  { url: amazon, src: "amazon-music" },
+                  { url: song["YouTube-Music"], src: "youtube-music" },
+                ].map(
+                  (platform, idx) =>
+                    platform.url && (
+                      <a
+                        key={idx}
+                        href={platform.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="hover:scale-110 transition-transform duration-200"
+                      >
+                        <img
+                          src={`https://musicx-be.onrender.com/uploads/platforms/${platform.src}.png`}
+                          alt={platform.src}
+                          className="w-3"
+                        />
+                      </a>
+                    )
+                )}
+                {apple && (
+                  <a
+                    href={apple}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="hover:scale-110 transition-transform duration-200"
+                  >
+                    <FaApple className="text-white text-heading-5" />
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Action buttons */}
+        <div className="p-2 flex justify-between items-center bg-gradient-to-br from-neutral-900 to-neutral-800 text-white text-sm gap-3">
+          <div className="flex gap-1 relative">
+            <div className="absolute -bottom-[2px] h-[2px] w-full bg-white rounded flex justify-between overflow-hidden">
+              <div
+                className="h-full bg-interactive-light transition-[width] duration-300"
+                style={{
+                  width:
+                    song.likes?.length + song.dislikes?.length === 0
+                      ? "0%"
+                      : `${
+                          (song.likes?.length * 100) /
+                          (song.likes?.length + song.dislikes?.length)
+                        }%`,
+                }}
+              ></div>
+              <div
+                className="h-full bg-interactive-light-destructive transition-[width] duration-300"
+                style={{
+                  width:
+                    song.likes?.length + song.dislikes?.length === 0
+                      ? "0%"
+                      : `${
+                          (song.dislikes?.length * 100) /
+                          (song.likes?.length + song.dislikes?.length)
+                        }%`,
+                }}
+              ></div>
+            </div>
+
             <button
-              disabled={!hasLinkWithoutUrlOrArtWork(song)}
-              className="cursor-pointer hover:opacity-80 transition-opacity z-20 disabled:opacity-25 disabled:cursor-not-allowed"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/share/${userData._id}/${_id}`);
-              }}
+              onClick={handleLike}
+              className={`flex items-center gap-[2px] hover:text-interactive-light transition ${
+                song.likes?.includes(userData["user-id"])
+                  ? "text-interactive-light"
+                  : ""
+              }`}
             >
-              <FaShareNodes className="text-heading-6 text-white" />
+              <AiFillLike />
+              <span>{formatNumber(song.likes?.length) || 0}</span>
+            </button>
+
+            <button
+              onClick={handleDislike}
+              className={`flex items-center gap-[2px] hover:text-interactive-light-destructive transition ${
+                song.dislikes?.includes(userData["user-id"])
+                  ? "text-interactive-light-destructive"
+                  : ""
+              }`}
+            >
+              <AiFillDislike />
+              <span>{song.dislikes?.length || 0}</span>
+            </button>
+          </div>
+
+          <div className="flex gap-1">
+            {location.pathname === "/profile" && (
+              <>
+                <BsGraphUpArrow
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDetails(song.isrc || song.ISRC);
+                  }}
+                />
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditId(song._id);
+                  }}
+                  className="hover:text-yellow-300 transition"
+                >
+                  <RiEditBoxFill />
+                </button>
+              </>
+            )}
+
+            <button
+              onClick={(e) => e.stopPropagation()}
+              className="hover:text-cyan-300 transition"
+            >
+              <FaShareNodes />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Accordion for mobile view */}
-      {/* {(isFirst || isAccordionOpen) && openSongId === song._id && ( */}
-      <div
-        className={`lg:hidden flex justify-end gap-2 ${
-          (isFirst || isAccordionOpen) && openSongId === song._id ? "mt-2" : ""
-        } overflow-hidden transition-[height_margin-top]`}
-        style={{
-          height:
-            (isFirst || isAccordionOpen) && openSongId === song._id
-              ? "21.31px"
-              : "0",
-        }}
-      >
-        <button
-          className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-          onClick={handleLike}
-        >
-          <AiFillLike className="text-heading-6 text-white" />
-        </button>
-        <button
-          className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-          onClick={handleDislike}
-        >
-          <AiFillDislike className="text-heading-6 text-white" />
-        </button>
-        <button
-          className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-          onClick={(e) => {
-            e.stopPropagation();
-            setEditId(_id);
-          }}
-        >
-          <RiEditBoxFill className="text-heading-6 text-white" />
-        </button>
-        <button
-          disabled={!hasLinkWithoutUrlOrArtWork(song)}
-          className="cursor-pointer hover:opacity-80 transition-opacity z-20 disabled:opacity-25 disabled:cursor-not-allowed"
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate(`/share/${userData._id}/${_id}`);
-          }}
-        >
-          <FaShareNodes className="text-heading-6 text-white" />
-        </button>
-      </div>
-      {/* )} */}
-
-      {editId && <EditSong setEditId={setEditId} songData={song} />}
+      {details?.length ? (
+        <RevenueDetails setDetails={setDetails} isrc={details} />
+      ) : (
+        <></>
+      )}
+      {/* Edit Modal */}
+      {editId === song._id && (
+        <EditSong songData={song} setEditId={setEditId} />
+      )}
     </div>
   );
 };

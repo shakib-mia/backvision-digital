@@ -174,7 +174,7 @@ const PreviewDetails = ({ albumData }) => {
     return (
       <div key={song?.isrc || "single"}>
         <div className="px-4 py-3">
-          <h2 className="text-heading-6-bold text-black">{song.songName}</h2>
+          <h2 className="text-heading-6-bold text-white">{song.songName}</h2>
           <div className="mt-3 flex items-center">
             <button
               onClick={togglePlay}
@@ -376,7 +376,7 @@ const PreviewDetails = ({ albumData }) => {
       <div className="text-white rounded-lg shadow-lg overflow-hidden">
         <div
           className={`flex flex-col lg:flex-row ${
-            location.pathname.includes("album") && "bg-surface-white-surface-2"
+            location.pathname.includes("album") && "bg-grey-dark"
           }`}
         >
           <div className="w-full lg:w-1/4 ">
@@ -391,7 +391,7 @@ const PreviewDetails = ({ albumData }) => {
               {/* <div className="uppercase tracking-wide text-subtitle-2-bold text-primary-light">
                 {albumData.albumType}
               </div> */}
-              <h1 className="lg:mt-2 text-heading-1-bold">
+              <h1 className="lg:mt-2 text-heading-3-bold lg:text-heading-1-bold">
                 {albumData.songs ? albumData.albumTitle : albumData.songName}
               </h1>
               <p className="lg:mt-2 text-paragraph-1">

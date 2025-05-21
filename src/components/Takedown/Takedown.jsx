@@ -43,7 +43,7 @@ const Takedown = ({ setEditId, songData }) => {
       closeIcon={true}
       onSubmit={handleTakedown}
       handleClose={() => setEditId("")}
-      whiteContainerClass="h-2/3 relative lg:!w-1/3 !mx-auto overflow-y-auto overflow-x-hidden"
+      whiteContainerClass="relative lg:!w-1/3 !mx-auto overflow-y-auto overflow-x-hidden"
     >
       {/* <EditSongForm updatedData={updatedData} setUpdatedData={setUpdatedData} /> */}
       {/* <SelectOptions

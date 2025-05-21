@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import styles from "./inputfield.module.css"; // Import the CSS module
 
-const InputField = (props) => {
+const InputField = forwardRef((props, ref) => {
   const {
     label,
     placeholder,
@@ -20,12 +20,14 @@ const InputField = (props) => {
 
   const handleFocus = () => setFocused(true);
   const handleBlur = () => setFocused(value?.length > 0);
+  console.log({ disabled, label, value });
 
   return (
-    <div className="relative mb-3">
+    <div className={`relative mb-3 ${props.parentClassName}`}>
       <div className={`${styles.inputContainer} ${containerClassName}`}>
         {props.textarea ? (
           <textarea
+            ref={ref}
             id={id}
             type={type}
             value={value}
@@ -40,6 +42,7 @@ const InputField = (props) => {
           />
         ) : (
           <input
+            ref={ref}
             id={id}
             type={type}
             value={value}
@@ -62,7 +65,7 @@ const InputField = (props) => {
               type === "file" ||
               type === "checkbox" ||
               disabled ||
-              value?.length
+              value?.toString()?.length
                 ? styles.focused
                 : ""
             } ${type === "checkbox" ? "static" : "absolute"}`}
@@ -82,6 +85,6 @@ const InputField = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default InputField;

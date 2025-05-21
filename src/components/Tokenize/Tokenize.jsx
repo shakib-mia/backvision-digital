@@ -6,8 +6,9 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { backendUrl } from "../../constants";
 
-const Tokenize = ({ showTokenize, isINR, accountBalance }) => {
-  const [amount, setAmount] = useState(0);
+const Tokenize = ({ showTokenize, isINR, accountBalance, tokenize }) => {
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
   const { dollarRate, token, setRefetch } = useContext(ProfileContext);
 
   const handleAmountChange = (e) => {
@@ -17,7 +18,7 @@ const Tokenize = ({ showTokenize, isINR, accountBalance }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const inputAmount = parseFloat(amount); // user input
+    const inputAmount = parseFloat(amount);
     if (!inputAmount || inputAmount <= 0) {
       return Swal.fire(
         "Invalid Amount",
@@ -26,10 +27,16 @@ const Tokenize = ({ showTokenize, isINR, accountBalance }) => {
       );
     }
 
-    // Internally convert to INR if needed
-    const tokenizedINR = isINR ? inputAmount : inputAmount / dollarRate;
+    if (inputAmount > parseFloat(accountBalance)) {
+      return Swal.fire(
+        "Amount Too High",
+        `You cannot tokenize more than your current balance (₹${accountBalance})`,
+        "error"
+      );
+    }
 
-    // Show confirmation dialog to user using their selected currency
+    const amountInINR = isINR ? inputAmount : inputAmount * dollarRate;
+
     const result = await Swal.fire({
       title: "Confirm Tokenization",
       html: `Are you sure you want to tokenize <strong>${
@@ -41,60 +48,77 @@ const Tokenize = ({ showTokenize, isINR, accountBalance }) => {
       cancelButtonText: "Cancel",
     });
 
-    if (result.isConfirmed) {
-      // You can now process tokenization using `tokenizedINR`
-      //   console.log(`Tokenized Amount in INR: ₹${tokenizedINR.toFixed(2)}`);
-      axios
-        .post(
-          backendUrl + "tokenize",
-          { tokenizedINR },
-          {
-            headers: {
-              token,
-            },
-          }
-        )
-        .then((res) => {
-          setRefetch((ref) => !ref);
-          Swal.fire({
-            icon: "success",
-            title: "Tokenization Complete",
-            text: `₹${tokenizedINR.toFixed(
-              2
-            )} has been deducted from your account balance.`,
-            confirmButtonColor: "#3085d6",
-          });
+    if (!result.isConfirmed) return;
+
+    setLoading(true);
+
+    axios
+      .post(
+        backendUrl + "tokenize",
+        { tokenizedINR: amountInINR },
+        { headers: { token } }
+      )
+      .then(() => {
+        setRefetch((ref) => !ref);
+        Swal.fire({
+          icon: "success",
+          title: "Tokenization Complete",
+          text: `₹${amountInINR.toFixed(
+            2
+          )} has been deducted from your account balance.`,
+          confirmButtonColor: "#3085d6",
         });
-
-      // Show success message
-
-      showTokenize(false); // Close modal
-    }
+        setAmount("");
+        showTokenize(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        Swal.fire({
+          icon: "error",
+          title: "Tokenization Failed",
+          text: err?.response?.data?.message || "Something went wrong!",
+        });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
     <div
-      className="fixed top-0 left-0 z-[99999] backdrop-blur-lg h-screen w-screen flex justify-center items-center"
+      className={`fixed top-0 left-0 z-[99999] backdrop-blur-lg h-screen w-screen flex justify-center items-center px-4 transition-opacity ${
+        tokenize
+          ? "opacity-100 pointer-events-auto"
+          : "opacity-0 pointer-events-none"
+      }`}
       onClick={() => showTokenize(false)}
     >
       <div
-        className="bg-black p-3 max-w-md w-full h-fit shadow-xl text-white rounded-lg"
+        className="bg-gradient-to-br from-[rgba(23_23_23/0.6)] to-neutral-800 p-2 max-w-md w-full shadow-2xl text-white rounded-2xl space-y-2 transition-[scale]"
         onClick={(e) => e.stopPropagation()}
+        style={{
+          scale: tokenize ? "1" : "0",
+        }}
       >
-        <h5 className="text-heading-5-bold text-center">Tokenize</h5>
+        <h5 className="text-heading-5-bold font-semibold text-center">
+          Tokenize Funds
+        </h5>
+        <p className="text-paragraph-1 text-neutral-300 text-center">
+          Turn your earnings into tokens and use them to purchase plans or
+          services—no need to wait for withdrawals.
+        </p>
 
-        <form onSubmit={handleSubmit} className="mt-1">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <InputField
             min={0}
             max={parseFloat(accountBalance)}
             type="number"
             onChange={handleAmountChange}
-            value={parseFloat(amount)}
+            value={amount}
             required={true}
-            label="Enter Amount"
+            label={`Enter Amount (${isINR ? "INR" : "USD"})`}
           />
-
-          <Button type="submit">Convert</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Processing..." : "Convert to Token"}
+          </Button>
         </form>
       </div>
     </div>

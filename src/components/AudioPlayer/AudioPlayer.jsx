@@ -96,9 +96,25 @@ function AudioPlayer({ src, id }) {
   // console.log(formData.songUrl);
 
   // console.log(audioRef.current?.duration);
+  // console.log(
+  //   formData.songs[id].artists.find(
+  //     ({ role }) => role === "Singer/Primary Artist"
+  //   ).name
+  // );
+
+  const primaryArtistName =
+    formData.songs.length > 0 &&
+    formData.songs[id]?.artists?.find(
+      ({ role }) => role === "Singer/Primary Artist"
+    )?.name
+      ? formData.songs[id].artists.find(
+          ({ role }) => role === "Singer/Primary Artist"
+        ).name
+      : formData.artists?.find(({ role }) => role === "Singer/Primary Artist")
+          ?.name;
 
   return (
-    <div className="p-3 bg-grey-light rounded-xl text-grey-dark h-full inline-block w-full relative overflow-hidden">
+    <div className="p-3 bg-grey-dark rounded-xl text-grey-dark h-full inline-block w-full relative overflow-hidden">
       {/* {src.length > 0 || (
         <div className="w-full h-full absolute top-0 left-0 backdrop-blur z-[9999999999]">
           No songs has been uploaded yet
@@ -120,28 +136,38 @@ function AudioPlayer({ src, id }) {
             onTimeUpdate={updateProgress}
           ></audio>
           <aside>
-            <h5 className="text-heading-5-bold">{formData.songName}</h5>
-            {formData?.artists?.find(
-              ({ role }) => role === "Singer/Primary Artist"
-            )?.name.length ? (
-              <h6 className="text-heading-6-bold mt-2">
-                <span className="font-normal">By</span>{" "}
-                {
-                  formData.artists.find(
+            <h5 className="text-heading-5-bold text-white">
+              {formData.songs.length
+                ? formData.songs[id].songName
+                : formData.songName}
+            </h5>
+            {(() => {
+              const hasSongs = formData.songs.length > 0;
+              const primaryArtist = hasSongs
+                ? formData.songs[id]?.artists?.find(
                     ({ role }) => role === "Singer/Primary Artist"
-                  ).name
-                }
-              </h6>
-            ) : (
-              <></>
-            )}
+                  )
+                : formData.artists?.find(
+                    ({ role }) => role === "Singer/Primary Artist"
+                  );
+
+              return primaryArtist?.name ? (
+                <h6 className="text-heading-6-bold mt-2 text-white">
+                  <span className="font-normal">By</span> {primaryArtist.name}
+                </h6>
+              ) : null;
+            })()}
           </aside>
         </aside>
       </div>
       {src?.length || songUrl?.length ? (
         <div className="w-full mx-auto flex items-center gap-3 mt-2">
           <span onClick={togglePlayPause} className="cursor-pointer w-1/12">
-            {isPlaying && progress !== 100 ? <FaPause /> : <FaPlay />}
+            {isPlaying && progress !== 100 ? (
+              <FaPause className="text-white" />
+            ) : (
+              <FaPlay className="text-white" />
+            )}
           </span>
 
           {/* Progress */}
@@ -149,13 +175,13 @@ function AudioPlayer({ src, id }) {
             className="progress-bar w-7/12 h-1 bg-grey relative overflow-visible rounded-full cursor-pointer"
             onClick={handleProgressChange}
           >
-            <div className="absolute top-[12px] w-full flex justify-between">
+            <div className="absolute top-[12px] w-full flex justify-between text-white">
               <aside>{formatTime(audioRef.current?.currentTime)}</aside>
               <aside>{formatTime(audioRef.current?.duration)}</aside>
             </div>
 
             <div
-              className="absolute left-0 top-0 h-full bg-primary-light rounded-full pointer-events-none"
+              className="absolute left-0 top-0 h-full bg-interactive-light rounded-full pointer-events-none"
               style={{ width: `${progress}%` }}
             ></div>
             <div
@@ -185,7 +211,7 @@ function AudioPlayer({ src, id }) {
               /> */}
             {volume > 0 ? (
               <FaVolumeUp
-                className="cursor-pointer"
+                className="cursor-pointer text-white"
                 onClick={() => {
                   setVolume(0);
 
@@ -202,16 +228,16 @@ function AudioPlayer({ src, id }) {
               />
             )}
             <div
-              className="w-full h-1 rounded-full bg-primary relative cursor-pointer"
+              className="w-full h-1 rounded-full bg-interactive-light-confirmation-disabled relative cursor-pointer"
               onClick={handleVolumeChange}
             >
               <div
-                className="bg-interactive-light-confirmation h-full rounded-full pointer-events-none"
+                className="bg-interactive-light-confirmation-focus h-full rounded-full pointer-events-none"
                 style={{ width: `${Math.abs(volume) - 5}%` }}
               ></div>
               <div
-                className="h-2 bg-primary-light rounded-full w-2 absolute top-0 bottom-0 m-auto cursor-pointer pointer-events-none"
-                style={{ left: `${Math.abs(volume) - 5}%` }}
+                className="h-2 bg-interactive-light-confirmation rounded-full w-2 absolute top-0 bottom-0 m-auto cursor-pointer pointer-events-none"
+                style={{ left: `${Math.abs(volume) - 15}%` }}
               ></div>
             </div>
           </div>

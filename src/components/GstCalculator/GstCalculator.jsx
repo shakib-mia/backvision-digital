@@ -3,32 +3,31 @@ import { FaRupeeSign } from "react-icons/fa";
 import { PlanContext } from "../../contexts/PlanContext";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
-const GSTCalculator = ({ location }) => {
-  // Extract the total price in paise from the URL
+const GSTCalculator = ({ location, formData }) => {
   const { planStore } = useContext(PlanContext);
-  const { userData } = useContext(ProfileContext);
-  console.log(planStore);
-  const totalPriceInPaisa = parseInt(
-    userData.billing_country === "India"
-      ? planStore.price
-      : parseFloat(location.search.split("?")[2]),
-    10
-  );
-  // console.log(location.search.split("?")[1]);
-  // Convert the total price from paise to rupees
-  const totalPrice =
-    userData.billing_country === "India"
-      ? totalPriceInPaisa / 100
-      : totalPriceInPaisa / 100;
+  const { userData, dollarRate } = useContext(ProfileContext);
 
-  // Define the GST rate
+  // Determine the correct price source
+  const rawPrice =
+    userData.billing_country === "India"
+      ? planStore.price || formData.price
+      : parseFloat(location.search.split("?")[2] || formData.price);
+
+  // Convert raw price to number
+  const totalPriceInPaisa = parseInt(rawPrice, 10);
+
+  // Convert to rupees (or dollar equivalent in rupees)
+  let totalPrice = totalPriceInPaisa / 100;
+
+  // Multiply by dollarRate if billing_country is NOT India
+  if (userData.billing_country !== "India") {
+    totalPrice = totalPrice * dollarRate;
+  }
+
+  // GST calculation
   const gstRate = 18;
-
-  // Calculate the original price and GST amount
   const originalPrice = totalPrice / (1 + gstRate / 100);
   const gstAmount = totalPrice - originalPrice;
-
-  // console.log(totalPrice);
 
   return (
     <aside className="w-1/2 p-2 flex items-center">

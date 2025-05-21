@@ -28,6 +28,7 @@ const Form = forwardRef(
       headingSize,
       heading,
       children,
+      onChange,
     },
     ref
   ) => {
@@ -41,7 +42,6 @@ const Form = forwardRef(
     // console.log(fields);
 
     const { profileData, userData } = useContext(ProfileContext);
-    console.log(profileData);
     const [formData, setFormData] = useState({});
 
     const formRef = useRef(null);
@@ -62,31 +62,31 @@ const Form = forwardRef(
           .replace(/-/g, "_")}_phone_ext`]: `${selectedCode}${fullPhoneNumber}`,
       };
       dataToSubmit.id = id;
-      // console.log(dataToSubmit);
+      console.log(dataToSubmit);
 
-      try {
-        const response = await axios.post(
-          backendUrl + "submit-form",
-          dataToSubmit,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${profileData.user_token}`,
-            },
-          }
-        );
+      // try {
+      //   const response = await axios.post(
+      //     backendUrl + "submit-form",
+      //     dataToSubmit,
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${profileData.user_token}`,
+      //       },
+      //     }
+      //   );
 
-        if (response.data.insertedId.length) {
-          toast.success("Form submitted successfully!");
-          e.target.reset();
-          navigate("/");
-        } else {
-          throw new Error(response.data.message || "Submission failed");
-        }
-      } catch (error) {
-        console.error("Error submitting form:", error);
-        toast.error(`Error: ${error.message || "Unexpected error occurred"}`);
-      }
+      //   if (response.data.insertedId.length) {
+      //     toast.success("Form submitted successfully!");
+      //     e.target.reset();
+      //     navigate("/");
+      //   } else {
+      //     throw new Error(response.data.message || "Submission failed");
+      //   }
+      // } catch (error) {
+      //   console.error("Error submitting form:", error);
+      //   toast.error(`Error: ${error.message || "Unexpected error occurred"}`);
+      // }
     };
 
     const handleChange = (e) => {
@@ -121,6 +121,7 @@ const Form = forwardRef(
           );
         }
 
+        onChange(e);
         setFormData(newFormData);
       } else {
         newFormData[name] = value;
@@ -180,7 +181,7 @@ const Form = forwardRef(
           id={id || "myForm"}
           ref={ref || formRef}
           autoComplete="off"
-          className={`mt-[90px] rounded-[15px] shadow-lg pt-[29px] px-[50px] 2xl:px-[60px] 3xl:px-[101px] pb-[80px] bg-black w-7/12 mx-auto ${containerClassName}`}
+          className={`lg:mt-[90px] rounded-[15px] shadow-lg pt-[29px] px-[8px] 2xl:px-[60px] 3xl:px-[101px] pb-[80px] bg-black lg:w-7/12 mx-auto ${containerClassName}`}
         >
           {heading && (
             <h3

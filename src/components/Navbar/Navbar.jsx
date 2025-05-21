@@ -226,17 +226,23 @@ const Navbar = () => {
                 <span className="italic">
                   {userData.billing_country === "India" ? "₹" : "$"}
                   {userData.billing_country === "India"
-                    ? parseFloat(userData?.lifetimeRevenue?.toFixed(2)) -
-                      (
-                        parseFloat(userData?.lifetimeDisbursed?.toFixed(2)) +
-                        (userData?.tokenized || 0)
-                      ).toFixed(2)
+                    ? (
+                        parseFloat(userData?.lifetimeRevenue?.toFixed(2) || 0) -
+                        (parseFloat(
+                          userData?.lifetimeDisbursed?.toFixed(2) || 0
+                        ) +
+                          (userData?.tokenized || 0))
+                      ).toFixed(2) || 0
                     : (
-                        (parseFloat(userData?.lifetimeRevenue?.toFixed(2)) -
-                          (parseFloat(userData?.lifetimeDisbursed?.toFixed(2)) +
+                        (parseFloat(
+                          userData?.lifetimeRevenue?.toFixed(2) || 0
+                        ) -
+                          (parseFloat(
+                            userData?.lifetimeDisbursed?.toFixed(2) || 0
+                          ) +
                             (userData?.tokenized || 0))) *
                         dollarRate
-                      ).toFixed(2)}
+                      ).toFixed(2) || 0}
                 </span>
               </Link>
               <span className="flex gap-[4px] items-center">
@@ -253,10 +259,10 @@ const Navbar = () => {
                 alt="profile"
               />
               {rightDropdownOpen && (
-                <div className="absolute right-0 mt-0 w-[200px] bg-gray-800 text-white shadow-lg rounded-lg">
+                <div className="absolute right-0 mt-0 w-[250px] bg-gray-800 text-white shadow-lg rounded-lg overflow-hidden">
                   <div
                     onClick={() => navigate("/profile")}
-                    className="px-4 py-2 cursor-pointer relative"
+                    className="px-2 py-2 cursor-pointer relative"
                   >
                     <div className="w-1 h-1 bg-gray-800 absolute -top-[4px] rotate-45 right-1"></div>
                     <p className="text-sm">
@@ -269,7 +275,7 @@ const Navbar = () => {
                   <div className="border-t border-gray-700">
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-700"
+                      className="w-full text-left px-2 py-2 text-red-500 hover:bg-gray-700"
                     >
                       Logout <MdLogout className="inline-block" />
                     </button>

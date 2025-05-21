@@ -690,7 +690,12 @@ const Revenue = () => {
                                     item === "after tds revenue" ? (
                                       final_after_tds[song.isrc].toFixed(8)
                                     ) : (
-                                      song[item].toFixed(8)
+                                      (
+                                        song[item] *
+                                        (userData.country === "India"
+                                          ? 1
+                                          : dollarRate)
+                                      ).toFixed(8)
                                     )
                                   ) : item === "total" ? (
                                     total_lifetime_views[song.isrc]
@@ -850,13 +855,9 @@ const Revenue = () => {
               )
             ))}
           {/* details item modal */}
+          {/* details item modal */}
           {details?.length ? (
-            <RevenueDetails
-              setDetails={setDetails}
-              options={options}
-              songs={songs}
-              details={details}
-            />
+            <RevenueDetails setDetails={setDetails} isrc={details} />
           ) : (
             <></>
           )}

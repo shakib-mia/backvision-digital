@@ -72,7 +72,7 @@ const Uploads = () => {
     // Show songs if they exist
     if (userData.isrc && songs.length > 0) {
       return (
-        <div className="flex flex-col gap-2 h-fit overflow-y-auto pb-2">
+        <div className="flex flex-col gap-2 h-fit overflow-y-auto">
           {location.pathname === "/" && (
             <ReactOwlCarousel
               autoplay

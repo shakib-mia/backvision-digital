@@ -15,6 +15,7 @@ import {
   FaSquareFacebook,
   FaSquareInstagram,
   FaSquareXTwitter,
+  FaXTwitter,
 } from "react-icons/fa6";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FaLink } from "react-icons/fa";
@@ -25,8 +26,13 @@ const Profile = () => {
   const { userData } = useContext(ProfileContext);
   const location = useLocation();
   const [profileData, setProfileData] = useState(
-    location.pathname === "/profile" ? userData : {}
+    location.pathname === "/profile" ? { ...userData } : {}
   );
+  const [isExpanded, setIsExpanded] = useState(false);
+  const toggleReadMore = () => setIsExpanded(!isExpanded);
+
+  const maxLength = 150; // character limit for collapsed text
+  const bio = profileData.bio;
   const [copied, setCopied] = useState(false);
   // console.log(profileData);
 
@@ -68,197 +74,124 @@ const Profile = () => {
 
   const [details, setDetails] = useState(false);
   const text = profileData.bio;
-  console.log(profileData);
+  // console.log({ profileData, userData });
 
   return (
     <div
-      className={`mx-auto rounded-[20px] rounded-t-none overflow-y-auto`}
+      className={`mx-auto rounded-[20px] rounded-t-none relative overflow-y-auto pt-4`}
       id="profile-container"
       style={{
         marginTop: document.getElementById("topbar")?.clientHeight + "px",
       }}
     >
-      <div className="relative">
-        <div className="w-full h-[12rem] lg:h-full">
-          {location.pathname === "/profile" && (
-            <div className="bg-gradient-to-bl from-black-secondary to-[30%] to-transparent absolute top-0 left-0 w-full h-full">
-              <div className="absolute bottom-1 right-1 lg:bottom-2 lg:right-2">
-                <img
-                  src={profileEdit}
-                  className="cursor-pointer"
-                  alt=""
-                  title="Edit your cover photo"
+      <div className="bg-black flex flex-col lg:flex-row container gap-4 pb-7">
+        <div className="sticky top-0 w-full lg:w-4/12 h-full card-shadow text-white">
+          <aside className="relative p-2">
+            <img
+              src={profileData.cover_photo || cover}
+              className="w-full absolute h-6 left-0 top-0"
+              alt=""
+              id="cover-photo"
+            />
+
+            <div className="absolute top-4">
+              <ProfilePicture
+                imageUrl={profileData.display_image}
+                profileData={profileData}
+              />
+            </div>
+            <div className="mt-[100px]">
+              <div className="flex gap-1 items-center">
+                <h6 className="text-heading-6 underline">
+                  {profileData.first_name} {profileData.last_name}
+                </h6>
+                <MdModeEdit
                   onClick={() => setEdit(true)}
+                  data-tooltip-id="edit"
+                  data-tooltip-content="Edit Profile"
+                  className="cursor-pointer text-heading-6 focus:outline-none"
                 />
               </div>
-            </div>
-          )}
-          <img
-            src={profileData.cover_photo || cover}
-            className="object-cover w-full h-[12rem] lg:h-[18rem]"
-            alt=""
-          />
-        </div>
-      </div>
 
-      <div className="bg-black">
-        <div className="flex flex-col lg:flex-row lg:gap-[60px] relative container">
-          <div className="w-full left-0 px-4 lg:px-0 relative -top-7 lg:top-[-100px]">
-            <div className="flex flex-col lg:flex-row gap-[11px]">
-              <div className="pt-4">
-                <ProfilePicture
-                  imageUrl={profileData.display_image}
-                  profileData={profileData}
-                  // setProfileData={setProfileData}
-                />
-              </div>
-              <aside className="text-white lg:mt-[8rem] lg:w-11/12">
-                <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-5">
-                  <div className="flex items-center flex-col lg:flex-row gap-2">
-                    {profileData.first_name ? (
-                      <h5 className="text-heading-5 underline">
-                        {profileData.first_name} {profileData.last_name}
-                      </h5>
-                    ) : (
-                      <LoadingPulse className="w-[200px] h-[30px]" />
-                    )}
-
-                    {route[route.length - 1] === "profile" &&
-                    profileData.first_name ? (
-                      <div className="flex items-center space-x-2">
-                        {/* <img
-                        src={profileEdit}
-                        onClick={() => setEdit(true)}
-                        className="w-[21px] h-[21px] cursor-pointer"
-                        alt="edit"
-                      /> */}
-                        <MdModeEdit
-                          onClick={() => setEdit(true)}
-                          data-tooltip-id="edit"
-                          data-tooltip-content="Edit Profile"
-                          className="cursor-pointer text-heading-6 focus:outline-none"
-                        />
-                        <Tooltip id="edit" />
-                        <CopyToClipboard
-                          text={
-                            window.location.href + "/" + profileData["user-id"]
-                          }
-                          data-tooltip-id={"copy"}
-                          onCopy={() => setCopied(true)}
-                          data-tooltip-content={
-                            copied ? "Copied" : "Copy Link To Clipboard"
-                          }
-                          className="cursor-pointer text-heading-6 focus:outline-none"
-                        >
-                          <FaLink />
-                        </CopyToClipboard>
-                        <Tooltip id={"copy"} />
-                      </div>
-                    ) : profileData.first_name ? (
-                      <div className="flex items-center space-x-2">
-                        {/* Hidden as it is not functional */}
-                        {/* <img
-                        src={userplus}
-                        onClick={handleFollow}
-                        className="w-3 h-3 cursor-pointer"
-                        alt="follow"
-                      /> */}
-                        <CopyToClipboard
-                          text={
-                            window.location.href + "/" + profileData["user-id"]
-                          }
-                          data-tooltip-id={"copy"}
-                          onCopy={() => setCopied(true)}
-                          data-tooltip-content={
-                            copied ? "Copied" : "Copy Link To Clipboard"
-                          }
-                          className="cursor-pointer text-heading-6 focus:outline-none"
-                        >
-                          <FaLink />
-                        </CopyToClipboard>
-                        <Tooltip id={"copy"} />
-                      </div>
-                    ) : (
-                      <LoadingPulse width={"30px"} height={"30px"} />
-                    )}
-                  </div>
-
-                  <div
-                    className={`${
-                      profileData.first_name
-                        ? "flex gap-[10px]"
-                        : "grid grid-cols-3 gap-[10px]"
-                    }`}
+              <h6 className="text-paragraph-1 font-bold">
+                {profileData["short-bio"] || ""}
+              </h6>
+              <p>
+                {bio
+                  ? isExpanded
+                    ? bio
+                    : `${bio?.slice(0, maxLength)}${
+                        bio?.length > maxLength ? "..." : " "
+                      }`
+                  : ""}
+                {bio?.length > maxLength && (
+                  <span
+                    onClick={toggleReadMore}
+                    className="text-blue-600 cursor-pointer hover:underline mt-2"
                   >
-                    {profileData.facebook_profile_link && (
-                      <a
-                        href={profileData.facebook_profile_link}
-                        className="text-heading-6"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FaSquareFacebook />
-                      </a>
-                    )}
-                    {profileData.instagram_profile_link && (
-                      <a
-                        href={profileData.instagram_profile_link}
-                        className="text-heading-6"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FaSquareInstagram />
-                      </a>
-                    )}
-                    {profileData.twitter_profile_link && (
-                      <a
-                        href={profileData.twitter_profile_link}
-                        className="text-heading-6"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <FaSquareXTwitter />
-                      </a>
-                    )}
-                  </div>
-                </div>
+                    {isExpanded ? "Read Less" : "Read More"}
+                  </span>
+                )}
+              </p>
 
-                {/* <p className="text-[12px] mt-[6px]">99 Followers</p> */}
-                <p className="text-[12px] w-5/6 mt-2 mb-0 font-bold text-center 2xl:text-left tracking-[1.25px] uppercase">
-                  {profileData["short-bio"]}
-                </p>
-
-                <p className="text-[12px] w-5/6 mt-1 text-center lg:text-left">
-                  {text?.slice(0, details ? text?.length - 1 : 200)}
-                  {!details && text?.length > 200 && "..."}
-                  <br />
-                  {text?.length > 200 && (
-                    <button
-                      className="items-center gap-[6px] mt-1 justify-center lg:justify-start inline-flex w-full"
-                      onClick={() => setDetails(!details)}
+              <ul className="mt-3 flex flex-col gap-1">
+                {profileData.facebook_profile_link && (
+                  <li className="flex gap-1">
+                    <FaSquareFacebook />
+                    <a
+                      href={profileData.facebook_profile_link}
+                      className="text-button"
+                      target="_blank"
+                      rel="noreferrer"
                     >
-                      {details ? (
-                        <>
-                          SHOW LESS{" "}
-                          <img
-                            src={downArrowWhite}
-                            className="rotate-180"
-                            alt=""
-                          />
-                        </>
-                      ) : (
-                        <>
-                          SHOW MORE <img src={downArrowWhite} alt="" />
-                        </>
-                      )}
-                    </button>
-                  )}
-                </p>
-              </aside>
+                      {
+                        profileData.facebook_profile_link.split(
+                          "https://www.facebook.com/"
+                        )[1]
+                      }
+                    </a>
+                  </li>
+                )}
+                {profileData.instagram_profile_link && (
+                  <li className="flex gap-1">
+                    <FaSquareInstagram />
+                    <a
+                      href={profileData.instagram_profile_link}
+                      className="text-button"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {
+                        profileData.instagram_profile_link.split(
+                          "https://www.instagram.com/"
+                        )[1]
+                      }
+                    </a>
+                  </li>
+                )}
+                {profileData.twitter_profile_link && (
+                  <li className="flex gap-1">
+                    <FaXTwitter />
+                    <a
+                      href={profileData.twitter_profile_link}
+                      className="text-button"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {
+                        profileData.twitter_profile_link.split(
+                          "https://www.x.com/"
+                        )[1]
+                      }
+                    </a>
+                  </li>
+                )}
+              </ul>
             </div>
-          </div>
+          </aside>
         </div>
-        <div className="container">
+
+        <div className="w-full lg:w-8/12">
           <Songs />
         </div>
 

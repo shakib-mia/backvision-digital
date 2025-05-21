@@ -53,12 +53,12 @@ const Albums = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 pb-4">
+    <div className="flex flex-col gap-4 pb-4 w-full">
       {albums.length > 0 ? (
         albums.map((album, key) => (
           <div
             key={key}
-            className={`p-2 lg:p-4 bg-grey-lighter rounded-xl shadow-sm flex flex-col gap-4 bg-white transition ${
+            className={`bg-grey-lighter rounded-xl shadow-sm flex flex-col gap-4 transition ${
               expandedAlbum ? "shadow" : "shadow-none"
             }`}
           >
@@ -91,12 +91,26 @@ const Albums = () => {
                       ) || "No Status"
                     )}
                   </p>
+
+                  {/* Pay Now Button */}
+                  {album.payment_id ||
+                  (userData.yearlyPlanEndDate &&
+                    checkTheDateIsBefore(userData.yearlyPlanEndDate)) ? (
+                    <></>
+                  ) : (
+                    <Button
+                      onClick={() => handlePayNow(album.orderId)}
+                      className="px-3 py-1"
+                    >
+                      Pay Now
+                    </Button>
+                  )}
                 </div>
               </div>
 
               {/* Right: Icons and Buttons */}
               <div className="flex items-center gap-2 justify-between w-full lg:w-fit">
-                {/* Pay Now Button */}
+                {/* Pay Now Button
                 {album.payment_id ||
                 (userData.yearlyPlanEndDate &&
                   checkTheDateIsBefore(userData.yearlyPlanEndDate)) ? (
@@ -108,7 +122,7 @@ const Albums = () => {
                   >
                     Pay Now
                   </Button>
-                )}
+                )} */}
 
                 <aside className="flex gap-2">
                   {/* Edit Icon */}
@@ -136,12 +150,12 @@ const Albums = () => {
               <div className="p-4 bg-grey-lighter flex flex-col gap-2 border-t border-grey-light">
                 {/* Songs List */}
                 {album.songs.map((song, index) => (
-                  <div key={index} className="flex flex-col gap-1">
-                    <p className="text-sm text-primary">
+                  <div key={index} className="flex flex-col">
+                    <p className="text-subtitle-1 text-interactive-light-disabled">
                       <strong>Song Name:</strong> {song.songName} ({song.status}
                       )
                     </p>
-                    <p className="text-sm text-grey-dark">
+                    <p className="text-subtitle-2 text-white">
                       <strong>Artists:</strong>{" "}
                       {song.artists.map((artist) => artist.name).join(", ")}
                     </p>

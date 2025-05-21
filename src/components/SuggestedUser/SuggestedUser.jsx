@@ -22,8 +22,8 @@ const SuggestedUser = ({
       <aside className="w-2/3">
         <h6 className=" text-heading-6-bold">Md. Shakib Mia</h6>
         <p className="text-paragraph-1 font-medium">Short Bio</p>
-        {/* <div className="flex gap-1 mt-2 pb-2">
-          {facebook_profile_link && (
+        <div className="flex gap-1 mt-2 pb-2">
+          {
             <a
               href={facebook_profile_link}
               className="inline-flex justify-center items-center w-4 aspect-square rounded-full shadow-xl bg-interactive-light hover:bg-interactive-light-hover active:bg-interactive-light-active focus:bg-interactive-light-focus transition"
@@ -32,8 +32,8 @@ const SuggestedUser = ({
             >
               <FaFacebookF />
             </a>
-          )}
-          {instagram_profile_link && (
+          }
+          {
             <a
               href={instagram_profile_link}
               className="inline-flex justify-center items-center w-4 aspect-square rounded-full shadow-xl bg-interactive-light hover:bg-interactive-light-hover active:bg-interactive-light-active focus:bg-interactive-light-focus transition"
@@ -42,8 +42,8 @@ const SuggestedUser = ({
             >
               <FaInstagram />
             </a>
-          )}
-          {twitter_profile_link && (
+          }
+          {
             <a
               href={twitter_profile_link}
               className="inline-flex justify-center items-center w-4 aspect-square rounded-full shadow-xl bg-interactive-light hover:bg-interactive-light-hover active:bg-interactive-light-active focus:bg-interactive-light-focus transition"
@@ -52,8 +52,8 @@ const SuggestedUser = ({
             >
               <FaTwitter />
             </a>
-          )}
-        </div> */}
+          }
+        </div>
       </aside>
     </div>
   );

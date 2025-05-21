@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { backendUrl, user } from "../../constants";
 import SelectOptions from "../../components/SelectOptions/SelectOptions";
 import CountrySelector from "../../components/CountrySelector/CountrySelector";
+import { toast } from "react-toastify";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
@@ -29,7 +30,8 @@ const SignupDetails = () => {
       .get(backendUrl + "token-time", {
         headers: { token },
       })
-      .then(({ data }) => setUserData({ ...userData, user_email: data.email }));
+      .then(({ data }) => setUserData({ ...userData, user_email: data.email }))
+      .catch((err) => console.log(err));
   }, []);
 
   const fetchData = async () => {
@@ -38,7 +40,7 @@ const SignupDetails = () => {
       const data = await response.json();
       setCountries(data.map((item) => item.name.common));
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log("Error fetching data:", error);
     }
   };
 
@@ -63,6 +65,46 @@ const SignupDetails = () => {
   const [available, setAvailable] = useState(true); // Assuming it's true initially
   const [hideNote, setHideNote] = useState(false);
   const [isChanged, setIsChanged] = useState(false); // To track changes in the form
+  const [allIds, setAllIds] = useState([]);
+  let username =
+    userData.first_name.toLowerCase() + userData.last_name.toLowerCase();
+
+  useEffect(() => {
+    if (userData.first_name && userData.last_name) {
+      const generatedId = `${userData.first_name}${userData.last_name}`
+        .toLowerCase()
+        .replace(/\s/g, "");
+
+      setUserId(generatedId);
+      setUserData({ ...userData, "user-id": generatedId });
+
+      // Check availability
+      if (allIds.includes(generatedId)) {
+        setAvailable(false);
+        setHideNote(false);
+      } else {
+        setAvailable(true);
+        setHideNote(true);
+      }
+    }
+  }, [userData.first_name, userData.last_name, allIds]);
+
+  const [isManualUserId, setIsManualUserId] = useState(false);
+
+  useEffect(() => {
+    const fetchAllIds = async () => {
+      try {
+        const response = await fetch(backendUrl + "generate-user-id");
+        const data = await response.json();
+        setAllIds(data);
+      } catch (error) {
+        console.error("Error fetching all user IDs:", error);
+      }
+    };
+    fetchAllIds();
+  }, []);
+
+  console.log(allIds);
 
   // Check if all required fields are filled
   const areFieldsFilled = () => {
@@ -83,22 +125,42 @@ const SignupDetails = () => {
     setIsChanged(areFieldsFilled());
   }, [userData, userId]);
 
+  //  const [isManualUserId, setIsManualUserId] = useState(false);
+
   const handleUserIdChange = (e) => {
     const value = e.target.value;
     setUserId(value);
+    setIsManualUserId(true); // mark manual editing
     setUserData({ ...userData, "user-id": value });
 
-    // console.log(userIds.includes(value));
-
-    // Check user ID availability
-    if (userIds.includes(value)) {
-      setAvailable(false); // User ID already in use
+    // Check availability
+    if (allIds.includes(value)) {
+      setAvailable(false);
       setHideNote(false);
     } else {
-      setAvailable(true); // User ID is available
+      setAvailable(true);
       setHideNote(true);
     }
   };
+
+  useEffect(() => {
+    if (!isManualUserId && userData.first_name && userData.last_name) {
+      const generatedId = `${userData.first_name}${userData.last_name}`
+        .toLowerCase()
+        .replace(/\s/g, "");
+
+      setUserId(generatedId);
+      setUserData({ ...userData, "user-id": generatedId });
+
+      if (allIds.includes(generatedId)) {
+        setAvailable(false);
+        setHideNote(false);
+      } else {
+        setAvailable(true);
+        setHideNote(true);
+      }
+    }
+  }, [userData.first_name, userData.last_name, allIds, isManualUserId]);
 
   const fields = [
     {
@@ -264,12 +326,15 @@ const SignupDetails = () => {
     axios
       .post(backendUrl + "post-user-details", userDetailsData, config)
       .then((res) => {
-        if (res.data.acknowledged) {
-          navigate("/");
-          window.location.reload();
-        }
-      })
-      .catch((err) => console.log(err));
+        // if (res.data.acknowledged) {
+        navigate("/");
+        setUserData({
+          ...userData,
+          ...userDetailsData,
+        });
+        // window.location.reload();
+        // }
+      });
   };
 
   return (
@@ -280,16 +345,13 @@ const SignupDetails = () => {
         id="signup-page"
         className="hidden xl:flex"
       > */}
-      <form
-        onSubmit={signup}
-        className="flex justify-center items-center min-h-screen text-white"
-      >
-        <div className="bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm lg:max-w-md w-full">
-          <div className="w-full flex justify-between items-center">
+      <form onSubmit={signup} className="my-3 flex justify-center text-white">
+        <div className="bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm lg:max-w-[40vw] w-full">
+          <div className="w-full flex justify-between items-center mb-2">
             <h5 className="text-heading-5-bold">We need a few more details</h5>
           </div>
-          <div className="flex flex-wrap" id="form">
-            {fields.map((props, id) =>
+          {/* <div className="flex gap-1" id="form"> */}
+          {/* {fields.map((props, id) =>
               (id + 1) % 3 === 0 ? (
                 <>
                   {props.name === "phone" && (
@@ -395,8 +457,143 @@ const SignupDetails = () => {
                   // fieldClassName="mr-2"
                 />
               )
-            )}
+            )} */}
+
+          <div id="form" className="space-y-4">
+            {/* Name Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InputField
+                label="First Name"
+                onChange={(e) => {
+                  setUserData({
+                    ...userData,
+                    first_name: e.target.value,
+                    "user-id": `${userData.first_name}${userData.last_name}`,
+                  });
+                }}
+                value={userData.first_name}
+                required={true}
+              />
+              <InputField
+                label="Last Name"
+                onChange={(e) => {
+                  setUserData({
+                    ...userData,
+                    last_name: e.target.value,
+                    "user-id": `${userData.first_name}${userData.last_name}`,
+                  });
+                }}
+                value={userData.last_name}
+                required={true}
+              />
+            </div>
+
+            {/* Company and Address */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InputField
+                label="Company/Record Label"
+                onChange={(e) =>
+                  setUserData({ ...userData, company_label: e.target.value })
+                }
+                value={userData.company_label}
+                required={false}
+              />
+              <InputField
+                label="Address"
+                onChange={(e) =>
+                  setUserData({ ...userData, billing_address: e.target.value })
+                }
+                value={userData.billing_address}
+                required={true}
+              />
+            </div>
+
+            {/* Email and Phone */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InputField
+                label="Email"
+                onChange={(e) =>
+                  setUserData({ ...userData, user_email: e.target.value })
+                }
+                value={userData.user_email}
+                required={true}
+                disabled={true}
+              />
+              <InputField
+                label="Phone"
+                onChange={(e) =>
+                  setUserData({ ...userData, phone_no: e.target.value })
+                }
+                value={userData.phone_no}
+                required={true}
+              />
+            </div>
+
+            {/* City and Country */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InputField
+                label="City"
+                onChange={(e) =>
+                  setUserData({ ...userData, billing_city: e.target.value })
+                }
+                value={userData.billing_city}
+                required={true}
+              />
+              <>
+                <CountrySelector
+                  selectedCountry={userData.billing_country}
+                  setSelectedCountry={(country) =>
+                    setUserData({ ...userData, billing_country: country })
+                  }
+                />
+              </>
+            </div>
+
+            {/* Postal and GST */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InputField
+                label="Postal Code"
+                onChange={(e) =>
+                  setUserData({ ...userData, postal_code: e.target.value })
+                }
+                value={userData.postal_code}
+                required={true}
+              />
+              <InputField
+                label="GST"
+                onChange={(e) =>
+                  setUserData({ ...userData, gst_no: e.target.value })
+                }
+                value={userData.gst_no}
+                required={false}
+              />
+            </div>
+
+            {/* User ID */}
+            <InputField
+              label="User ID"
+              onChange={(e) => {
+                setUserData({ ...userData, "user-id": e.target.value });
+                // console.log(e.target.value);
+              }}
+              value={userData["user-id"]}
+              note={
+                userData["user-id"]?.length
+                  ? !allIds.includes(userData["user-id"])
+                    ? "Available"
+                    : "Already in Use"
+                  : ""
+              }
+              noteClassName={
+                allIds.includes(userData["user-id"])
+                  ? "text-red-500"
+                  : "text-green-500"
+              }
+              // value={userData["user-id"]}
+            />
           </div>
+
+          {/* </div> */}
           {/* <InputField {...fields[2]} containerClassName={`w-full`} /> */}
           <div className="mt-3 mb-2 text-center">
             <Button

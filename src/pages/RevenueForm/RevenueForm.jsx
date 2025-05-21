@@ -234,7 +234,7 @@ function RevenueForm() {
     };
 
     const { data } = await axios.post(
-      "https://api.forevisiondigital.in/store-invoice",
+      "https://localhost:5000/store-invoice",
       formData,
       config
     );
@@ -368,8 +368,8 @@ function RevenueForm() {
             </div>
           </div>
 
-          {/* <fieldset> */}
           <div className="flex flex-col gap-3 mt-5">
+            <h4 className="text-heading-4-bold">Vendor Details</h4>
             <div className="flex flex-col md:flex-row gap-3">
               <InputField
                 name={"vendorName"}
@@ -377,7 +377,7 @@ function RevenueForm() {
                 id={"vandorName"}
                 type={"text"}
                 required={true}
-                containerClassName={"w-full md:w-2/4"}
+                parentClassName={"w-full md:w-2/4"}
               />
               <InputField
                 name={"invoiceNumber"}
@@ -385,7 +385,7 @@ function RevenueForm() {
                 id={"invoiceNumber"}
                 type={"text"}
                 required={true}
-                containerClassName={"w-full md:w-1/4"}
+                parentClassName={"w-full md:w-1/4"}
               />
               <InputField
                 name={"invoiceDate"}
@@ -401,7 +401,7 @@ function RevenueForm() {
                   String(new Date().getDate()).padStart(2, "0")
                 }
                 disabled={true}
-                containerClassName={"w-full md:w-1/4"}
+                parentClassName={"w-full md:w-1/4"}
               />
             </div>
             <div className="flex flex-col md:flex-row gap-3">
@@ -411,7 +411,7 @@ function RevenueForm() {
                 id={"address"}
                 required={true}
                 type={"address"}
-                containerClassName={"w-full md:w-2/4"}
+                parentClassName={"w-full md:w-2/4"}
               />
               <InputField
                 name={"streetName"}
@@ -419,7 +419,7 @@ function RevenueForm() {
                 id={"streetName"}
                 type={"address"}
                 required={true}
-                containerClassName={"w-full md:w-1/4"}
+                parentClassName={"w-full md:w-1/4"}
               />
               <InputField
                 name={"landMark"}
@@ -427,7 +427,7 @@ function RevenueForm() {
                 id={"landMark"}
                 type={"text"}
                 // required={gst}
-                containerClassName={"w-full md:w-1/4"}
+                parentClassName={"w-full md:w-1/4"}
               />
             </div>
             <div className="flex gap-3 flex-col md:flex-row">
@@ -437,7 +437,7 @@ function RevenueForm() {
                 id={"pinCode"}
                 type={"number"}
                 required={true}
-                containerClassName={"w-full md:w-1/4"}
+                parentClassName={"w-full md:w-1/4"}
               />
               <InputField
                 name={"city"}
@@ -445,7 +445,7 @@ function RevenueForm() {
                 id={"city"}
                 required={true}
                 type={"address"}
-                containerClassName={"w-full md:w-2/4"}
+                parentClassName={"w-full md:w-2/4"}
               />
               {ruIndian ? (
                 <SelectOptions
@@ -493,7 +493,7 @@ function RevenueForm() {
                   ]}
                   id={"state"}
                   required={true}
-                  containerClassName={"w-full md:w-1/4"}
+                  parentClassName={"w-full md:w-1/4"}
                 />
               ) : (
                 <InputField
@@ -502,7 +502,7 @@ function RevenueForm() {
                   name={"state"}
                   label={"State" + (ruIndian ? "*" : "")}
                   required={true}
-                  containerClassName={"w-full md:w-1/4"}
+                  parentClassName={"w-full md:w-1/4"}
                 />
               )}
             </div>
@@ -513,7 +513,7 @@ function RevenueForm() {
                   label={"GSTIN Number"}
                   id={"gctinNumber"}
                   type={"text"}
-                  containerClassName={"w-full md:w-2/4"}
+                  parentClassName={"w-full md:w-2/4"}
                   required={true}
                 />
                 <InputField
@@ -524,7 +524,7 @@ function RevenueForm() {
                   disabled={true}
                   value={state}
                   onChange={(e) => setPlaceOfSupply(e.target.value)}
-                  containerClassName={gst ? "w-full md:w-2/4" : "w-full"}
+                  parentClassName={gst ? "w-full md:w-2/4" : "w-full"}
                   required={true}
                 />
               </div>
@@ -536,7 +536,7 @@ function RevenueForm() {
                 id={"cinNumber"}
                 type={"text"}
                 // required={gst}
-                containerClassName={`${
+                parentClassName={`${
                   gst ? "w-full md:w-2/4" : paypal ? "w-1/2" : "w-full"
                 }`}
               />
@@ -545,7 +545,7 @@ function RevenueForm() {
                   type={"text"}
                   label={"PayPal Email Address"}
                   placeholder={"Enter PayPal Email Here"}
-                  containerClassName={"w-1/2"}
+                  parentClassName={"w-1/2"}
                   required={paypal}
                   // onChange={e => setFormBody({...formd})}
                   name={"paypalEmail"}
@@ -557,46 +557,11 @@ function RevenueForm() {
                   label={"Service Accounting Number (SAC)"}
                   id={"serviceAccount"}
                   type={"number"}
-                  containerClassName={"w-full md:w-2/4"}
+                  parentClassName={"w-full md:w-2/4"}
                   required={true}
                 />
               )}
             </div>
-
-            {/* {gst && (
-              <div className="flex gap-3 mb-5">
-                {state === "West Bengal" && (
-                  <>
-                    <InputField
-                      name={"cgstAmount"}
-                      label={"CGST Amount"}
-                      id={"cgstAmount"}
-                      type={"number"}
-                      containerClassName={"w-1/2"}
-                      required={gst && state === "West Bengal"}
-                    />
-                    <InputField
-                      name={"sgstAmount"}
-                      label={"SGST Amount"}
-                      id={"sgstAmount"}
-                      type={"number"}
-                      containerClassName={"w-1/2"}
-                      required={gst && state === "West Bengal"}
-                    />
-                  </>
-                )}
-                {state !== "West Bengal" && (
-                  <InputField
-                    name={"igstAmount"}
-                    label={"IGST Amount"}
-                    id={"igstAmount"}
-                    type={"number"}
-                    containerClassName={"w-full"}
-                    required={gst && state !== "West Bengal"}
-                  />
-                )}
-              </div>
-            )} */}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-5">
               <InputField
@@ -605,17 +570,9 @@ function RevenueForm() {
                 id={"panNumber"}
                 type={"text"}
                 required={true}
-                containerClassName={"w-full"}
+                parentClassName={"w-full"}
                 note={"If you don't have a PAN card, type N/A"}
               />
-              {/* <InputField
-                name={"taxableValue"}
-                label={"Total Amount"}
-                id={"totalAmount"}
-                type={"text"}
-                containerClassName={"w-full"}
-                required={true}
-              /> */}
 
               <InputField
                 name={"totalAmount"}
@@ -628,17 +585,10 @@ function RevenueForm() {
                     (userData.lifetimeDisbursed || 0) || 0
                 ).toFixed(2)}
                 disabled={true}
-                containerClassName={"w-full"}
+                parentClassName={"w-full"}
               />
             </div>
-            {/* <InputField
-              name={"totalAmountWord"}
-              label={"Total Amount (in Word)"}
-              id={"totalAmountWord"}
-              required={true}
-              type={"text"}
-              containerClassName={"w-2/5"}
-            /> */}
+
             {!paypal && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -648,7 +598,7 @@ function RevenueForm() {
                     id={"bankName"}
                     required={true}
                     type={"text"}
-                    // containerClassName={"w-full md:w-1/2"}
+                    // parentClassName={"w-full md:w-1/2"}
                   />
                   <InputField
                     name={"branch"}
@@ -656,7 +606,7 @@ function RevenueForm() {
                     id={"branch"}
                     type={"text"}
                     required={true}
-                    // containerClassName={"w-1/2"}
+                    // parentClassName={"w-1/2"}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -668,7 +618,7 @@ function RevenueForm() {
                     type={"text"}
                     options={["Savings", "Current"]}
                     onChange={(e) => setAccountType(e.target.value)}
-                    // containerClassName={"w-1/3"}
+                    // parentClassName={"w-1/3"}
                   />
                   <InputField
                     name={"ifscCode"}
@@ -676,7 +626,7 @@ function RevenueForm() {
                     id={"ifscCode"}
                     type={"text"}
                     required={true}
-                    // containerClassName={"w-1/3"}
+                    // parentClassName={"w-1/3"}
                   />
                   <InputField
                     name={"beneficiaryName"}
@@ -684,7 +634,7 @@ function RevenueForm() {
                     id={"beneficiaryName"}
                     type={"text"}
                     required={true}
-                    // containerClassName={"w-1/3"}
+                    // parentClassName={"w-1/3"}
                   />
                 </div>
 
@@ -696,7 +646,7 @@ function RevenueForm() {
                     type={"number"}
                     required={true}
                     onChange={(e) => setAccountNumber(e.target.value)}
-                    // containerClassName={"w-full"}
+                    // parentClassName={"w-full"}
                   />
                   <aside>
                     <InputField
@@ -706,7 +656,7 @@ function RevenueForm() {
                       type={"number"}
                       onChange={(e) => setConfirmAccountNumber(e.target.value)}
                       required={true}
-                      // containerClassName={"w-full"}
+                      // parentClassName={"w-full"}
                     />
                     {accountNumber !== confirmAccountNumber && (
                       <p className="text-button text-interactive-dark-destructive-active mt-1 pl-1">
@@ -800,11 +750,6 @@ function RevenueForm() {
                     <span className="text-interactive-light-destructive-focus text-button !font-light">
                       Required
                     </span>
-                    {/* {ruIndian && (
-                    <p className="text-interactive-light-destructive pt-1 text-[12px]">
-                      Please fill on the field with Cancelled Cheque
-                    </p>
-                  )} */}
                   </label>
                   <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                     <label htmlFor="cancelledCheque">
@@ -831,7 +776,6 @@ function RevenueForm() {
                   </div>
                 </div>
               )}
-              {/* <div className="flex justify-center"> */}
               {gst && (
                 <div className="w-1/2 md:w-1/4 aspect-square flex flex-col justify-between p-1">
                   <label
@@ -842,13 +786,6 @@ function RevenueForm() {
                     <span className="text-interactive-light-destructive-focus text-button !font-light">
                       Required
                     </span>
-                    {/* {ruIndian && (
-                      <div className="w-1/2 p-1">
-                        <p className="teeractive-light-destructive pt-1 text-[12px]">
-                          Please fill on the field with GST certificate
-                        </p>
-                      </div>
-                    )} */}
                   </label>
                   <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                     <label htmlFor="gst">
@@ -886,11 +823,6 @@ function RevenueForm() {
                     <span className="text-interactive-light-destructive-focus text-button !font-light">
                       Required
                     </span>
-                    {/* {ruIndian && (
-                  <p className="text-interactive-light-destructive pt-1 text-[12px]">
-                    Please fill on the field with Signature
-                  </p>
-                )} */}
                   </label>
                 </div>
                 <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
@@ -917,10 +849,8 @@ function RevenueForm() {
                   </label>
                 </div>
               </div>
-              {/* </div> */}
             </div>
           </div>
-          {/* </fieldset> */}
 
           <div className="py-4 text-center">
             <Button type={"submit"} disabled={false}>
@@ -951,7 +881,7 @@ function RevenueForm() {
               <Button
                 type={"success"}
                 text={"confirm"}
-                containerClassName={"w-fit mt-3"}
+                parentClassName={"w-fit mt-3"}
                 onClick={handlePdf}
               />
             </div>

@@ -14,7 +14,7 @@ import "sweetalert2/src/sweetalert2.scss";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollTop/ScrollTop";
-import Lenis from "lenis";
+// import Lenis from "lenis";
 import initializeGA from "./analytics";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -167,6 +167,18 @@ function App() {
       .then(({ data }) => setCountry(data.country));
   }, []);
 
+  // useEffect(() => {
+  //   // Initialize Lenis
+  //   const lenis = new Lenis({
+  //     autoRaf: true,
+  //   });
+
+  //   // Listen for the scroll event and log the event data
+  //   lenis.on("scroll", (e) => {
+  //     console.log(e);
+  //   });
+  // }, []);
+
   // Fetch dollar rate when country changes
   useEffect(() => {
     const fetchDollarRate = async () => {
@@ -236,11 +248,21 @@ function App() {
         <>
           <ProfileContext.Provider value={store}>
             <PlanContext.Provider value={{ planStore, setPlanStore }}>
-              {token ? token.length && <BottomBar /> : <></>}
               {location.pathname !== "/login" &&
                 location.pathname !== "/signup" &&
                 location.pathname !== "/forgot-password" &&
                 location.pathname !== "/signup-details" &&
+                location.pathname !== "/verify-otp" &&
+                !location.pathname.includes("/verify-otp/reset") &&
+                !location.pathname.includes("/reset-password") &&
+                !location.pathname.includes("payment") && <BottomBar />}
+              {location.pathname !== "/login" &&
+                location.pathname !== "/signup" &&
+                location.pathname !== "/forgot-password" &&
+                location.pathname !== "/signup-details" &&
+                location.pathname !== "/verify-otp" &&
+                !location.pathname.includes("/verify-otp/reset") &&
+                !location.pathname.includes("/reset-password") &&
                 !location.pathname.includes("payment") && (
                   <>
                     {/* {store.token && <Sidebar />} */}
@@ -253,6 +275,7 @@ function App() {
                 //   location.pathname !== "/signup" &&
                 //   location.pathname !== "/forgot-password" &&
                 //   location.pathname !== "/signup-details" &&
+                // location.pathname !== "/verify-otp" &&
                 //   !location.pathname.includes("payment")
                 //     ? "w-[85%]"
                 //     : "w-full"

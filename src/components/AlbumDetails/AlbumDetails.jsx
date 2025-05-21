@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import Button from "../Button/Button";
 // import InputField from "../InputField/InputField";
@@ -16,11 +16,27 @@ import Swal from "sweetalert2";
 
 const AlbumDetails = () => {
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
-  const { recordLabels } = useContext(ProfileContext);
+  const { recordLabels, token } = useContext(ProfileContext);
   const [file, setFile] = useState({});
   const [filmBanner, setFilmBanner] = useState({});
   const [showRecordLabelForm, setShowRecordLabelForm] = useState(false);
   const location = useLocation();
+
+  // console.log(formData);
+
+  useEffect(() => {
+    // console.log();
+    const config = {
+      headers: { token },
+    };
+    axios
+      .get(
+        backendUrl + "recent-uploads/album/" + location.pathname.split("/")[2],
+        config
+      )
+      .then(({ data }) => console.log(data))
+      .catch((error) => console.log(error));
+  }, []);
 
   const handleDetailSubmit = () => {
     // formData;
@@ -357,7 +373,7 @@ const AlbumDetails = () => {
               "Album Art"
             }
             accept={".jpg"}
-            label={" "}
+            label={"Artwork"}
             note={
               "Ensure that your artwork is in the dimensions of 3000×3000 pixels and in .jpg format only."
             }

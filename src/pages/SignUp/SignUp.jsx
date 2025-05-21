@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import AuthBody from "../../components/AuthBody/AuthBody";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { toast } from "react-toastify";
 import { backendUrl } from "../../constants";
-import { FcGoogle } from "react-icons/fc";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
+import bg from "../../assets/images/login-bg.jpg";
+import ReactOwlCarousel from "react-owl-carousel";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -52,22 +52,15 @@ const SignUp = () => {
         display_image: user.user.photoURL,
       };
 
-      axios
-        .post(backendUrl + "user-signup", signupData)
-        .then(({ data }) => {
-          if (data.acknowledged) {
-            setUId(data.insertedId);
-            // console.log(signupData.email);
-            toast.success("Signup Successful. Please Login Now.");
-            setUserData({ ...userData, user_email: signupData.email });
-            navigate("/signup-details");
-          }
-        })
-        .catch((err) =>
-          toast.error(err.response.data, {
-            position: "bottom-center",
-          })
-        );
+      axios.post(backendUrl + "user-signup", signupData).then(({ data }) => {
+        if (data.acknowledged) {
+          setUId(data.insertedId);
+          // console.log(signupData.email);
+          toast.success("Signup Successful. Please Login Now.");
+          setUserData({ ...userData, user_email: signupData.email });
+          navigate("/signup-details");
+        }
+      });
     }
   }, [user]);
 
@@ -112,17 +105,18 @@ const SignUp = () => {
     axios
       .post(backendUrl + "user-signup", signupData)
       .then(({ data }) => {
-        if (data.length) {
-          setUId(data.insertedId);
-          setToken(data);
-          setUserData({ ...userData, user_email: signupData.email });
-          navigate("/signup-details");
+        if (data.token.length) {
+          setUserData({
+            ...userData,
+            user_email: signupData.email,
+          });
+          setToken(data.token);
+          // navigate("/signup-details");
+          navigate("/verify-otp");
         }
       })
       .catch((err) =>
-        toast.error(err.response.data, {
-          position: "bottom-center",
-        })
+        toast.error(err.response.data, { position: "bottom-center" })
       );
 
     // const formData = new FormData(e.target);
@@ -141,64 +135,82 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen text-white">
-      <div className="bg-gray-800 p-4 rounded-lg shadow-lg max-w-sm lg:max-w-md w-full">
-        <div className="flex justify-between items-end">
-          <h5 className="text-heading-5-bold font-bold text-center text-blue-400">
-            Sign up
-          </h5>
+    <div className="flex justify-center items-center min-h-screen text-white min-w-[100vw] absolute left-0 bg-center bg-cover bg-no-repeat">
+      <div className="grid grid-cols-1 lg:grid-cols-2 max-w-4xl mx-auto rounded-lg overflow-hidden shadow-[0_10px_12px] shadow-[#000]">
+        <aside className="p-1">
+          <ReactOwlCarousel
+            items={1}
+            className="h-full !hidden lg:!block auth-slider"
+            autoplay
+            autoplayTimeout={3000}
+            loop
+            dots={true}
+            mouseDrag={false} // disables mouse swiping
+            touchDrag={false} // disables touch swiping
+            pullDrag={false} // disables pull drag behavior
+          >
+            <img
+              src={bg}
+              alt="background"
+              className="hidden lg:block !w-full !h-full object-cover object-[7%] rounded-md"
+            />
 
-          {/* <aside className="hidden lg:block">
+            <img
+              src={bg}
+              alt="background"
+              className="hidden lg:block !w-full !h-full object-cover object-[7%] rounded-md"
+            />
+
+            <img
+              src={bg}
+              alt="background"
+              className="hidden lg:block !w-full !h-full object-cover object-[7%] rounded-md"
+            />
+          </ReactOwlCarousel>
+        </aside>
+        <div className="p-4">
+          <div className="flex justify-between items-end">
+            <h6 className="text-heading-6-bold font-bold text-blue-400">
+              Welcome to BackVision Digital 👋
+            </h6>
+
+            {/* <aside className="hidden lg:block">
             Already have an account?{" "}
             <Link to={"/login"} className="text-interactive-light-disabled">
               Login
             </Link>
           </aside> */}
-        </div>
-
-        <form onSubmit={signup}>
-          {fields.map((props, id) => (
-            <InputField {...props} key={id} containerClassName="mt-3" />
-          ))}
-          <div className="mt-3 mb-2 text-center">
-            <Button
-              type="submit"
-              text="Sign Up"
-              disabled={
-                !(
-                  email.length > 0 &&
-                  password.length &&
-                  password === confirmPass
-                )
-              }
-            >
-              Sign Up
-            </Button>
           </div>
-        </form>
 
-        {/* <div className="my-2 flex items-center gap-3 mx-auto">
-          <div className="h-[1px] w-full bg-grey-light"></div>
-          <div>OR</div>
-          <div className="h-[1px] w-full bg-grey-light"></div>
-        </div>
+          <form onSubmit={signup}>
+            {fields.map((props, id) => (
+              <InputField {...props} key={id} containerClassName="mt-3" />
+            ))}
+            <div className="mt-3 mb-2 text-center">
+              <Button
+                type="submit"
+                text="Sign Up"
+                disabled={
+                  !(
+                    email.length > 0 &&
+                    password.length &&
+                    password === confirmPass
+                  )
+                }
+              >
+                Sign Up
+              </Button>
+            </div>
+          </form>
 
-        <button
-          type="button"
-          className="mb-2 flex gap-2 text-heading-6 w-full font-semibold items-center border border-grey-light py-2 rounded-lg justify-center mx-auto hover:bg-interactive-light transition hover:text-white"
-          onClick={() => signInWithGoogle()}
-        >
-          <FcGoogle />
-          <span className="font-sans">Continue with Google</span>
-        </button> */}
-
-        <div className="text-center">
-          <Link
-            to="/login"
-            className="text-interactive-light-disabled text-button uppercase"
-          >
-            Already have an account?
-          </Link>
+          <div className="text-center">
+            <Link
+              to="/login"
+              className="text-interactive-light-disabled text-button uppercase"
+            >
+              Already have an account?
+            </Link>
+          </div>
         </div>
       </div>
     </div>

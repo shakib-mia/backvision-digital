@@ -57,7 +57,15 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   const [description, setDescription] = useState("");
   const [songUrl, setSongUrl] = useState("");
   const [subGenreOptions, setSubGenreOptions] = useState([]);
-  console.log(formData);
+  // console.log(audioUrl);
+
+  useEffect(() => {
+    const audio = new Audio(audioUrl);
+
+    audio.addEventListener("loadedmetadata", () => {
+      setAudioDuration(audio.duration);
+    });
+  }, [audioUrl]);
 
   useEffect(() => {
     if (
@@ -388,7 +396,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
         formData.planName = location.search.split("?")[1];
         // console.log();
         // document.getElementsByClassName("owl-next")[0].click();
-        setScreen("preview");
+        // setScreen("preview");
+        setCollapsed(true);
         // axios
         //   .post(backendUrl + "recent-uploads", formData, config)
         //   .then(({ data }) => {
@@ -1114,7 +1123,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           {/* <div className="mt-3 flex gap-3"> */}
           <InputField
             type={"file"}
-            accept={"audio/mp3, audio/wav"}
+            accept={".mp3, .wav"}
             label={"Upload Audio"}
             onChange={(e) => handleAudioChange(e, id)}
             disabled={

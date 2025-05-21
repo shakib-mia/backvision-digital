@@ -52,8 +52,12 @@ import Pitch from "./pages/Pitch/Pitch";
 import CustomPlan from "./pages/CustomPlan/CustomPlan";
 import HomeV2 from "./pages/HomeV2/HomeV2";
 import Accounts from "./pages/Accounts/Accounts";
+import VerifyOtp from "./pages/VerifyOtp/VerifyOtp";
+import ResetPasswordOtp from "./pages/ResetPasswordOtp/ResetPasswordOtp";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import RevenueFormNew from "./pages/RevenueFormNew/RevenueFormNew";
 
-export const backendUrl = "http://localhost:5000/";
+export const backendUrl = "https://musicx-be.onrender.com/";
 // export const backendUrl = "https://server.forevisiondigital.in/";
 export const currencyAPI = "https://api.frankfurter.app/latest";
 
@@ -63,11 +67,12 @@ export const navItem = [
     text: "Home",
     path: "/",
   },
-  {
-    icon: <BsGraphUpArrow className="text-[24px]" />,
-    text: "Revenue",
-    path: "/revenue",
-  },
+  // {
+  //   icon: <BsGraphUpArrow className="text-[24px]" />,
+  //   text: "Revenue",
+  //   path: "/revenue",
+  // },
+
   {
     icon: <BsUpload className="text-[24px]" />,
     text: "Song Upload",
@@ -256,6 +261,30 @@ export const routes = [
         <Home /> {/* will be replaced by <Home /> */}
       </RequireAuth>
     ),
+  },
+  {
+    path: "/verify-otp",
+    page: (
+      <>
+        <VerifyOtp />
+      </>
+    ),
+  },
+  {
+    path: "/verify-otp/reset",
+    page: (
+      <>
+        <ResetPasswordOtp />
+      </>
+    ),
+  },
+  {
+    path: "/reset-password",
+    page: <ResetPassword />,
+  },
+  {
+    path: "/revenue-form-new",
+    page: <RevenueFormNew />,
   },
   {
     path: "/home",

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { backendUrl, imageDomain } from "../../constants";
+import { backendUrl } from "../../constants";
 import profile from "./../../assets/images/profile.png";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -10,6 +10,7 @@ const ProfilePicture = ({
   editable,
   profileData,
   setProfileData,
+  modal,
 }) => {
   // console.log(setProfileData);
   const { token } = useContext(ProfileContext);
@@ -68,8 +69,16 @@ const ProfilePicture = ({
   };
 
   return (
-    <div className="relative w-7 lg:w-[231px] aspect-square mx-auto">
-      <div className="border-4 lg:border-[10px] border-white rounded-full aspect-square overflow-hidden flex items-center justify-center">
+    <div
+      className={`relative ${
+        modal ? "w-7 lg:w-[231px]" : "w-6"
+      } aspect-square mx-auto`}
+    >
+      <div
+        className={`border-4 ${
+          modal ? "lg:border-[10px]" : "lg:border-[5px]"
+        } border-white rounded-full aspect-square overflow-hidden flex items-center justify-center`}
+      >
         {imageUrl ? (
           <img
             className="w-full aspect-square object-cover"

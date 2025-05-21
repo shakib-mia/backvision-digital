@@ -98,6 +98,17 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
     }
   }, [updatedSelectedPlatforms, updatedSelectedPlatforms?.length]);
 
+  const [originalData, setOriginalData] = useState({});
+
+  useEffect(() => {
+    if (Object.keys(originalData).length === 0 && updatedData) {
+      setOriginalData(updatedData);
+    }
+  }, [updatedData, originalData]);
+
+  const isDataChanged =
+    JSON.stringify(originalData) !== JSON.stringify(updatedData);
+
   return (
     <>
       {Object.entries(updatedData).map(([label, value], key) => {
@@ -191,7 +202,9 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
       })}
 
       <div className="flex justify-center mt-5">
-        <Button type={"submit"}>Request Edit</Button>
+        <Button type={"submit"} disabled={!isDataChanged}>
+          Request Edit
+        </Button>
       </div>
     </>
   );
